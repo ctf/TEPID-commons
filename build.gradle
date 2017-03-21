@@ -7,6 +7,7 @@ sourceCompatibility = 1.7
 
 repositories {
     mavenCentral()
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -57,3 +58,18 @@ dependencies {
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.5.4'
 }
+
+//task sourcesJar(type: Jar, dependsOn: classes) {
+//    classifier = 'sources'
+//    from sourceSets.main.allJava
+//}
+
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+
+//artifacts {
+//    archives sourcesJar
+//    archives javadocJar
+//}
