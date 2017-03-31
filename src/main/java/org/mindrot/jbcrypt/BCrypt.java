@@ -40,9 +40,9 @@ import java.security.SecureRandom;
  * <p>
  * <code>
  * if (BCrypt.checkpw(candidate_password, stored_hash))
- * &System.out.println("It matches");
+ * System.out.println("It matches");
  * else
- * &System.out.println("It does not match");
+ * System.out.println("It does not match");
  * </code>
  * <p>
  * The gensalt() method takes an optional parameter (log_rounds)
