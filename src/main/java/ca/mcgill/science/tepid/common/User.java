@@ -17,26 +17,9 @@ public class User {
 	public boolean colorPrinting = false;
 
 	private String _id, _rev;
-	@JsonProperty("type")
 	public final String type = "user";
 	@JsonIgnore
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-	@JsonProperty("_id")
-	public String getId() {
-		return _id;
-	}
-	@JsonProperty("_id")
-	public void setId(String _id) {
-		this._id = _id;
-	}
-	@JsonProperty("_rev")
-	public String getRev() {
-		return _rev;
-	}
-	@JsonProperty("_rev")
-	public void setRev(String _rev) {
-		this._rev = _rev;
-	}
 
 	@JsonAnyGetter
 	public Map<String, Object> getAdditionalProperties() {

@@ -27,13 +27,11 @@ data class PrintJob(
         var isRefunded: Boolean = false,
         var eta: Long = 0,
         var deleteDataOn: Long = 0,
-        @JsonProperty("_id")
-        var id: String? = null,
-        @JsonProperty("_rev")
-        var rev: String? = null,
+        var _id: String = "",
+        var _rev: String = "",
         @get:JsonAnyGetter
         @JsonIgnore
-        val additionalProperties: HashMap<String, Any> = HashMap()
+        val additionalProperties: MutableMap<String, Any> = HashMap()
 ) {
 
     @JsonAnySetter

@@ -9,19 +9,14 @@ import java.util.HashMap
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder("_id", "_rev", "type", "heading", "body")
 data class EmailReasons(
-        @JsonProperty("_id")
-        var id: String = "",
-        @JsonProperty("_rev")
-        var rev: String? = null,
-        @JsonProperty("type")
+        var _id: String = "",
+        var _rev: String? = null,
         var type: String? = null,
-        @JsonProperty("heading")
         var heading: String? = null,
-        @JsonProperty("body")
         var body: String? = null,
         @get:JsonAnyGetter
         @JsonIgnore
-        val additionalProperties: HashMap<String, Any> = HashMap()
+        val additionalProperties: MutableMap<String, Any> = HashMap()
 ) {
 
     @JsonAnySetter

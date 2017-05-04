@@ -11,33 +11,21 @@ import kotlin.collections.HashMap
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder("_id", "_rev", "type", "name", "protocol", "username", "password", "path", "domain")
-data class Destination(@JsonProperty("_id")
-                       var _id: String = "",
-                       @JsonProperty("_rev")
+data class Destination(var _id: String = "",
                        var _rev: String = "",
-                       @JsonProperty("type")
                        var type: String = "",
-                       @JsonProperty("name")
                        var name: String = "",
-                       @JsonProperty("protocol")
                        var protocol: String? = null,
-                       @JsonProperty("username")
                        var username: String? = null,
-                       @JsonProperty("password")
                        var password: String? = null,
-                       @JsonProperty("path")
                        var path: String? = null,
-                       @JsonProperty("domain")
                        var domain: String? = null,
-                       @JsonProperty("ticket")
                        var ticket: DestinationTicket? = null,
-                       @JsonProperty("up")
                        var up: Boolean = false,
-                       @JsonProperty("ppm")
                        var ppm: Int = 0,
                        @get:JsonAnyGetter
                        @JsonIgnore
-                       val additionalProperties: HashMap<String, Any> = HashMap()) {
+                       val additionalProperties: MutableMap<String, Any> = HashMap()) {
 
     @JsonAnySetter
     fun setAdditionalProperty(name: String, value: Any) {
