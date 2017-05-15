@@ -16,7 +16,6 @@ data class CheckedIn(
         @JsonIgnore
         val additionalProperties: MutableMap<String, Any> = HashMap()
 ) {
-
     @JsonAnySetter
     fun setAdditionalProperty(name: String, value: Any) {
         this.additionalProperties.put(name, value)
