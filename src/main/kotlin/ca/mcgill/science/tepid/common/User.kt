@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit
 
 /**
  * Created by Allan Wang on 2017-05-14.
+ *
+ * BEWARE that the password is printed in user.toString(). It's also a public variable...
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -45,4 +47,5 @@ data class User(
     fun setAdditionalProperty(name: String, value: Any) {
         this.additionalProperties.put(name, value)
     }
+
 }
