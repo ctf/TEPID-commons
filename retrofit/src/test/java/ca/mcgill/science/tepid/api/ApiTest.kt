@@ -1,5 +1,6 @@
 package ca.mcgill.science.tepid.api
 
+import ca.mcgill.science.tepid.data.DestinationJson
 import org.junit.Test
 
 /**
@@ -9,9 +10,9 @@ class ApiTest {
 
     @Test
     fun test() {
-//        val data = Destination()
-//        data._id = "abc"
-//        println(data)
+        val data = DestinationJson()
+        data._id = "abc"
+        println(data)
     }
 
 }
