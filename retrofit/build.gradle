@@ -1,7 +1,8 @@
-apply from: '../files/common.gradle'
-
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$KOTLIN"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile project(':data')
+    compile project(':models')
+    compile "com.squareup.retrofit2:retrofit:$RETROFIT"
+    compile "com.squareup.retrofit2:converter-moshi:$RETROFIT"
+    compile "com.squareup.moshi:moshi:$MOSHI"
+    compile "com.squareup.okhttp3:logging-interceptor:$OKHTTP3"
+    compile "com.facebook.stetho:stetho-okhttp3:$STETHO"
 }
