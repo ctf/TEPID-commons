@@ -12,4 +12,5 @@ Move variables also have default values
 ### [Model]
 
 Immutable data variants of the json models. 
-This is typically constructed externally, and it has only the values it needs (no database `_id`, `_rev`, etc)
+This is typically constructed externally, so its main constructor has no defaults.
+It only has the values it needs (no database `_id`, `_rev`, etc)
