@@ -10,7 +10,7 @@ import java.util.*
  * Created by Allan Wang on 2017-05-03.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class EmailReasons @JvmOverloads constructor(
+data class EmailReasons (
         var _id: String = "",
         var _rev: String? = null,
         var type: String? = null,

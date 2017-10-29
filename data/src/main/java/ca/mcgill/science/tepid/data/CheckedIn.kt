@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.*
 import java.util.HashMap
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class CheckedIn @JvmOverloads constructor(
+data class CheckedIn (
         var _id: String = "",
         var currentCheckIn: Map<String, Array<String>> = HashMap(),
         var lateCheckIns: Map<String, Array<String>> = HashMap(),

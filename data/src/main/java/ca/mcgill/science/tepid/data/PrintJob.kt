@@ -6,7 +6,7 @@ import java.util.*
 
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class PrintJob @JvmOverloads constructor(
+data class PrintJob (
         val type: String = "job",
         var name: String = "",
         var queueName: String? = null,

@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class User @JvmOverloads constructor(
+data class User (
         var _id: String = "",
         val _rev: String = "",
         var displayName: String? = null,

@@ -8,7 +8,7 @@ import java.util.Date
 
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Session @JvmOverloads constructor(
+data class Session (
         var _id: String = "",
         var _rev: String = "",
         var role: String? = null,

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class PrintQueue @JvmOverloads constructor(
+data class PrintQueue (
         val type: String = "queue",
         var _id: String = "",
         var _rev: String = "",

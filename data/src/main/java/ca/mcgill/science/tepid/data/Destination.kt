@@ -8,7 +8,7 @@ import kotlin.collections.HashMap
  * Created by Allan Wang on 2017-05-03.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class Destination @JvmOverloads constructor(var _id: String = "",
+data class Destination (var _id: String = "",
                        var _rev: String = "",
                        var type: String = "",
                        var name: String = "",

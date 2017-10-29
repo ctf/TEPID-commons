@@ -7,7 +7,7 @@ import java.util.HashMap
 
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class SignUp @JvmOverloads constructor(
+data class SignUp (
         var _id: String = "",
         var _rev: String = "",
         var type: String? = null,

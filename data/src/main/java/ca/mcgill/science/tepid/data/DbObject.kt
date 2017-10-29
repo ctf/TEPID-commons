@@ -9,7 +9,7 @@ import java.util.HashMap
 
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-class DbObject @JvmOverloads constructor(
+class DbObject (
         @get:JsonAnyGetter
         @JsonIgnore
         val additionalProperties: MutableMap<String, Any> = HashMap<String, Any>()
