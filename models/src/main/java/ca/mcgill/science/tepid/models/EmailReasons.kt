@@ -1,9 +1,9 @@
-package ca.mcgill.science.tepid.data
+package ca.mcgill.science.tepid.models
 
-import ca.mcgill.science.tepid.data.bindings.TepidDb
-import ca.mcgill.science.tepid.data.bindings.TepidDbDelegate
-import ca.mcgill.science.tepid.data.bindings.TepidExtras
-import ca.mcgill.science.tepid.data.bindings.TepidExtrasDelegate
+import ca.mcgill.science.tepid.models.bindings.TepidDb
+import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
+import ca.mcgill.science.tepid.models.bindings.TepidExtras
+import ca.mcgill.science.tepid.models.bindings.TepidExtrasDelegate
 import com.fasterxml.jackson.annotation.JsonInclude
 
 /**

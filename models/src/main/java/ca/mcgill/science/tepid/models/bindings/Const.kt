@@ -1,4 +1,4 @@
-package ca.mcgill.science.tepid.data.bindings
+package ca.mcgill.science.tepid.models.bindings
 
 /**
  * Created by Allan Wang on 2017-10-29.

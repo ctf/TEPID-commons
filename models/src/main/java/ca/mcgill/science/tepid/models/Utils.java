@@ -1,4 +1,4 @@
-package ca.mcgill.science.tepid.data;
+package ca.mcgill.science.tepid.models;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;

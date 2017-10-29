@@ -1,4 +1,4 @@
-package ca.mcgill.science.tepid.data;
+package ca.mcgill.science.tepid.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

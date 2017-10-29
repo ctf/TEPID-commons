@@ -1,9 +1,6 @@
-package ca.mcgill.science.tepid.data
+package ca.mcgill.science.tepid.models
 
-import ca.mcgill.science.tepid.data.bindings.*
-import com.fasterxml.jackson.annotation.JsonAnyGetter
-import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.annotation.JsonIgnore
+import ca.mcgill.science.tepid.models.bindings.*
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.util.*

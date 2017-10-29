@@ -1,6 +1,6 @@
 package ca.mcgill.science.tepid.api
 
-import ca.mcgill.science.tepid.data.DestinationJson
+import ca.mcgill.science.tepid.models.DestinationJson
 import org.junit.Test
 
 /**
