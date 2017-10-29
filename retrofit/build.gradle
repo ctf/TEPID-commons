@@ -1,7 +1,0 @@
-apply from: '../files/common.gradle'
-
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$KOTLIN"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile project(':data')
-}

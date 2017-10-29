@@ -1,4 +1,4 @@
-package ca.mcgill.science.tepid.data.internal
+package ca.mcgill.science.tepid.data.bindings
 
 import com.fasterxml.jackson.annotation.*
 import java.util.HashMap
@@ -13,13 +13,13 @@ import java.util.HashMap
 @JsonIgnoreProperties(ignoreUnknown = true)
 internal interface TepidDb {
     var _id: String
-    var rev: String?
+    var _rev: String?
     var type: String?
 }
 
 internal class TepidDbDelegate : TepidDb {
     override var _id: String = ""
-    override var rev: String? = null
+    override var _rev: String? = null
     override var type: String? = null
 }
 
