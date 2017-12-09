@@ -20,7 +20,7 @@ interface ITepid {
     fun getUser(@Path("shortUser") shortUser: String): Call<User>
 
     @GET("users/{id}?noRedirect")
-    fun getUser(@Path("id") id: Long): Call<User>
+    fun getUser(@Path("id") id: Int): Call<User>
 
     @GET("users/{shortUser}/quota")
     fun getQuota(@Path("shortUser") shortUser: String): Call<Int>

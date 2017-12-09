@@ -26,7 +26,9 @@ abstract class BaseInterceptor : Interceptor {
 class TokenInterceptor(private val token: () -> String) : BaseInterceptor() {
 
     override fun apply(request: Request.Builder, originalChain: Interceptor.Chain) {
-        request.addHeader("Authorization", "Token ${token()}")
+        val token = token()
+        if (token.isNotBlank())
+            request.addHeader("Authorization", "Token $token")
     }
 
 }

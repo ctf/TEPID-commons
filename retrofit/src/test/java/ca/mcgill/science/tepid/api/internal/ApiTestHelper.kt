@@ -1,7 +1,9 @@
 package ca.mcgill.science.tepid.api.internal
 
+import ca.mcgill.science.tepid.models.data.User
 import retrofit2.Call
 import retrofit2.Response
+import kotlin.test.assertTrue
 import kotlin.test.fail
 
 /**
@@ -61,11 +63,29 @@ internal fun <T> Call<T>.executeExpectingError(expectedCode: Int, action: Respon
     try {
         val response = execute()
         if (response.isSuccessful)
-            fail("Successful response received when expecting failure")
+            fail("Successful response received when expecting failure: ${response.body()}")
         if (response.code() != expectedCode)
             fail("Unsuccessful response with ${response.code()} code rather than $expectedCode")
         response.action()
     } catch (exception: Exception) {
         fail("An exception occurred: ${exception.message}")
     }
+}
+
+const val TEST_USER = "***REMOVED***"
+const val TEST_USER_ID = ***REMOVED***
+
+internal fun User.assertTestUser() = assertComponentsEqual {
+    listOf(
+            givenName to "Allan",
+            lastName to "Wang",
+            longUser to "***REMOVED***",
+            email to "***REMOVED***",
+            faculty to "***REMOVED***",
+            realName to "Allan Wang",
+            shortUser to TEST_USER,
+            studentId to TEST_USER_ID
+    )
+}.apply {
+    assertTrue(groups.isNotEmpty())
 }
