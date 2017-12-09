@@ -27,7 +27,6 @@ data class User(
         var salutation: String? = null,
         var authType: String? = null,
         var role: String = USER,
-        @Transient
         var password: String? = null,
         var groups: List<String> = emptyList(),
         var preferredName: List<String> = emptyList(),

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class SessionRequest(
         var username: String = "",
-        @Transient var password: String = "",
+        var password: String = "",
         var persistent: Boolean = false,
         var permanent: Boolean = false
 ) {
