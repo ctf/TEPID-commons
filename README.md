@@ -20,11 +20,11 @@ repositories {
 }
 
 dependencies {
-    compile "ca.mcgill:tepid-commons:$TEPID-COMMONS"
+    compile "ca.mcgill:tepid-commons:$TEPID_COMMONS"
 }
 ```
 
-Where `$TEPID-COMMONS` can be any release, commit hash, or snapshot.
+Where `$TEPID_COMMONS` can be any release, commit hash, or snapshot.
 
 # Testing
 
