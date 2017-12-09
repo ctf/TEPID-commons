@@ -37,6 +37,12 @@ data class User(
         var colorPrinting: Boolean = false
 ) : TepidDb by TepidDbDelegate(), TepidExtras by TepidExtrasDelegate() {
     override var type: String? = "user"
+
+    fun isMatch(name: String) {
+        if (name.contains(".")) longUser == name
+        else shortUser == name
+    }
+
 }
 
 /**
