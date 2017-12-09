@@ -7,7 +7,7 @@ import kotlin.test.fail
 /**
  * Given two variables with the same type, map their respective values and compare them individually
  */
-internal fun <T> T.assertComponentsEqual(expected: T, values: (T) -> List<Any?>) {
+internal fun <T> T.assertComponentsEqual(expected: T, values: (T) -> List<Any?>): T {
     val expectedValues = values(expected)
     val actualValues = values(this)
     var valid = true
@@ -18,20 +18,22 @@ internal fun <T> T.assertComponentsEqual(expected: T, values: (T) -> List<Any?>)
         }
     }
     if (!valid) fail("Not all components matched")
+    return this
 }
 
 /**
  * Given one variable, make its components to expected values
  */
-internal fun <T> T.assertComponentsEqual(value: (T) -> List<Pair<Any?, Any?>>) {
+internal fun <T> T.assertComponentsEqual(value: T.() -> List<Pair<Any?, Any?>>): T {
     var valid = true
-    value(this).forEachIndexed { index, (act, exp) ->
+    this.value().forEachIndexed { index, (act, exp) ->
         if (act != exp) {
             valid = false
             System.err.println("Component $index mismatch: expected $exp, actually $act")
         }
     }
     if (!valid) fail("Not all components matched")
+    return this
 }
 
 /**

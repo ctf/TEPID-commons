@@ -1,4 +1,4 @@
-package ca.mcgill.science.tepid.models
+package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.*
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
@@ -38,3 +38,15 @@ data class User(
 ) : TepidDb by TepidDbDelegate(), TepidExtras by TepidExtrasDelegate() {
     override var type: String? = "user"
 }
+
+/**
+ * User Query; student info from autoSuggest
+ * A shorter version of user
+ */
+data class UserQuery(
+        var displayName: String = "",
+        var shortUser: String = "",
+        var email: String = "",
+        var colorPrinting: Boolean = false,
+        var type: String = "user"
+)

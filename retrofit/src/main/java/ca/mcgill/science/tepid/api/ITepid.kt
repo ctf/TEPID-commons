@@ -1,6 +1,6 @@
 package ca.mcgill.science.tepid.api
 
-import ca.mcgill.science.tepid.models.*
+import ca.mcgill.science.tepid.models.data.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -8,6 +8,7 @@ import retrofit2.http.*
  * Created by Allan Wang on 2017-10-28.
  */
 interface ITepid {
+
     @Headers("CTFA-Type: NewSession")
     @POST("sessions")
     fun getSession(@Body body: SessionRequest): Call<Session>

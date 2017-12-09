@@ -26,7 +26,7 @@ class TepidApi(val url: String, val debug: Boolean = url != TEPID_URL_PRODUCTION
 
     var debugBuilder: (builder: OkHttpClient.Builder) -> Unit = {
         it.addInterceptor(HttpLoggingInterceptor()
-                .setLevel(HttpLoggingInterceptor.Level.HEADERS))
+                .setLevel(HttpLoggingInterceptor.Level.BASIC))
     }
 
     var retrofitBuilder: (builder: Retrofit.Builder) -> Unit = {}
