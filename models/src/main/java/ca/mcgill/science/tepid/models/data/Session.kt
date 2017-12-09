@@ -6,17 +6,16 @@ import ca.mcgill.science.tepid.models.bindings.USER
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include
-
-import java.util.Date
+import java.util.*
 
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class Session (
+data class Session(
         var role: String = USER,
         var user: User,
         var expiration: Date? = null,
         val persistent: Boolean = true
-): TepidDb by TepidDbDelegate() {
+) : TepidDb by TepidDbDelegate() {
 
     override var type: String? = "session"
 

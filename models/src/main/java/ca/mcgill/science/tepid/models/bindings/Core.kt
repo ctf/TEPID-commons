@@ -1,7 +1,7 @@
 package ca.mcgill.science.tepid.models.bindings
 
 import com.fasterxml.jackson.annotation.*
-import java.util.HashMap
+import java.util.*
 
 /**
  * Created by Allan Wang on 2017-10-29.
