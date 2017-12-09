@@ -25,3 +25,8 @@ dependencies {
 ```
 
 Where `$TEPID-COMMONS` can be any release, commit hash, or snapshot.
+
+# Testing
+
+Most unit tests are reliant on some sort of authentication.
+You may copy over `priv.sample.properties` to `priv.properties` and paste your token there.
