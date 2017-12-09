@@ -15,6 +15,8 @@ internal interface TepidDb {
     var _id: String
     var _rev: String?
     var type: String?
+    fun getId() = _id
+    fun getRev() = _rev
 }
 
 internal class TepidDbDelegate : TepidDb {
