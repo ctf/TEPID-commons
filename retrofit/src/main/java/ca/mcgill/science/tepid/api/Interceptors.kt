@@ -23,11 +23,10 @@ abstract class BaseInterceptor : Interceptor {
 /**
  * Injects the token to each request
  */
-class TokenInterceptor(val token: String, val injector: (Request) -> Boolean = { true }) : BaseInterceptor() {
+class TokenInterceptor(private val token: () -> String) : BaseInterceptor() {
 
     override fun apply(request: Request.Builder, originalChain: Interceptor.Chain) {
-        if (injector(originalChain.request()))
-            request.addHeader("Authorization", "Token " + token)
+        request.addHeader("Authorization", "Token ${token()}")
     }
 
 }

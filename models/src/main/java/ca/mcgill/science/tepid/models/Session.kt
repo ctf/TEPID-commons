@@ -11,7 +11,7 @@ import java.util.Date
 
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class SessionJson (
+data class Session (
         var role: String = USER,
         var user: User,
         var expiration: Date? = null,
@@ -24,10 +24,8 @@ data class SessionJson (
         return "Session " + this._id
     }
 
-    fun expirationHours(hours: Long) {
+    fun setExpirationHours(hours: Long) {
         this.expiration = Date(System.currentTimeMillis() + hours * 60 * 60 * 1000)
     }
 
 }
-
-class Session(val role: String, val user: User, val _id: String)

@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class UserJson(
+data class User(
         var displayName: String? = null,
         var givenName: String? = null,
         var middleName: String? = null,
@@ -27,9 +27,10 @@ data class UserJson(
         var salutation: String? = null,
         var authType: String? = null,
         var role: String = USER,
+        @Transient
         var password: String? = null,
-        var groups: List<String> = ArrayList(),
-        var preferredName: List<String>? = null,
+        var groups: List<String> = emptyList(),
+        var preferredName: List<String> = emptyList(),
         var activeSince: Date? = null,
         var studentId: Int = -1,
         var jobExpiration: Long = TimeUnit.DAYS.toMillis(7),//why is this here
@@ -37,26 +38,3 @@ data class UserJson(
 ) : TepidDb by TepidDbDelegate(), TepidExtras by TepidExtrasDelegate() {
     override var type: String? = "user"
 }
-
-data class User(
-        val displayName: String?,
-        val givenName: String?,
-        val middleName: String?,
-        val lastName: String?,
-        val shortUser: String?,
-        val longUser: String?,
-        val email: String,
-        val faculty: String?,
-        val nick: String?,
-        val realName: String?,
-        val salutation: String?,
-        val authType: String?,
-        val role: String,
-        val password: String?,
-        val groups: List<String>,
-        val preferredName: List<String>?,
-        val activeSince: Date?,
-        val studentId: Int,
-        val jobExpiration: Long,
-        val colorPrinting: Boolean
-)

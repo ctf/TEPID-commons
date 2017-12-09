@@ -9,11 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include
 
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class SignUpJson(
+data class SignUp(
         var name: String,
         var givenName: String = name,
         var nickname: String? = null,
-        var slots: Map<String, Array<String>>? = null
+        var slots: Map<String, Array<String>> = emptyMap()
 ) : TepidDb by TepidDbDelegate(), TepidExtras by TepidExtrasDelegate()
-
-data class SignUp(val name: String, val givenName: String, val nickname: String?, val slots: Map<String, Array<String>>)

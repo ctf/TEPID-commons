@@ -10,7 +10,7 @@ import java.util.*
 
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class PrintJobJson(
+data class PrintJob(
         var name: String = "",
         var queueName: String? = null,
         var originalHost: String? = null,
@@ -41,23 +41,3 @@ data class PrintJobJson(
         this.error = error
     }
 }
-
-data class PrintJob(
-        val name: String,
-        val queueName: String?,
-        val originalHost: String?,
-        val userIdentification: String?,
-        val destination: String?,
-        val error: String?,
-        val file: String?,
-        val colorPages: Int,
-        val pages: Int,
-        val started: Date,
-        val processed: Date?,
-        val printed: Date?,
-        val failed: Date?,
-        val received: Date?,
-        val isRefunded: Boolean,
-        val eta: Long,
-        val deleteDataOn: Long = 0
-)

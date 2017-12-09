@@ -9,4 +9,4 @@ const val USER = "user"
 
 const val TEPID_URL_PRODUCTION = "https://tepid.science.mcgill.ca:8443/tepid/"
 const val TEPID_URL_TEST = "http://testpid.science.mcgill.ca:8080/tepid/"
-const val TEPID_LOCAL = "localhost:8080/"
+const val TEPID_LOCAL = "http://localhost:8080/"

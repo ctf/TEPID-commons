@@ -8,11 +8,11 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include
 
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class PrintQueueJson(
+data class PrintQueue(
         var loadBalancer: String? = null,
         var defaultOn: String? = null,
         var name: String? = null,
-        var destinations: List<String>? = null
+        var destinations: List<String> = emptyList()
 ) : TepidDb by TepidDbDelegate() {
 
     override var type: String? = "queue"
@@ -21,7 +21,3 @@ data class PrintQueueJson(
         return "PrintQueue [name=$name, destinations=$destinations]"
     }
 }
-
-data class PrintQueue(
-        val loadBalancer: String?, val defaultOn: String?, val name: String?, val destinations: List<String>?
-)

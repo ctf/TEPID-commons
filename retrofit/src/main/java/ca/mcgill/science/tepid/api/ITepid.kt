@@ -3,7 +3,6 @@ package ca.mcgill.science.tepid.api
 import ca.mcgill.science.tepid.models.*
 import retrofit2.Call
 import retrofit2.http.*
-import javax.print.attribute.standard.PrinterInfo
 
 /**
  * Created by Allan Wang on 2017-10-28.
@@ -26,7 +25,7 @@ interface ITepid {
     fun getQuota(@Path("shortUser") shortUser: String): Call<Int>
 
     @GET("destinations")
-    fun getPrinterInfo(): Call<Map<String, PrinterInfo>>
+    fun getPrinterInfo(): Call<Map<String, Destination>>
 
     @Headers("Content-Type: application/json;charset=UTF-8")
     @POST("destinations/{printerId}")
