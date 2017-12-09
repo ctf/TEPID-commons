@@ -11,13 +11,13 @@ import java.util.*
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Session(
-        var role: String = USER,
+        var role: String = "",
         var user: User,
         var expiration: Date? = null,
         var persistent: Boolean = true
 ) : TepidDb by TepidDbDelegate() {
 
-    constructor(role: String = USER,
+    constructor(role: String = "",
                 user: User,
                 expiration: Long? = null,
                 persistent: Boolean = true) : this(role, user, expiration.hoursToDate(), persistent)

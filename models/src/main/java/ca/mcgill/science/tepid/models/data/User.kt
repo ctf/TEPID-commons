@@ -26,7 +26,7 @@ data class User(
         var realName: String? = null,
         var salutation: String? = null,
         var authType: String? = null,
-        var role: String = USER,
+        var role: String = "",
         var password: String? = null,
         var groups: List<String> = emptyList(),
         var preferredName: List<String> = emptyList(),
