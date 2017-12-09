@@ -20,7 +20,7 @@ data class User(
         var lastName: String? = null,
         var shortUser: String? = null,
         var longUser: String? = null,
-        var email: String,
+        var email: String? = null,
         var faculty: String? = null,
         var nick: String? = null,
         var realName: String? = null,
