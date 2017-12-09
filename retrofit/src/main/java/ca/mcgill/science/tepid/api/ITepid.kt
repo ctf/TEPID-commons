@@ -52,6 +52,9 @@ interface ITepid {
     @PUT("users/{shortUser}/color")
     fun enableColor(@Path("shortUser") shortUser: String, @Body enable: Boolean): Call<ColorResponse>
 
+    @GET("about")
+    fun getAbout(): Call<About>
+
 //    @GET("barcode/_wait")
 //    fun scanBarcode(): Call<UserBarcode>
 }

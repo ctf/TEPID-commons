@@ -30,6 +30,11 @@ subprojects {
         kotlinOptions.jvmTarget = JVM_TARGET
     }
 
+    test {
+        dependsOn cleanTest
+        testLogging.showStandardStreams = true
+    }
+
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from sourceSets.main.allSource
@@ -46,7 +51,6 @@ subprojects {
     }
 
     dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$KOTLIN"
         compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$KOTLIN"
 
         testCompile "junit:junit:$JUNIT"
