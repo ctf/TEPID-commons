@@ -1,0 +1,4 @@
+dependencies {
+    compile "org.slf4j:slf4j-api:$SLF4J"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$KOTLIN"
+}

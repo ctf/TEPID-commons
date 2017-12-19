@@ -1,6 +1,12 @@
 package in.waffl.q;
 
+/**
+ * Container for {@link Promise} which exposes the api
+ *
+ * @param <T>
+ */
 public class Q<T> {
+
     public final Promise<T> promise;
 
     private Q() {
@@ -24,7 +30,7 @@ public class Q<T> {
     }
 
     public static <T> Q<T> defer() {
-        return new Q<T>();
+        return new Q<>();
     }
 
 }

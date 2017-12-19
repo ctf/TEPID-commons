@@ -9,7 +9,6 @@ import retrofit2.http.*
  */
 interface ITepid {
 
-    @Headers("CTFA-Type: NewSession")
     @POST("sessions")
     fun getSession(@Body body: SessionRequest): Call<Session>
 

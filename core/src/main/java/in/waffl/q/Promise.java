@@ -5,7 +5,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-
+/**
+ * Base implementation of a promise
+ *
+ * Most of the interface is hidden, and can be accessed by the parent holder
+ * {@link Q}
+ * @param <T>
+ */
 public class Promise<T> {
     private T result;
     private Semaphore lock = new Semaphore(0);
@@ -14,20 +20,16 @@ public class Promise<T> {
     private boolean resolved;
     private Queue<PromiseCallback<T>> listeners = new ConcurrentLinkedQueue<>();
 
-    protected Promise() {
+    Promise() {
     }
 
     public T getResult() {
         try {
             lock.acquire();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
         if (reason != null) {
-            if (cause == null) {
-                throw new PromiseRejectionException(reason);
-            } else {
-                throw new PromiseRejectionException(reason, cause);
-            }
+            throw new PromiseRejectionException(reason, cause);
         }
         return result;
     }
@@ -35,20 +37,16 @@ public class Promise<T> {
     public T getResult(long ms) {
         try {
             if (!lock.tryAcquire(1, ms, TimeUnit.MILLISECONDS)) return null;
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
         }
         if (reason != null) {
-            if (cause == null) {
-                throw new PromiseRejectionException(reason);
-            } else {
-                throw new PromiseRejectionException(reason, cause);
-            }
+            throw new PromiseRejectionException(reason, cause);
         }
         return result;
     }
 
-    protected void resolve(T result) {
-        if (resolved) throw new RuntimeException("Promise already resolved");
+    void resolve(T result) {
+        if (resolved) throw new PromiseException("Promise already resolved");
         resolved = true;
         this.result = result;
         lock.release();
@@ -57,8 +55,8 @@ public class Promise<T> {
         }
     }
 
-    protected void reject(String reason) {
-        if (resolved) throw new RuntimeException("Promise already resolved");
+    void reject(String reason) {
+        if (resolved) throw new PromiseException("Promise already resolved");
         resolved = true;
         this.reason = reason;
         lock.release();
@@ -67,8 +65,8 @@ public class Promise<T> {
         }
     }
 
-    protected void reject(String reason, Throwable cause) {
-        if (resolved) throw new RuntimeException("Promise already resolved");
+    void reject(String reason, Throwable cause) {
+        if (resolved) throw new PromiseException("Promise already resolved");
         resolved = true;
         this.reason = reason;
         this.cause = cause;
@@ -78,7 +76,7 @@ public class Promise<T> {
         }
     }
 
-    protected boolean isResolved() {
+    boolean isResolved() {
         return this.resolved;
     }
 

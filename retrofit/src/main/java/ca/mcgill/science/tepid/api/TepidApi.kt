@@ -16,11 +16,10 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  *
  * Can be implemented per project with a singleton via
  *
- * val API by TepidApi("url")
+ * val API: ITepid by  lazy { TepidApi(...).create() }
  */
-class TepidApi(val url: String, val debug: Boolean = url != TEPID_URL_PRODUCTION) {
-
-    var token: String = ""
+class TepidApi(private val url: String,
+               private val debug: Boolean = url != TEPID_URL_PRODUCTION) {
 
     var clientBuilder: (builder: OkHttpClient.Builder) -> Unit = {}
 
@@ -31,13 +30,14 @@ class TepidApi(val url: String, val debug: Boolean = url != TEPID_URL_PRODUCTION
 
     var retrofitBuilder: (builder: Retrofit.Builder) -> Unit = {}
 
-    fun create(config: TepidApi.() -> Unit = {}): ITepid {
-        config()
+    fun create(builder: Config.() -> Unit = {}): ITepid {
+        val config = Config()
+        config.builder()
         val client = OkHttpClient.Builder()
         clientBuilder(client)
         if (debug) debugBuilder(client)
-        client.addInterceptor(TokenInterceptor { token })
 
+        config.tokenRetriever?.apply { client.addInterceptor(TokenInterceptor(this)) }
 
         val moshi = Moshi.Builder()
                 .add(KotlinJsonAdapterFactory())
@@ -49,6 +49,13 @@ class TepidApi(val url: String, val debug: Boolean = url != TEPID_URL_PRODUCTION
                 .client(client.build())
         retrofitBuilder(retrofit)
         return retrofit.build().create(ITepid::class.java)
+    }
+
+    class Config {
+
+        var tokenRetriever: (() -> String)? = null
+        var auth: Pair<String, String>? = null
+
     }
 
 }
