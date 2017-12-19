@@ -29,7 +29,7 @@ data class PrintJob(
         var isRefunded: Boolean = false,
         var eta: Long = 0,
         var deleteDataOn: Long = 0
-) : TepidDb by TepidDbDelegate(), TepidExtras by TepidExtrasDelegate() {
+) : TepidDb by TepidDbDelegate(), TepidExtras by TepidExtrasDelegate(), Comparable<PrintJob> {
 
     override var type: String? = "job"
 
@@ -40,5 +40,17 @@ data class PrintJob(
     fun setFailed(failed: Date, error: String) {
         this.failed = failed
         this.error = error
+    }
+
+    private fun dateToCompare() =
+            if (failed != null) started else processed
+
+    override fun compareTo(other: PrintJob): Int {
+        val date1 = dateToCompare()
+        val date2 = other.dateToCompare()
+        if (date1 == null) return -1
+        if (date2 == null) return 1
+        val compare = date1.compareTo(date2)
+        return if (compare == 0) _id.compareTo(other._id) else compare
     }
 }

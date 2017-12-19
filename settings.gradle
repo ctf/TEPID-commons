@@ -1,1 +1,1 @@
-include 'models', 'core', 'retrofit'
+include 'core', 'ldap', 'models', 'retrofit', 'test', 'utils'

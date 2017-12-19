@@ -2,7 +2,6 @@ package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
-import ca.mcgill.science.tepid.models.bindings.USER
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include
@@ -25,6 +24,10 @@ data class Session(
     override var type: String? = "session"
 
     override fun toString() = "Session $_id"
+
+    val token: String
+        get() = Base64.getEncoder()
+                .encodeToString("${user.shortUser}:${_id}".toByteArray())
 
 }
 

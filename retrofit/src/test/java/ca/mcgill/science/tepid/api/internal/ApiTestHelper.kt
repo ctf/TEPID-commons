@@ -86,6 +86,4 @@ internal fun User.assertTestUser() = assertComponentsEqual {
             shortUser to TEST_USER,
             studentId to TEST_USER_ID
     )
-}.apply {
-    assertTrue(groups.isNotEmpty())
 }

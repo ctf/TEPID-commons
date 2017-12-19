@@ -1,6 +1,9 @@
 package ca.mcgill.science.tepid.models.data
 
-import ca.mcgill.science.tepid.models.bindings.*
+import ca.mcgill.science.tepid.models.bindings.TepidDb
+import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
+import ca.mcgill.science.tepid.models.bindings.TepidExtras
+import ca.mcgill.science.tepid.models.bindings.TepidExtrasDelegate
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.util.*
@@ -9,7 +12,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by Allan Wang on 2017-05-14.
  *
- * BEWARE that the password is printed in user.toString(). It's also a public variable...
+ * The main user data model with public variables
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -27,8 +30,6 @@ data class User(
         var salutation: String? = null,
         var authType: String? = null,
         var role: String = "",
-        var password: String? = null,
-        var groups: List<String> = emptyList(),
         var preferredName: List<String> = emptyList(),
         var activeSince: Date? = null,
         var studentId: Int = -1,
@@ -41,6 +42,12 @@ data class User(
             if (name.contains(".")) longUser == name
             else shortUser == name
 
+    fun toUserQuery() = UserQuery(
+            displayName = displayName ?: realName ?: givenName ?: "",
+            shortUser = shortUser ?: "",
+            email = email ?: "",
+            colorPrinting = colorPrinting
+    )
 }
 
 /**

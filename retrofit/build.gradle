@@ -6,4 +6,6 @@ dependencies {
     compile "com.squareup.moshi:moshi-kotlin:$MOSHI"
     compile "com.squareup.okhttp3:logging-interceptor:$OKHTTP3"
     compile "com.facebook.stetho:stetho-okhttp3:$STETHO"
+
+    testCompile project(':test')
 }

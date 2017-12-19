@@ -1,7 +1,6 @@
 package in.waffl.q;
 
 public class PromiseRejectionException extends RuntimeException {
-    private static final long serialVersionUID = 8849404795231493548L;
 
     public PromiseRejectionException() {
     }
