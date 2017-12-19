@@ -2,15 +2,8 @@
 
 The following submodules contains all of the data bindings to TEPID.
 
-Klasses are generally in the following format:
+As of now, our data models are:
 
-### [Model]Json
-
-Models used in Jackson. Contains jackson annotations and have mutable variables.
-Move variables also have default values
-
-### [Model]
-
-Immutable data variants of the json models. 
-This is typically constructed externally, so its main constructor has no defaults.
-It only has the values it needs (no database `_id`, `_rev`, etc)
+* Mutable - to support Jackson
+* With defaults - to ensure all values are initialized
+* With delegates where necessary - see `ca.mcgill.science.tepid.models.bindings.*`
