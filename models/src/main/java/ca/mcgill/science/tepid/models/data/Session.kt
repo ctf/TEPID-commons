@@ -11,13 +11,13 @@ import java.util.*
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Session(
         var role: String = "",
-        var user: User,
+        var user: FullUser,
         var expiration: Date? = null,
         var persistent: Boolean = true
 ) : TepidDb by TepidDbDelegate() {
 
     constructor(role: String = "",
-                user: User,
+                user: FullUser,
                 expiration: Long? = null,
                 persistent: Boolean = true) : this(role, user, expiration.hoursToDate(), persistent)
 
