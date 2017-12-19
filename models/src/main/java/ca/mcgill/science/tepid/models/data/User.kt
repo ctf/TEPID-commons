@@ -89,10 +89,7 @@ data class FullUser(
         var studentId: Int = -1,
         var jobExpiration: Long = TimeUnit.DAYS.toMillis(7),//why is this here
         var colorPrinting: Boolean = false
-) {
-
-    internal var _id: String = ""
-    internal var _rev: String? = null
+) : TepidDb by TepidDbDelegate() {
 
     fun isMatch(name: String) =
             if (name.contains(".")) longUser == name
