@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.naming.Context.*
 import javax.naming.NamingException
-import javax.naming.directory.Attribute
 import javax.naming.directory.Attributes
 import javax.naming.directory.SearchControls
 import javax.naming.ldap.InitialLdapContext
@@ -24,7 +23,7 @@ interface LdapContract {
     fun autoSuggest(like: String, auth: Pair<String, String>, limit: Int): List<FullUser>
 }
 
-open class LdapBase : LdapContract, WithLogging() {
+open class LdapBase : LdapContract, LdapHelperContract by LdapHelperDelegate(), WithLogging() {
 
     /**
      * Queries [username] (short user or long user)
@@ -81,7 +80,7 @@ open class LdapBase : LdapContract, WithLogging() {
 
         }
 
-        val members = attributeToList(get("memberOf"))?.mapNotNull {
+        val members = get("memberOf")?.toList()?.mapNotNull {
             try {
                 val cn = ctx.getAttributes(it, arrayOf("CN"))?.get("CN")?.get()?.toString()
                 val groupValues = seasonRegex.find(it.toLowerCase(Locale.CANADA))?.groupValues
@@ -108,46 +107,6 @@ open class LdapBase : LdapContract, WithLogging() {
 
         return out
     }
-
-    /**
-     * Copy over attributes from another user
-     */
-    fun mergeUsers(main: FullUser, other: FullUser?) {
-        other ?: return
-        with(main) {
-            if (_id == "") _id = other._id
-            _rev = _rev ?: other._rev
-            studentId = other.studentId
-            preferredName = other.preferredName
-            nick = nick ?: other.nick
-            colorPrinting = other.colorPrinting
-            jobExpiration = other.jobExpiration
-            shortUser = shortUser ?: other.shortUser
-            if (studentId <= 0) studentId == other.studentId
-        }
-    }
-
-    /**
-     * Convert attributes to attribute list
-     */
-    fun attributesToList(attrs: Attributes?): List<Attribute>? {
-        if (attrs == null) return null
-        val ids = attrs.iDs
-        val data = mutableListOf<Attribute>()
-        while (ids.hasMore()) {
-            val id = ids.next()
-            data.add(attrs.get(id))
-        }
-        ids.close()
-        return (data)
-    }
-
-    /**
-     * Convert attribute to string list
-     */
-    fun attributeToList(attr: Attribute?) =
-            if (attr == null) null
-            else (0 until attr.size()).map { attr.get(it).toString() }
 
     /**
      * Defines the environment necessary for [InitialLdapContext]
