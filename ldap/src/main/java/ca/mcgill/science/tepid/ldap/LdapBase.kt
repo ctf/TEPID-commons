@@ -3,7 +3,6 @@ package ca.mcgill.science.tepid.ldap
 import ca.mcgill.science.tepid.models.data.Course
 import ca.mcgill.science.tepid.models.data.FullUser
 import ca.mcgill.science.tepid.models.data.Season
-import ca.mcgill.science.tepid.models.data.User
 import ca.mcgill.science.tepid.utils.WithLogging
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -16,17 +15,17 @@ import javax.naming.directory.SearchControls
 import javax.naming.ldap.InitialLdapContext
 import javax.naming.ldap.LdapContext
 
-object Ldap : WithLogging() {
+open class LdapBase : WithLogging() {
 
     /**
-     * Queries [username] with [auth] credentials (username to password).
+     * Queries [username] (short user or long user)
+     * with [auth] credentials (username to password).
      * Resulting user is nonnull if it exists
      *
      * Note that [auth] may use different credentials than the [username] in question.
      * However, if a different auth is provided (eg from our science account),
      * the studentId cannot be queried
      */
-    @JvmStatic
     fun queryUser(username: String?, auth: Pair<String, String>): FullUser? {
         if (username == null) return null
         val ldapSearchBase = ***REMOVED***
@@ -46,7 +45,7 @@ object Ldap : WithLogging() {
     /**
      * Make sure that the regex matches values located in [Season]
      */
-    private val seasonRegex = Regex("ou=(fall|winter|summer) (2[0-9]{3})[^0-9]")
+    protected val seasonRegex = Regex("ou=(fall|winter|summer) (2[0-9]{3})[^0-9]")
 
     /**
      * Creates a blank user and attempts to retrieve as many attributes
@@ -54,7 +53,7 @@ object Ldap : WithLogging() {
      *
      * Note that when converting
      */
-    private fun Attributes.toUser(ctx: LdapContext): FullUser {
+    protected fun Attributes.toUser(ctx: LdapContext): FullUser {
         fun attr(name: String) = get(name)?.get()?.toString() ?: ""
         val out = FullUser(
                 displayName = attr("displayName"),
@@ -104,10 +103,10 @@ object Ldap : WithLogging() {
     /**
      * Copy over attributes from another user
      */
-    private fun FullUser.mergeFrom(other: FullUser?) {
+    protected fun FullUser.mergeFrom(other: FullUser?) {
         other ?: return
-        _id = other._id
-        _rev = other._rev
+        if (_id == "") _id = other._id
+        _rev = _rev ?: other._rev
         studentId = other.studentId
         preferredName = other.preferredName
         nick = nick ?: other.nick
@@ -120,7 +119,7 @@ object Ldap : WithLogging() {
     /**
      * Convert attributes to attribute list
      */
-    private fun Attributes.toList(): List<Attribute> {
+    protected fun Attributes.toList(): List<Attribute> {
         val ids = iDs
         val data = mutableListOf<Attribute>()
         while (ids.hasMore()) {
@@ -134,12 +133,12 @@ object Ldap : WithLogging() {
     /**
      * Convert attribute to string list
      */
-    private fun Attribute.toList() = (0 until size()).map { get(it).toString() }
+    protected fun Attribute.toList() = (0 until size()).map { get(it).toString() }
 
     /**
      * Defines the environment necessary for [InitialLdapContext]
      */
-    private fun createAuthMap(user: String, password: String) = Hashtable<String, String>().apply {
+    protected fun createAuthMap(user: String, password: String) = Hashtable<String, String>().apply {
         put(SECURITY_AUTHENTICATION, "simple")
         put(INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory")
         put(PROVIDER_URL, ***REMOVED***)
@@ -149,12 +148,12 @@ object Ldap : WithLogging() {
         put("com.sun.jndi.ldap.connect.timeout", "500")
     }
 
-    private fun bindLdap(auth: Pair<String, String>) = bindLdap(auth.first, auth.second)
+    protected fun bindLdap(auth: Pair<String, String>) = bindLdap(auth.first, auth.second)
 
     /**
      * Create [LdapContext] for given credentials
      */
-    private fun bindLdap(user: String, password: String): LdapContext? {
+    protected fun bindLdap(user: String, password: String): LdapContext? {
         try {
             val auth = createAuthMap(user, password)
             return InitialLdapContext(auth, null)
@@ -164,4 +163,28 @@ object Ldap : WithLogging() {
         }
     }
 
+    fun autoSuggest(like: String, auth: Pair<String, String>, limit: Int): List<FullUser> {
+        try {
+            val ldapSearchBase = ***REMOVED***
+            val searchFilter = "(&(objectClass=user)(|(userPrincipalName=$like*)(samaccountname=$like*)))"
+            val ctx = bindLdap(auth) ?: return emptyList()
+            val searchControls = SearchControls()
+            searchControls.searchScope = SearchControls.SUBTREE_SCOPE
+            val results = ctx.search(ldapSearchBase, searchFilter, searchControls)
+            val out = mutableListOf<FullUser>()
+            var res = 0
+            val iter = results.iterator()
+            while (iter.hasNext() && res++ < limit) {
+                val user = iter.next().attributes.toUser(ctx)
+                if (user.longUser?.split("@")?.getOrNull(0)?.indexOf(".") ?: -1 > 0)
+                    out.add(user)
+            }
+            results.close()
+            ctx.close()
+            return out
+        } catch (ne: NamingException) {
+            log.error("Could not get autosuggest $ne")
+            return emptyList()
+        }
+    }
 }

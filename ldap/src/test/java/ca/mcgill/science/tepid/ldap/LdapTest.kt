@@ -8,13 +8,13 @@ import kotlin.test.assertNull
 import kotlin.test.fail
 
 
-class LdapTest {
+class LdapTest : LdapBase() {
 
     companion object {
 
         init {
             Assume.assumeTrue("Testing LDAP connection",
-                    Ldap.queryUser("***REMOVED***", TEST_AUTH) != null)
+                    LdapBase().queryUser("***REMOVED***", TEST_AUTH) != null)
         }
 
     }
@@ -24,13 +24,13 @@ class LdapTest {
      */
     @Test
     fun bindOtherUser() {
-        val user = Ldap.queryUser("***REMOVED***", TEST_AUTH) ?: fail("Null user")
+        val user = queryUser("***REMOVED***", TEST_AUTH) ?: fail("Null user")
         assertEquals(-1, user.studentId, "unexpected studentId from external TEST_AUTH")
     }
 
     @Test
     fun bind() {
-        val user = Ldap.queryUser("azsedzzz", TEST_AUTH)
+        val user = queryUser("azsedzzz", TEST_AUTH)
         assertNull(user, "User azsedzzz should be null")
     }
 
