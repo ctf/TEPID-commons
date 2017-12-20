@@ -116,6 +116,8 @@ open class LdapBase : WithLogging() {
         if (studentId <= 0) studentId == other.studentId
     }
 
+    protected fun mergeWith(main: FullUser, other: FullUser?) = main.mergeFrom(other)
+
     /**
      * Convert attributes to attribute list
      */
