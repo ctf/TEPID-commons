@@ -9,7 +9,7 @@ import java.util.*
  * Base variables that are in all db related classes
  */
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.ALWAYS)
 @JsonIgnoreProperties(ignoreUnknown = true)
 internal interface TepidDb {
     var _id: String

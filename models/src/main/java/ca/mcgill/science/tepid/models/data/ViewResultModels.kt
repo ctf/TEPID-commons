@@ -1,8 +1,13 @@
 package ca.mcgill.science.tepid.models.data
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonInclude
+
 /**
  * Collection of rows containing values
  */
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@JsonIgnoreProperties(ignoreUnknown = true)
 open class ViewResultSet<V : Any> {
     open var rows: List<Row<V>> = emptyList()
 
@@ -29,6 +34,8 @@ open class ViewResultSet<V : Any> {
 /**
  * Collection of rows containing keys and values
  */
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@JsonIgnoreProperties(ignoreUnknown = true)
 open class ViewResultMap<K : Any, V : Any> {
     open var rows: List<Row<K, V>> = emptyList()
 
