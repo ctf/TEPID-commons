@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonInclude
 open class ViewResultSet<V : Any> {
     open var rows: List<Row<V>> = emptyList()
 
+    @JsonInclude(JsonInclude.Include.ALWAYS)
+    @JsonIgnoreProperties(ignoreUnknown = true)
     open class Row<out V>(open val value: V?) {
         override fun hashCode() = value?.hashCode() ?: 7
 
@@ -39,6 +41,8 @@ open class ViewResultSet<V : Any> {
 open class ViewResultMap<K : Any, V : Any> {
     open var rows: List<Row<K, V>> = emptyList()
 
+    @JsonInclude(JsonInclude.Include.ALWAYS)
+    @JsonIgnoreProperties(ignoreUnknown = true)
     open class Row<out K, out V>(open val key: K?, open val value: V?) {
         override fun hashCode() = (key?.hashCode() ?: 13) * 13 + (value?.hashCode() ?: 7)
 
