@@ -1,5 +1,6 @@
 package ca.mcgill.science.tepid.models.data
 
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 
@@ -13,7 +14,7 @@ open class ViewResultSet<V : Any> {
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
     @JsonIgnoreProperties(ignoreUnknown = true)
-    open class Row<out V>(open val value: V?) {
+    open class Row<out V> @JsonCreator constructor(open val value: V?) {
         override fun hashCode() = value?.hashCode() ?: 7
 
         override fun equals(other: Any?) =
@@ -43,7 +44,7 @@ open class ViewResultMap<K : Any, V : Any> {
 
     @JsonInclude(JsonInclude.Include.ALWAYS)
     @JsonIgnoreProperties(ignoreUnknown = true)
-    open class Row<out K, out V>(open val key: K?, open val value: V?) {
+    open class Row<out K, out V> @JsonCreator constructor(open val key: K?, open val value: V?) {
         override fun hashCode() = (key?.hashCode() ?: 13) * 13 + (value?.hashCode() ?: 7)
 
         override fun equals(other: Any?) =
