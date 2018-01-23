@@ -7,9 +7,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Base implementation of a promise
- *
+ * <p>
  * Most of the interface is hidden, and can be accessed by the parent holder
  * {@link Q}
+ *
  * @param <T>
  */
 public class Promise<T> {

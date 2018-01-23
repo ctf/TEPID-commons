@@ -8,8 +8,10 @@ buildscript {
     }
 }
 
-group GROUP
-version '1.0-SNAPSHOT'
+allprojects {
+    group GROUP
+    version COMMONS_VERSION
+}
 
 subprojects {
 

@@ -1,8 +1,7 @@
 package ca.mcgill.science.tepid.models.data
 
-import com.fasterxml.jackson.annotation.JsonInclude
+import ca.mcgill.science.tepid.models.bindings.TepidJackson
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class About(val debug: Boolean, val ldapEnabled: Boolean,
                  val startTime: String = "",
-                 val hash: String = "", val warnings: List<String> = emptyList())
+                 val hash: String = "", val warnings: List<String> = emptyList()) : TepidJackson

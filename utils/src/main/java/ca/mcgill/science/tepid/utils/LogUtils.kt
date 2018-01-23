@@ -1,7 +1,7 @@
 package ca.mcgill.science.tepid.utils
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import kotlin.reflect.full.companionObject
 
 
@@ -9,37 +9,8 @@ import kotlin.reflect.full.companionObject
  * Created by Allan Wang on 2017-09-29.
  */
 
-/*
- * ------------------------------------------
- * Logger
- *
- * Simple Kotlin based logging system
- * to automatically pull class information
- * ------------------------------------------
- */
-
-inline fun <reified T : Any> T.log(message: Any?)
-        = logBase(true, false) { message }
-
-inline fun <reified T : Any> T.logErr(message: Any?)
-        = logBase(true, true) { message }
-
-inline fun <reified T : Any> T.log(condition: Boolean = true, message: () -> Any?)
-        = logBase(condition, false, message)
-
-inline fun <reified T : Any> T.logErr(condition: Boolean = true, message: () -> Any?)
-        = logBase(condition, true, message)
-
-inline fun <reified T : Any> T.logBase(condition: Boolean = true, error: Boolean = false, message: () -> Any?) {
-    if (condition) {
-        val msg = "Tepid - ${this::class.java.simpleName}: ${message()}"
-        if (error) System.err.println(msg) else System.out.println(msg)
-    }
-}
-
-
 /**
- * We will use the benefits of log4j,
+ * We will use the benefits of log4j2,
  * but wrap it in a delegate to make it cleaner
  *
  * Typically, classes should have a companion object extending [WithLogging]
@@ -49,7 +20,7 @@ inline fun <reified T : Any> T.logBase(condition: Boolean = true, error: Boolean
 fun <T : Any> T.logger() = logger(this.javaClass)
 
 private fun <T : Any> logger(forClass: Class<T>): Logger
-        = LoggerFactory.getLogger(unwrapCompanionClass(forClass).name)
+        = LogManager.getLogger(unwrapCompanionClass(forClass).name)
 
 // unwrap companion class to enclosing class given a Java Class
 private fun <T : Any> unwrapCompanionClass(ofClass: Class<T>): Class<*>

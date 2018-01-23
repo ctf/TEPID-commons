@@ -3,6 +3,7 @@ package ca.mcgill.science.tepid.ldap
 import ca.mcgill.science.tepid.models.data.Course
 import ca.mcgill.science.tepid.models.data.FullUser
 import ca.mcgill.science.tepid.models.data.Season
+import ca.mcgill.science.tepid.models.data.Semester
 import ca.mcgill.science.tepid.utils.WithLogging
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -23,7 +24,16 @@ interface LdapContract {
     fun autoSuggest(like: String, auth: Pair<String, String>, limit: Int): List<FullUser>
 }
 
-open class LdapBase : LdapContract, LdapHelperContract by LdapHelperDelegate(), WithLogging() {
+open class LdapBase : LdapContract, LdapHelperContract by LdapHelperDelegate() {
+
+    private companion object : WithLogging() {
+
+        /**
+         * Make sure that the regex matches values located in [Semester]
+         */
+        private val semesterRegex: Regex by lazy { Regex("ou=(fall|winter|summer) (2[0-9]{3})[^0-9]") }
+
+    }
 
     /**
      * Queries [username] (short user or long user)
@@ -51,17 +61,12 @@ open class LdapBase : LdapContract, LdapHelperContract by LdapHelperDelegate(), 
     }
 
     /**
-     * Make sure that the regex matches values located in [Season]
-     */
-    val seasonRegex = Regex("ou=(fall|winter|summer) (2[0-9]{3})[^0-9]")
-
-    /**
      * Creates a blank user and attempts to retrieve as many attributes
      * as possible from the specified attributes
      *
      * Note that when converting
      */
-    fun Attributes.toUser(ctx: LdapContext): FullUser {
+    protected fun Attributes.toUser(ctx: LdapContext): FullUser {
         fun attr(name: String) = get(name)?.get()?.toString() ?: ""
         val out = FullUser(
                 displayName = attr("displayName"),
@@ -75,7 +80,7 @@ open class LdapBase : LdapContract, LdapHelperContract by LdapHelperDelegate(), 
                 studentId = attr("employeeID").toIntOrNull() ?: -1
         )
         try {
-            out.activeSince = SimpleDateFormat("yyyyMMddHHmmss.SX").parse(attr("whenCreated"))
+            out.activeSince = SimpleDateFormat("yyyyMMddHHmmss.SX").parse(attr("whenCreated")).time
         } catch (e: ParseException) {
 
         }
@@ -83,8 +88,8 @@ open class LdapBase : LdapContract, LdapHelperContract by LdapHelperDelegate(), 
         val members = get("memberOf")?.toList()?.mapNotNull {
             try {
                 val cn = ctx.getAttributes(it, arrayOf("CN"))?.get("CN")?.get()?.toString()
-                val groupValues = seasonRegex.find(it.toLowerCase(Locale.CANADA))?.groupValues
-                val semester = if (groupValues != null) Season.valueOf(groupValues[1].toUpperCase(Locale.CANADA)) to groupValues[2].toInt()
+                val groupValues = semesterRegex.find(it.toLowerCase(Locale.CANADA))?.groupValues
+                val semester = if (groupValues != null) Semester(Season(groupValues[1]), groupValues[2].toInt())
                 else null
                 cn to semester
             } catch (e: NamingException) {
@@ -99,7 +104,7 @@ open class LdapBase : LdapContract, LdapHelperContract by LdapHelperDelegate(), 
         members?.forEach { (name, semester) ->
             if (name == null) return@forEach
             if (semester == null) groups.add(name)
-            else courses.add(Course(name, semester.first, semester.second))
+            else courses.add(Course(name, semester.season, semester.year))
         }
 
         out.groups = groups
@@ -131,7 +136,7 @@ open class LdapBase : LdapContract, LdapHelperContract by LdapHelperDelegate(), 
             val auth = createAuthMap(user, password)
             return InitialLdapContext(auth, null)
         } catch (e: Exception) {
-            log.error("Failed to bind to LDAP")
+            log.error("Failed to bind to LDAP", e)
             return null
         }
     }
@@ -152,11 +157,12 @@ open class LdapBase : LdapContract, LdapHelperContract by LdapHelperDelegate(), 
                 if (user.longUser?.split("@")?.getOrNull(0)?.indexOf(".") ?: -1 > 0)
                     out.add(user)
             }
+            //todo update; a crash here will lead to the contents not closing
             results.close()
             ctx.close()
             return out
         } catch (ne: NamingException) {
-            log.error("Could not get autosuggest $ne")
+            log.error("Could not get autosuggest", ne)
             return emptyList()
         }
     }

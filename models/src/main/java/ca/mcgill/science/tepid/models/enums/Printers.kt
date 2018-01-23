@@ -18,3 +18,16 @@ enum class PrinterId(val serialNumber: String) {
         val values = values()
     }
 }
+
+enum class Room(vararg val printers: PrinterId) {
+    _1B16(PrinterId._1B16_North, PrinterId._1B16_South),
+    _1B17(PrinterId._1B16_North, PrinterId._1B17_South),
+    _1B18(PrinterId._1B18_North);
+
+    //name matches the true room name on TEPID
+    override fun toString() = name.substring(1)
+
+    companion object {
+        val values = values()
+    }
+}
