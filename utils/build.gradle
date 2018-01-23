@@ -1,5 +1,5 @@
 dependencies {
-    compile "org.apache.logging.log4j:log4j-api:$APACHE"
-    compile "org.apache.logging.log4j:log4j-core:$APACHE"
-    compile "org.jetbrains.kotlin:kotlin-reflect:$KOTLIN"
+    compile "org.apache.logging.log4j:log4j-api:${tepid.apache}"
+    compile "org.apache.logging.log4j:log4j-core:${tepid.apache}"
+    compile "org.jetbrains.kotlin:kotlin-reflect:${tepid.kotlin}"
 }

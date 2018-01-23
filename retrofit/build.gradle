@@ -1,11 +1,10 @@
 dependencies {
     compile project(':models')
-    compile "com.squareup.retrofit2:retrofit:$RETROFIT"
-    compile "com.squareup.retrofit2:converter-moshi:$RETROFIT"
-    compile "com.squareup.moshi:moshi:$MOSHI"
-    compile "com.squareup.moshi:moshi-kotlin:$MOSHI"
-    compile "com.squareup.okhttp3:logging-interceptor:$OKHTTP3"
-    compile "com.facebook.stetho:stetho-okhttp3:$STETHO"
+    compile "com.squareup.retrofit2:retrofit:${tepid.retrofit}"
+    compile "com.squareup.retrofit2:converter-moshi:${tepid.retrofit}"
+    compile "com.squareup.moshi:moshi:${tepid.moshi}"
+    compile "com.squareup.moshi:moshi-kotlin:${tepid.moshi}"
+    compile "com.squareup.okhttp3:logging-interceptor:${tepid.okhttp3}"
 
     testCompile project(':test')
 }

@@ -1,6 +1,5 @@
 package ca.mcgill.science.tepid.api
 
-import ca.mcgill.science.tepid.api.adapters.DateAdapter
 import ca.mcgill.science.tepid.models.bindings.TEPID_URL_PRODUCTION
 import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
@@ -41,7 +40,6 @@ class TepidApi(private val url: String,
 
         val moshi = Moshi.Builder()
                 .add(KotlinJsonAdapterFactory())
-                .add(DateAdapter())
 
         val retrofit = Retrofit.Builder()
                 .baseUrl(url)
