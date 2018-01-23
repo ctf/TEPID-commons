@@ -7,11 +7,11 @@ class UserPrintJobsTest {
 
     @Test
     fun get() {
-        api.getUserPrintJobs(TEST_USER).executeTest()
+        api.getUserPrintJobs(TEST_USER_SHORT).executeTest()
     }
 
     @Test
     fun unauth() {
-        apiUnauth.getUserPrintJobs(TEST_USER).executeExpectingError(401)
+        apiUnauth.getUserPrintJobs(TEST_USER_SHORT).executeExpectingError(401)
     }
 }

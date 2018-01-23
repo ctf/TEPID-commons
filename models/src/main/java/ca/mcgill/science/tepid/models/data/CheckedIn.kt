@@ -4,9 +4,7 @@ import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
 import ca.mcgill.science.tepid.models.bindings.TepidExtras
 import ca.mcgill.science.tepid.models.bindings.TepidExtrasDelegate
-import com.fasterxml.jackson.annotation.JsonInclude
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 data class CheckedIn(
         var currentCheckIn: Map<String, Array<String>> = emptyMap(),
         var lateCheckIns: Map<String, Array<String>> = emptyMap(),

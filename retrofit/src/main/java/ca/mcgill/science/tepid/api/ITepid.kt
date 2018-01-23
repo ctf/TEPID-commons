@@ -24,6 +24,13 @@ interface ITepid {
     @GET("users/{shortUser}/quota")
     fun getQuota(@Path("shortUser") shortUser: String): Call<Int>
 
+    /**
+     * Returns true if a local admin exists
+     * Does not require authentication
+     */
+    @GET("users/configured")
+    fun isConfigured(): Call<Boolean>
+
     @GET("destinations")
     fun getPrinterInfo(): Call<Map<String, Destination>>
 
@@ -38,9 +45,16 @@ interface ITepid {
     @GET("jobs/{shortUser}")
     fun getUserPrintJobs(@Path("shortUser") shortUser: String): Call<List<PrintJob>>
 
+    /**
+     * Gets a list of short users similar to the one supplied
+     * Only accessible by ctfers and elders
+     */
     @GET("users/autosuggest/{expr}")
     fun getUserQuery(@Path("expr") query: String, @Query("limit") limit: Int): Call<List<UserQuery>>
 
+    /**
+     * getUserQuery with a default limit of 10
+     */
     @GET("users/autosuggest/{expr}?limit=10") //use default query limit
     fun getUserQuery(@Path("expr") query: String): Call<List<UserQuery>>
 
@@ -51,8 +65,19 @@ interface ITepid {
     @PUT("users/{shortUser}/color")
     fun enableColor(@Path("shortUser") shortUser: String, @Body enable: Boolean): Call<ColorResponse>
 
+    /**
+     * Retrieve data abount the current tepid build
+     * Does not require authentication
+     */
     @GET("about")
     fun getAbout(): Call<About>
+
+    /**
+     * Retrieves a string represending the authorized endpoints
+     * Does not require authentication
+     */
+    @GET("endpoints")
+    fun getEndpoints(): Call<String>
 
 //    @GET("barcode/_wait")
 //    fun scanBarcode(): Call<UserBarcode>

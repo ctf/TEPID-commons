@@ -1,4 +1,5 @@
 dependencies {
-    compile "org.slf4j:slf4j-api:$SLF4J"
+    compile "org.apache.logging.log4j:log4j-api:$APACHE"
+    compile "org.apache.logging.log4j:log4j-core:$APACHE"
     compile "org.jetbrains.kotlin:kotlin-reflect:$KOTLIN"
 }

@@ -2,11 +2,9 @@ package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
-import ca.mcgill.science.tepid.models.bindings.TepidExtras
-import ca.mcgill.science.tepid.models.bindings.TepidExtrasDelegate
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonInclude
-import java.util.*
+import ca.mcgill.science.tepid.models.bindings.TepidJackson
+import ca.mcgill.science.tepid.models.bindings.withDbData
+import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.concurrent.TimeUnit
 
 /**
@@ -14,8 +12,6 @@ import java.util.concurrent.TimeUnit
  *
  * The main user data model with public variables
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class User(
         var displayName: String? = null,
         var givenName: String? = null,
@@ -31,11 +27,12 @@ data class User(
         var authType: String? = null,
         var role: String = "",
         var preferredName: List<String> = emptyList(),
-        var activeSince: Date? = null,
+        var activeSince: Long = -1,
         var studentId: Int = -1,
-        var jobExpiration: Long = TimeUnit.DAYS.toMillis(7),//why is this here
+        var jobExpiration: Long = TimeUnit.DAYS.toMillis(7), //why is this here
         var colorPrinting: Boolean = false
-) : TepidDb by TepidDbDelegate(), TepidExtras by TepidExtrasDelegate() {
+) : TepidDb by TepidDbDelegate() {
+
     override var type: String? = "user"
 
     fun isMatch(name: String) =
@@ -60,7 +57,7 @@ data class UserQuery(
         var email: String = "",
         var colorPrinting: Boolean = false,
         var type: String = "user"
-)
+) : TepidJackson
 
 /**
  * The complete collection of user attributes
@@ -85,15 +82,28 @@ data class FullUser(
         var groups: List<String> = emptyList(),
         var courses: List<Course> = emptyList(),
         var preferredName: List<String> = emptyList(),
-        var activeSince: Date? = null,
+        var activeSince: Long = System.currentTimeMillis(),
         var studentId: Int = -1,
         var jobExpiration: Long = TimeUnit.DAYS.toMillis(7),//why is this here
         var colorPrinting: Boolean = false
 ) : TepidDb by TepidDbDelegate() {
 
+    override var type: String? = "user"
+
+    /**
+     * Check if supplied [name] matches
+     * [shortUser] or [longUser]
+     */
     fun isMatch(name: String) =
             if (name.contains(".")) longUser == name
             else shortUser == name
+
+    /**
+     * Get the set of semesters for which the user has had courses
+     */
+    @JsonIgnore
+    fun getSemesters(): Set<Semester> =
+            courses.map(Course::semester).toSet()
 
     fun toUser(): User = User(
             displayName = displayName,
@@ -113,8 +123,5 @@ data class FullUser(
             studentId = studentId,
             jobExpiration = jobExpiration,
             colorPrinting = colorPrinting
-    ).apply {
-        _id = this@FullUser._id
-        _rev = this@FullUser._rev
-    }
+    ).withDbData(this)
 }

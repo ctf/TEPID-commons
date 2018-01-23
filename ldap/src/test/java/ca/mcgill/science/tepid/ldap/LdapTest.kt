@@ -1,22 +1,33 @@
 package ca.mcgill.science.tepid.ldap
 
-import ca.mcgill.science.tepid.test.TEST_AUTH
+import ca.mcgill.science.tepid.test.TestUtils
 import org.junit.Assume
 import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNull
-import kotlin.test.fail
+import kotlin.test.*
 
 
 class LdapTest : LdapBase() {
 
     companion object {
 
+        private const val ***REMOVED*** = "***REMOVED***"
+
         init {
             Assume.assumeTrue("Testing LDAP connection",
-                    LdapBase().queryUser("***REMOVED***", TEST_AUTH) != null)
+                    LdapBase().queryUser(***REMOVED***, TestUtils.TEST_AUTH) != null)
         }
 
+    }
+
+    @Test
+    fun bindSelf() {
+        val user = queryUser(***REMOVED***, TestUtils.TEST_AUTH)
+        assertNotNull(user)
+        println(user!!)
+        assertEquals("Ctf Science", user.displayName)
+        assertEquals(***REMOVED***, user.shortUser)
+        assertTrue(user.groups.contains("***REMOVED***"))
+        println(user)
     }
 
     /**
@@ -24,13 +35,16 @@ class LdapTest : LdapBase() {
      */
     @Test
     fun bindOtherUser() {
-        val user = queryUser("***REMOVED***", TEST_AUTH) ?: fail("Null user")
+        val shortUser = "***REMOVED***"
+        val user = queryUser(shortUser, TestUtils.TEST_AUTH) ?: fail("Null user")
+        println(user)
+        assertEquals(shortUser, user.shortUser, "short user mismatch")
         assertEquals(-1, user.studentId, "unexpected studentId from external TEST_AUTH")
     }
 
     @Test
     fun bind() {
-        val user = queryUser("azsedzzz", TEST_AUTH)
+        val user = queryUser("azsedzzz", TestUtils.TEST_AUTH)
         assertNull(user, "User azsedzzz should be null")
     }
 
