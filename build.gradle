@@ -3,14 +3,19 @@ buildscript {
     repositories {
         mavenCentral()
     }
+
+    apply plugin: "ca.mcgill.science.tepid.commons"
+
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${tepid.kotlin}"
     }
 }
 
+apply plugin: "ca.mcgill.science.tepid.commons"
+
 allprojects {
-    group GROUP
-    version COMMONS_VERSION
+    group "ca.mcgill.science.tepid"
+    version tepid.tepidCommons
 }
 
 subprojects {
@@ -19,17 +24,17 @@ subprojects {
     apply plugin: 'kotlin'
     apply plugin: 'maven'
 
-    sourceCompatibility = JVM_TARGET
+    sourceCompatibility = tepid.jvmTarget
 
     repositories {
         mavenCentral()
     }
 
     compileKotlin {
-        kotlinOptions.jvmTarget = JVM_TARGET
+        kotlinOptions.jvmTarget = tepid.jvmTarget
     }
     compileTestKotlin {
-        kotlinOptions.jvmTarget = JVM_TARGET
+        kotlinOptions.jvmTarget = tepid.jvmTarget
     }
 
     test {
@@ -53,10 +58,10 @@ subprojects {
     }
 
     dependencies {
-        compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$KOTLIN"
+        compile tepidDependency.kotlin
 
-        testCompile "junit:junit:$JUNIT"
-        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$KOTLIN"
+        testCompile tepidDependency.junit
+        testCompile tepidDependency.kotlinTest
     }
 
 }

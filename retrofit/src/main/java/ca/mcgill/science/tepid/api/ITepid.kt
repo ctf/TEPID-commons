@@ -66,7 +66,7 @@ interface ITepid {
     fun enableColor(@Path("shortUser") shortUser: String, @Body enable: Boolean): Call<ColorResponse>
 
     /**
-     * Retrieve data abount the current tepid build
+     * Retrieve data about the current tepid build
      * Does not require authentication
      */
     @GET("about")
