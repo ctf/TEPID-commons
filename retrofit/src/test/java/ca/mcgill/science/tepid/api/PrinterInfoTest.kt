@@ -11,7 +11,7 @@ class PrinterInfoTest {
 
     @Test
     fun get() {
-        val data = api.getPrinterInfo().executeTest()
+        val data = api.getDestinations().executeTest()
         assert(data.size == PrinterId.values.size) {
             "Not all printers are mapped"
         }
@@ -31,6 +31,6 @@ class PrinterInfoTest {
 
     @Test
     fun unauth() {
-        apiUnauth.getPrinterInfo().executeExpectingError(401)
+        apiUnauth.getDestinations().executeExpectingError(401)
     }
 }
