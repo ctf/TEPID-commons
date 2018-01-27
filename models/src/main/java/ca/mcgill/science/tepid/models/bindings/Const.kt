@@ -3,6 +3,8 @@ package ca.mcgill.science.tepid.models.bindings
 /**
  * Created by Allan Wang on 2017-10-29.
  */
+const val ALL = "all"
+const val NONE = "none"
 const val CTFER = "ctfer"
 const val ELDER = "elder"
 const val USER = "user"

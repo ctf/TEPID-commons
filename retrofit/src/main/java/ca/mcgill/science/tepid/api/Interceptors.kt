@@ -13,12 +13,21 @@ abstract class BaseInterceptor : Interceptor {
     abstract fun apply(request: Request.Builder, originalChain: Interceptor.Chain)
 
     override fun intercept(chain: Interceptor.Chain): Response? {
-        val request = chain.request().newBuilder()
+        val origRequest = chain.request()
+        val request = origRequest.newBuilder()
+
+        // unless specified, put requests should be done by json
+        if (origRequest.method() == "PUT" && origRequest.header(CONTENT_TYPE) == null)
+            request.addHeader(CONTENT_TYPE, APPLICATION_JSON)
+
         apply(request, chain)
         return chain.proceed(request.build())
     }
 
 }
+
+private const val CONTENT_TYPE = "Content-Type"
+private const val APPLICATION_JSON = "application/json;charset=UTF-8"
 
 /**
  * Injects the token to each request

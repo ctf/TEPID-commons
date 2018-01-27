@@ -3,9 +3,9 @@ package ca.mcgill.science.tepid.models.data
 import ca.mcgill.science.tepid.models.bindings.TepidJackson
 
 /**
- * Response when toggling colour printing
+ * General response for executing put requests
  */
-data class ColorResponse(
+data class PutResponse(
         var ok: Boolean = false,
         var id: String = ""
 ) : TepidJackson
