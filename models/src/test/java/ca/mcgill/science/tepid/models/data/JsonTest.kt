@@ -80,7 +80,7 @@ class JsonTest {
     fun printJob() {
         sanityTest<PrintJob>()
         checkModel<PrintJob> {
-            setFailed("test")
+            fail("test")
         }
     }
 
