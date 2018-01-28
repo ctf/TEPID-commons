@@ -30,6 +30,13 @@ class LdapTest : LdapBase() {
         println(user)
     }
 
+    @Test
+    fun bindOtherLong() {
+        val user = queryUser("allan.wang", TestUtils.TEST_AUTH)
+        assertNotNull(user)
+        println(user!!)
+    }
+
     /**
      * Thank you yiwei for volunteering as tribute
      */

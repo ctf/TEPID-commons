@@ -2,6 +2,8 @@
 
 A modularized implementation of sharable features.
 
+[![](https://jitpack.io/v/ca.mcgill/tepid-commons.svg)](https://jitpack.io/#ca.mcgill/tepid-commons)
+
 More notably:
 
 | Model | Contents |

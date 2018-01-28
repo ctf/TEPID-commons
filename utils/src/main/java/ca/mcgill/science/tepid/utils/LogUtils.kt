@@ -19,12 +19,10 @@ import kotlin.reflect.full.companionObject
  */
 fun <T : Any> T.logger() = logger(this.javaClass)
 
-private fun <T : Any> logger(forClass: Class<T>): Logger
-        = LogManager.getLogger(unwrapCompanionClass(forClass).name)
+private fun <T : Any> logger(forClass: Class<T>): Logger = LogManager.getLogger(unwrapCompanionClass(forClass).name)
 
 // unwrap companion class to enclosing class given a Java Class
-private fun <T : Any> unwrapCompanionClass(ofClass: Class<T>): Class<*>
-        = if (ofClass.enclosingClass != null && ofClass.enclosingClass.kotlin.companionObject?.java == ofClass)
+private fun <T : Any> unwrapCompanionClass(ofClass: Class<T>): Class<*> = if (ofClass.enclosingClass != null && ofClass.enclosingClass.kotlin.companionObject?.java == ofClass)
     ofClass.enclosingClass else ofClass
 
 interface Loggable {

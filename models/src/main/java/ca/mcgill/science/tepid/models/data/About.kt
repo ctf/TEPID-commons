@@ -15,7 +15,7 @@ data class About(val debug: Boolean, val ldapEnabled: Boolean,
             val up = System.currentTimeMillis() - startTimestamp
             val hours = TimeUnit.MILLISECONDS.toHours(up)
             val minutes = TimeUnit.MILLISECONDS.toMinutes(up) - TimeUnit.HOURS.toMinutes(hours)
-            val seconds = TimeUnit.MILLISECONDS.toSeconds(up) - TimeUnit.MINUTES.toSeconds(minutes)
+            val seconds = TimeUnit.MILLISECONDS.toSeconds(up) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(up))
             return String.format("%02d hours, %02d min, %02d sec", hours, minutes, seconds)
         }
 

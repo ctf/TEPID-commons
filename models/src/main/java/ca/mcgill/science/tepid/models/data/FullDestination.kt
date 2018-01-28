@@ -1,6 +1,9 @@
 package ca.mcgill.science.tepid.models.data
 
-import ca.mcgill.science.tepid.models.bindings.*
+import ca.mcgill.science.tepid.models.bindings.TepidDb
+import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
+import ca.mcgill.science.tepid.models.bindings.TepidJackson
+import ca.mcgill.science.tepid.models.bindings.withDbData
 
 /**
  * Created by Allan Wang on 2017-05-03.
@@ -30,7 +33,7 @@ data class FullDestination(
         var ticket: DestinationTicket? = null,
         var up: Boolean = false,
         var ppm: Int = 0
-) : TepidDb by TepidDbDelegate(), TepidExtras by TepidExtrasDelegate() {
+) : TepidDb by TepidDbDelegate() {
 
     /**
      * Returned a filtered destination variant depending on the session role

@@ -136,7 +136,7 @@ open class LdapBase : LdapContract, LdapHelperContract by LdapHelperDelegate() {
             val auth = createAuthMap(user, password)
             return InitialLdapContext(auth, null)
         } catch (e: Exception) {
-            log.error("Failed to bind to LDAP", e)
+            log.error("Failed to bind to LDAP for $user", e)
             return null
         }
     }

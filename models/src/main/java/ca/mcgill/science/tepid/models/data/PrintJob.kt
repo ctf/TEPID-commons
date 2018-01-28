@@ -2,8 +2,6 @@ package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
-import ca.mcgill.science.tepid.models.bindings.TepidExtras
-import ca.mcgill.science.tepid.models.bindings.TepidExtrasDelegate
 
 data class PrintJob(
         var name: String = "",
@@ -23,7 +21,7 @@ data class PrintJob(
         var isRefunded: Boolean = false,
         var eta: Long = 0,
         var deleteDataOn: Long = 0
-) : TepidDb by TepidDbDelegate(), TepidExtras by TepidExtrasDelegate(), Comparable<PrintJob> {
+) : TepidDb by TepidDbDelegate(), Comparable<PrintJob> {
 
     override var type: String? = "job"
 
@@ -43,6 +41,8 @@ data class PrintJob(
         val date1 = dateToCompare()
         val date2 = other.dateToCompare()
         val compare = date1.compareTo(date2)
-        return if (compare == 0) _id.compareTo(other._id) else compare
+        if (compare != 0) return compare
+        return getId().compareTo(other.getId())
     }
+
 }

@@ -1,7 +1,8 @@
 package ca.mcgill.science.tepid.models.bindings
 
-import com.fasterxml.jackson.annotation.*
-import java.util.*
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonInclude
 
 /**
  * Created by Allan Wang on 2017-10-29.
@@ -13,14 +14,34 @@ import java.util.*
 @JsonIgnoreProperties(ignoreUnknown = true)
 interface TepidJackson
 
-//todo see if type is needed
-//if yes, we need to make sure we are propagating it properly
+/**
+ * Base db attributes for Couch
+ * It is important to note that these values are null by default
+ * As our jackson configs will ignore null values, it will not save the attributes
+ * if none is provided
+ *
+ * See [withDbData] for an easy way to propagate these attributes
+ *
+ * todo see if type is needed
+ */
 interface TepidDb : TepidJackson {
-    var _id: String
+    var _id: String?
     var _rev: String?
     var type: String?
-    fun getId() = _id
-    fun getRev() = _rev
+
+    /*
+     * Helper function to retrieve a nonnull id
+     * Defaults to an empty string
+     */
+    @JsonIgnore
+    fun getId() = _id ?: ""
+
+    /*
+     * Helper function to retrieve a nonnull rev
+     * Defaults to an empty string
+     */
+    @JsonIgnore
+    fun getRev() = _rev ?: ""
 }
 
 /**
@@ -34,23 +55,7 @@ fun <T : TepidDb> T.withDbData(main: TepidDb): T {
 }
 
 class TepidDbDelegate : TepidDb {
-    override var _id: String = ""
+    override var _id: String? = null
     override var _rev: String? = null
     override var type: String? = null
-}
-
-internal interface TepidExtras {
-    val additionalProperties: MutableMap<String, Any>
-    fun setAdditionalProperty(name: String, value: Any)
-}
-
-internal class TepidExtrasDelegate : TepidExtras {
-    @get:JsonAnyGetter
-    @JsonIgnore
-    override val additionalProperties: MutableMap<String, Any> = HashMap()
-
-    @JsonAnySetter
-    override fun setAdditionalProperty(name: String, value: Any) {
-        this.additionalProperties.put(name, value)
-    }
 }
