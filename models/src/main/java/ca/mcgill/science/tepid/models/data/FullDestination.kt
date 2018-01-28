@@ -1,9 +1,6 @@
 package ca.mcgill.science.tepid.models.data
 
-import ca.mcgill.science.tepid.models.bindings.TepidDb
-import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
-import ca.mcgill.science.tepid.models.bindings.TepidJackson
-import ca.mcgill.science.tepid.models.bindings.withDbData
+import ca.mcgill.science.tepid.models.bindings.*
 
 /**
  * Created by Allan Wang on 2017-05-03.
@@ -40,8 +37,8 @@ data class FullDestination(
      * Some values will be filtered out regardless
      */
     fun toDestination(session: Session): Destination {
-        val isElder = session.role == "elder"
-        val isCtfer = session.role == "ctfer"
+        val isElder = session.role == ELDER
+        val isCtfer = session.role == CTFER
         return Destination(
                 name = name,
                 protocol = if (isElder) protocol else null,
