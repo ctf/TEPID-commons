@@ -2,6 +2,7 @@ package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
+import com.fasterxml.jackson.annotation.JsonIgnore
 
 data class PrintJob(
         var name: String = "",
@@ -29,6 +30,7 @@ data class PrintJob(
         return if (name.length > length) name.substring(0, length - 3) + "..." else name
     }
 
+    @JsonIgnore
     fun setFailed(error: String) {
         this.failed = System.currentTimeMillis()
         this.error = error

@@ -4,6 +4,7 @@ import ca.mcgill.science.tepid.models.bindings.TepidDb
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.treeToValue
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -49,6 +50,17 @@ class JsonTest {
             val fullDup = mapper.treeToValue(fullJson, full::class.java)
             assertEquals(full, fullDup)
         }
+
+        /**
+         * Validates the json conversion to and from the given model
+         */
+        private inline fun <reified T : Any> checkModel(model: T = T::class.java.newInstance(),
+                                                        action: T.() -> Unit) {
+            model.action()
+            val json = mapper.valueToTree<JsonNode>(model)
+            val newModel = mapper.treeToValue<T>(json)
+            assertEquals(model, newModel, "Model mismatch for ${T::class.java}")
+        }
     }
 
 
@@ -65,7 +77,12 @@ class JsonTest {
     }
 
     @Test
-    fun printJob() = sanityTest<PrintJob>()
+    fun printJob() {
+        sanityTest<PrintJob>()
+        checkModel<PrintJob> {
+            setFailed("test")
+        }
+    }
 
     @Test
     fun queue() = sanityTest<PrintQueue>()
