@@ -2,6 +2,7 @@ package ca.mcgill.science.tepid.api.internal
 
 import ca.mcgill.science.tepid.api.ITepid
 import ca.mcgill.science.tepid.api.TepidApi
+import ca.mcgill.science.tepid.models.data.Session
 import ca.mcgill.science.tepid.models.data.SessionRequest
 import ca.mcgill.science.tepid.test.TestUtils
 import org.apache.logging.log4j.LogManager
@@ -22,11 +23,14 @@ val api: ITepid by lazy {
         TestUtils.TEST_USER.isBlank() || TestUtils.TEST_PASSWORD.isBlank() ->
             log.error("Requesting api for ${TestUtils.TEST_URL} with a blank username or password")
     }
-    val session = apiUnauth.getSession(
-            SessionRequest(TestUtils.TEST_USER, TestUtils.TEST_PASSWORD, false, false)
-    ).executeTest()
-    log.info("Initialized test api $session")
     TepidApi(TestUtils.TEST_URL, true).create {
-        tokenRetriever = { session.token }
+        tokenRetriever = { session.authHeader }
     }
+}
+
+val session: Session by lazy {
+    val session = apiUnauth.getSession(
+            SessionRequest(TestUtils.TEST_USER, TestUtils.TEST_PASSWORD, false, false)).executeTest()
+    log.info("Initialized test api $session")
+    session
 }

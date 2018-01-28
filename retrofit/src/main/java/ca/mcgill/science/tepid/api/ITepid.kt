@@ -2,10 +2,10 @@ package ca.mcgill.science.tepid.api
 
 import ca.mcgill.science.tepid.models.bindings.CTFER
 import ca.mcgill.science.tepid.models.bindings.ELDER
-import ca.mcgill.science.tepid.models.bindings.NONE
 import ca.mcgill.science.tepid.models.bindings.USER
 import ca.mcgill.science.tepid.models.data.*
 import ca.mcgill.science.tepid.models.enums.PrinterId
+import com.fasterxml.jackson.databind.node.ObjectNode
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -23,6 +23,14 @@ interface ITepid {
      */
 
     /**
+     * Check if the session token is valid
+     * If 200 response is returned, the token is still good
+     */
+    @GET("sessions/{user}/{token}")
+    @MinAuthority(NONE)
+    fun validateToken(@Path("user") user: String, @Path("token") token: String): Call<Session>
+
+    /**
      * Retrieve a new session given the request body
      * The output will contain the token information used to authenticate
      * for all other requests. See [Session] for more info.
@@ -33,7 +41,7 @@ interface ITepid {
 
     /**
      * Invalidate the supplied session id
-     * See [Session._id]
+     * See [Session.id]
      */
     @DELETE("sessions/{id}")
     @MinAuthority(NONE)
@@ -264,7 +272,7 @@ interface ITepid {
      */
     @POST("jobs")
     @MinAuthority(USER)
-    fun createNewJob(@Body job: PrintJob): Call<String>
+    fun createNewJob(@Body job: PrintJob): Call<PutResponse>
 
     /**
      * Add job data to the supplied id
@@ -298,6 +306,14 @@ interface ITepid {
     @MinAuthority(USER)
     fun reprintJob(@Path("id") id: String): Call<String>
 
+    /**
+     * Get and wait for a change in the specified job id
+     */
+    @GET("jobs/job/{id}/_changes?feed=longpoll&since=now")
+    @MinAuthority(USER)
+    fun getJobChanges(@Path("id") id: String): Call<ObjectNode>
+
+
     /*
      * -------------------------------------------
      * Misc
@@ -325,6 +341,8 @@ interface ITepid {
 //    @GET("barcode/_wait")
 //    fun scanBarcode(): Call<UserBarcode>
 }
+
+private const val NONE = "none"
 
 /*
  * -------------------------------------------

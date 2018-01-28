@@ -2,6 +2,7 @@ package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
+import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.*
 
 data class Session(
@@ -13,14 +14,16 @@ data class Session(
 
     override var type: String? = "session"
 
-    override fun toString() = "Session $_id"
+    override fun toString() = "Session ${getId()}"
 
-    override fun equals(other: Any?) = _id.isNotBlank() && other is Session && _id == other._id && _rev == other._rev
+    override fun equals(other: Any?) = !_id.isNullOrBlank() && other is Session && _id == other._id && _rev == other._rev
 
-    override fun hashCode() = _id.hashCode() * 13 + (_rev?.hashCode() ?: 7)
+    override fun hashCode() = getId().hashCode() * 13 + getRev().hashCode()
 
-    val token: String
+    val authHeader: String
+        @JsonIgnore
         get() = Base64.getEncoder()
                 .encodeToString("${user.shortUser}:$_id".toByteArray())
 
+    fun isValid() = expiration == -1L || expiration > System.currentTimeMillis()
 }
