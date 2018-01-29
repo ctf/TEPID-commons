@@ -27,7 +27,7 @@ data class PrintJob(
     override var type: String? = "job"
 
     fun truncateName(length: Int): String {
-        return if (name.length > length) name.substring(0, length - 3) + "..." else name
+        return if (name.length > length) name.substring(0, length - 1) + "\u2026" else name
     }
 
     @JsonIgnore
