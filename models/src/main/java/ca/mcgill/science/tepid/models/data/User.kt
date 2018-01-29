@@ -124,4 +124,34 @@ data class FullUser(
             jobExpiration = jobExpiration,
             colorPrinting = colorPrinting
     ).withDbData(this)
+
+    fun toNameUser(): NameUser = NameUser(
+            displayName = displayName,
+            givenName = givenName,
+            middleName = middleName,
+            lastName = lastName,
+            shortUser = shortUser,
+            longUser = longUser,
+            email = email,
+            nick = nick,
+            salutation = salutation,
+            preferredName = preferredName
+    )
 }
+
+/**
+ * Non db User variant with only name data
+ */
+data class NameUser(
+        var displayName: String? = null,
+        var givenName: String? = null,
+        var middleName: String? = null,
+        var lastName: String? = null,
+        var shortUser: String? = null,
+        var longUser: String? = null,
+        var email: String? = null,
+        var nick: String? = null,
+        var realName: String? = null,
+        var salutation: String? = null,
+        var preferredName: List<String> = emptyList()
+)
