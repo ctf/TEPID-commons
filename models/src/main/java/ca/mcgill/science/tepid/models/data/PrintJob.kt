@@ -2,6 +2,7 @@ package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
+import com.fasterxml.jackson.annotation.JsonIgnore
 
 data class PrintJob(
         var name: String = "",
@@ -34,12 +35,17 @@ data class PrintJob(
         this.error = error
     }
 
-    private fun dateToCompare() =
-            if (failed != -1L) started else processed
+    val displayDate: Long
+        @JsonIgnore
+        get() = when {
+            failed != -1L -> failed
+            processed != -1L -> processed
+            else -> started
+        }
 
     override fun compareTo(other: PrintJob): Int {
-        val date1 = dateToCompare()
-        val date2 = other.dateToCompare()
+        val date1 = displayDate
+        val date2 = other.displayDate
         val compare = date1.compareTo(date2)
         if (compare != 0) return compare
         return getId().compareTo(other.getId())
