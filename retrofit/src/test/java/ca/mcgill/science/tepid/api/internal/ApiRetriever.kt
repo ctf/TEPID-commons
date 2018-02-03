@@ -2,6 +2,7 @@ package ca.mcgill.science.tepid.api.internal
 
 import ca.mcgill.science.tepid.api.ITepid
 import ca.mcgill.science.tepid.api.TepidApi
+import ca.mcgill.science.tepid.models.data.PublicSession
 import ca.mcgill.science.tepid.models.data.Session
 import ca.mcgill.science.tepid.models.data.SessionRequest
 import ca.mcgill.science.tepid.test.TestUtils
@@ -24,13 +25,18 @@ val api: ITepid by lazy {
             log.error("Requesting api for ${TestUtils.TEST_URL} with a blank username or password")
     }
     TepidApi(TestUtils.TEST_URL, true).create {
-        tokenRetriever = { session.authHeader }
+        tokenRetriever = {
+            println(session.authHeader)
+            println(Session.decodeHeader(session.authHeader))
+            session.authHeader
+        }
     }
 }
 
-val session: Session by lazy {
+val session: PublicSession by lazy {
     val session = apiUnauth.getSession(
             SessionRequest(TestUtils.TEST_USER, TestUtils.TEST_PASSWORD, false, false)).executeTest()
     log.info("Initialized test api $session")
+    log.info("AAA ${session._id}")
     session
 }

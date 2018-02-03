@@ -19,6 +19,9 @@ class JsonTest {
         private const val REV = "_rev"
         private const val ID = "_id"
 
+        private inline fun <reified T : Any> T.passThroughJackson(): T =
+                mapper.treeToValue(mapper.valueToTree(this))
+
         /**
          * Simplified sanity test where there exists a constructor
          * without any mandatory parameters
@@ -88,7 +91,17 @@ class JsonTest {
     fun queue() = sanityTest<PrintQueue>()
 
     @Test
-    fun session() = sanityTest { Session(user = FullUser()) }
+    fun session() {
+        sanityTest { Session(user = FullUser()) }
+    }
+
+    @Test
+    fun publicSession() {
+        val session = Session(user = FullUser())
+        session._id = "hello"
+        val publicSession = session.toPublicSession().passThroughJackson()
+        assertEquals(session._id, publicSession._id)
+    }
 
     @Test
     fun user() {

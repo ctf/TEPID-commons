@@ -36,6 +36,6 @@ object TestUtils {
     private const val TEPID_LOCAL = "http://localhost:8080/"
 
     val PROPS: Properties by lazy {
-        PropUtils.loadProps("../priv.properties") ?: throw InvalidStateException("No properties found")
+        PropUtils.loadProps("../priv.properties") ?: throw IllegalArgumentException("No properties found")
     }
 }
