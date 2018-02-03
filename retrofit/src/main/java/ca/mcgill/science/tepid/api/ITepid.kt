@@ -28,7 +28,7 @@ interface ITepid {
      */
     @GET("sessions/{user}/{token}")
     @MinAuthority(NONE)
-    fun validateToken(@Path("user") user: String, @Path("token") token: String): Call<Session>
+    fun validateToken(@Path("user") user: String, @Path("token") token: String): Call<PublicSession>
 
     /**
      * Retrieve a new session given the request body
@@ -37,7 +37,7 @@ interface ITepid {
      */
     @POST("sessions")
     @MinAuthority(NONE)
-    fun getSession(@Body body: SessionRequest): Call<Session>
+    fun getSession(@Body body: SessionRequest): Call<PublicSession>
 
     /**
      * Invalidate the supplied session id

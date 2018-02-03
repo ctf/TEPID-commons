@@ -24,17 +24,8 @@ subprojects {
     apply plugin: 'kotlin'
     apply plugin: 'maven'
 
-    sourceCompatibility = tepid.jvmTarget
-
     repositories {
         mavenCentral()
-    }
-
-    compileKotlin {
-        kotlinOptions.jvmTarget = tepid.jvmTarget
-    }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = tepid.jvmTarget
     }
 
     test {

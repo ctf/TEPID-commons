@@ -1,9 +1,6 @@
 package ca.mcgill.science.tepid.models.data
 
-import ca.mcgill.science.tepid.models.bindings.TepidDb
-import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
-import ca.mcgill.science.tepid.models.bindings.TepidJackson
-import ca.mcgill.science.tepid.models.bindings.withDbData
+import ca.mcgill.science.tepid.models.bindings.*
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.concurrent.TimeUnit
 
@@ -11,6 +8,7 @@ import java.util.concurrent.TimeUnit
  * Created by Allan Wang on 2017-05-14.
  *
  * The main user data model with public variables
+ * Note that this is typically created from using [FullUser.toUser]
  */
 data class User(
         var displayName: String? = null,
@@ -105,6 +103,28 @@ data class FullUser(
     fun getSemesters(): Set<Semester> =
             courses.map(Course::semester).toSet()
 
+    /**
+     * Returns either an empty role, or one of
+     * [USER], [CTFER], or [ELDER]
+     *
+     * Note that this differs from the full user role,
+     * which may include being a local admin
+     */
+    @JsonIgnore
+    fun getCtfRole(): String {
+        if (groups.isEmpty())
+            return ""
+        if (authType == null || authType != LOCAL) {
+            val g = groups.toSet()
+            if (elderGroups.any(g::contains)) return ELDER
+            if (ctferGroups.any(g::contains)) return CTFER
+            if (userGroups.any(g::contains)) return USER
+            return ""
+        } else {
+            return if (role == ADMIN) ELDER else USER
+        }
+    }
+
     fun toUser(): User = User(
             displayName = displayName,
             givenName = givenName,
@@ -117,7 +137,7 @@ data class FullUser(
             nick = nick,
             salutation = salutation,
             authType = authType,
-            role = role,
+            role = getCtfRole(),
             preferredName = preferredName,
             activeSince = activeSince,
             studentId = studentId,
@@ -155,3 +175,4 @@ data class NameUser(
         var salutation: String? = null,
         var preferredName: List<String> = emptyList()
 )
+

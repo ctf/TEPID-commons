@@ -24,17 +24,9 @@ interface TepidJackson
  *
  * todo see if type is needed
  */
-interface TepidDb : TepidJackson {
-    var _id: String?
+interface TepidDb : TepidId {
     var _rev: String?
     var type: String?
-
-    /*
-     * Helper function to retrieve a nonnull id
-     * Defaults to an empty string
-     */
-    @JsonIgnore
-    fun getId() = _id ?: ""
 
     /*
      * Helper function to retrieve a nonnull rev
@@ -48,14 +40,33 @@ interface TepidDb : TepidJackson {
  * Helper function to inherit db data form a [main] db dataset
  */
 fun <T : TepidDb> T.withDbData(main: TepidDb): T {
-    _id = main._id
+    withIdData(main)
     _rev = main._rev
     type = main.type
     return this
 }
 
-class TepidDbDelegate : TepidDb {
-    override var _id: String? = null
+class TepidDbDelegate : TepidDb, TepidId by TepidIdDelegate() {
     override var _rev: String? = null
     override var type: String? = null
+}
+
+interface TepidId : TepidJackson {
+    var _id: String?
+
+    /*
+     * Helper function to retrieve a nonnull id
+     * Defaults to an empty string
+     */
+    @JsonIgnore
+    fun getId() = _id ?: ""
+}
+
+class TepidIdDelegate : TepidId {
+    override var _id: String? = null
+}
+
+fun <T : TepidId> T.withIdData(main: TepidId): T {
+    _id = main._id
+    return this
 }
