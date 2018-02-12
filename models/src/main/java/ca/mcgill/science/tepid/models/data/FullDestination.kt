@@ -36,7 +36,7 @@ data class FullDestination(
      * Returned a filtered destination variant depending on the session role
      * Some values will be filtered out regardless
      */
-    fun toDestination(session: Session): Destination {
+    fun toDestination(session: FullSession): Destination {
         val isElder = session.role == ELDER
         val isCtfer = session.role == CTFER
         return Destination(

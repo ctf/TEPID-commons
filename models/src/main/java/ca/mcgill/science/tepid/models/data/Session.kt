@@ -4,7 +4,7 @@ import ca.mcgill.science.tepid.models.bindings.*
 import ca.mcgill.science.tepid.models.internal.Base64
 import com.fasterxml.jackson.annotation.JsonIgnore
 
-data class Session(
+data class FullSession(
         var role: String = "",
         var user: FullUser,
         var expiration: Long = -1,
@@ -15,13 +15,13 @@ data class Session(
 
     override fun toString() = "Session $_id"
 
-    override fun equals(other: Any?) = !_id.isNullOrBlank() && other is Session && _id == other._id && _rev == other._rev
+    override fun equals(other: Any?) = !_id.isNullOrBlank() && other is FullSession && _id == other._id && _rev == other._rev
 
     override fun hashCode() = getId().hashCode() * 13 + getRev().hashCode()
 
     fun isValid() = expiration == -1L || expiration > System.currentTimeMillis()
 
-    fun toPublicSession(): PublicSession = PublicSession(
+    fun toPublicSession(): Session = Session(
             user = user.toUser(),
             expiration = expiration,
             persistent = persistent
@@ -57,7 +57,7 @@ data class Session(
 /**
  * A session with just a [User]
  */
-data class PublicSession(
+data class Session(
         var user: User,
         var role: String = user.role,
         var expiration: Long = -1,
@@ -65,5 +65,5 @@ data class PublicSession(
 ) : TepidId by TepidIdDelegate() {
     val authHeader: String
         @JsonIgnore
-        get() = Session.encodeToHeader(user.shortUser, _id)
+        get() = FullSession.encodeToHeader(user.shortUser, _id)
 }

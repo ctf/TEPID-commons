@@ -2,8 +2,8 @@ package ca.mcgill.science.tepid.api.internal
 
 import ca.mcgill.science.tepid.api.ITepid
 import ca.mcgill.science.tepid.api.TepidApi
-import ca.mcgill.science.tepid.models.data.PublicSession
 import ca.mcgill.science.tepid.models.data.Session
+import ca.mcgill.science.tepid.models.data.FullSession
 import ca.mcgill.science.tepid.models.data.SessionRequest
 import ca.mcgill.science.tepid.test.TestUtils
 import org.apache.logging.log4j.LogManager
@@ -27,13 +27,13 @@ val api: ITepid by lazy {
     TepidApi(TestUtils.TEST_URL, true).create {
         tokenRetriever = {
             println(session.authHeader)
-            println(Session.decodeHeader(session.authHeader))
+            println(FullSession.decodeHeader(session.authHeader))
             session.authHeader
         }
     }
 }
 
-val session: PublicSession by lazy {
+val session: Session by lazy {
     val session = apiUnauth.getSession(
             SessionRequest(TestUtils.TEST_USER, TestUtils.TEST_PASSWORD, false, false)).executeTest()
     log.info("Initialized test api $session")

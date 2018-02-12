@@ -56,9 +56,11 @@ internal fun <T> Call<T>.executeTest(): T {
 /**
  * Execute a response while expecting an error of code [expectedCode]
  */
-internal fun <T> Call<T>.executeExpectingError(expectedCode: Int) {
+internal fun <T> Call<T>.executeExpectingError(expectedCode: Int, message: String? = null) {
     try {
         val response = execute()
+        print("S: ")
+        println(response.errorBody()!!.string())
         if (response.isSuccessful)
             fail("Successful response received when expecting failure: ${response.body()}")
         if (response.code() != expectedCode)

@@ -92,12 +92,12 @@ class JsonTest {
 
     @Test
     fun session() {
-        sanityTest { Session(user = FullUser()) }
+        sanityTest { FullSession(user = FullUser()) }
     }
 
     @Test
     fun publicSession() {
-        val session = Session(user = FullUser())
+        val session = FullSession(user = FullUser())
         session._id = "hello"
         val publicSession = session.toPublicSession().passThroughJackson()
         assertEquals(session._id, publicSession._id)
