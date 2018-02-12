@@ -14,10 +14,10 @@ class JobTest {
 
     @Test
     fun newJob() {
-        api.createNewJob(PrintJob(name = "hello",
-                queueName = "1B17-***REMOVED***",
-                pages = 3
-        )).executeTest()
+//        api.createNewJob(PrintJob(name = "hello",
+//                queueName = "1B17-***REMOVED***",
+//                pages = 3
+//        )).executeTest()
     }
 
 }

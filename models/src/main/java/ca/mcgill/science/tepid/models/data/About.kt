@@ -7,6 +7,9 @@ import java.util.concurrent.TimeUnit
 data class About(val debug: Boolean, val ldapEnabled: Boolean,
                  val startTimestamp: Long = -1,
                  val startTime: String = "",
+                 val tag: String = "",
+                 val creationTimestamp: Long = -1,
+                 val creationTime: String = "",
                  val hash: String = "", val warnings: List<String> = emptyList()) : TepidJackson {
 
     val uptime: String

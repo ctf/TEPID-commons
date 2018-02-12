@@ -3,7 +3,6 @@ package ca.mcgill.science.tepid
 class Versions {
     static def tepidCommons = '1.0.0'
 
-    static def jvmTarget = '1.8'
     static def kotlin = '1.2.21'
 
     static def apache = '2.10.0'
