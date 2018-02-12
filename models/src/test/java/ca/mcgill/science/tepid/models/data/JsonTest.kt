@@ -99,7 +99,7 @@ class JsonTest {
     fun publicSession() {
         val session = FullSession(user = FullUser())
         session._id = "hello"
-        val publicSession = session.toPublicSession().passThroughJackson()
+        val publicSession = session.toSession().passThroughJackson()
         assertEquals(session._id, publicSession._id)
     }
 

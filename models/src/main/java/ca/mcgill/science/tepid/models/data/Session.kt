@@ -21,12 +21,25 @@ data class FullSession(
 
     fun isValid() = expiration == -1L || expiration > System.currentTimeMillis()
 
-    fun toPublicSession(): Session = Session(
+    fun toSession(): Session = Session(
             user = user.toUser(),
             expiration = expiration,
             persistent = persistent
     ).withIdData(this)
+}
 
+/**
+ * A session with just a [User]
+ */
+data class Session(
+        var user: User,
+        var role: String = user.role,
+        var expiration: Long = -1,
+        var persistent: Boolean = true
+) : TepidId by TepidIdDelegate() {
+    val authHeader: String
+        @JsonIgnore
+        get() = encodeToHeader(user.shortUser, _id)
 
     companion object {
 
@@ -52,18 +65,4 @@ data class FullSession(
                     null
                 }
     }
-}
-
-/**
- * A session with just a [User]
- */
-data class Session(
-        var user: User,
-        var role: String = user.role,
-        var expiration: Long = -1,
-        var persistent: Boolean = true
-) : TepidId by TepidIdDelegate() {
-    val authHeader: String
-        @JsonIgnore
-        get() = FullSession.encodeToHeader(user.shortUser, _id)
 }
