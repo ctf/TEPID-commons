@@ -12,10 +12,7 @@ data class PutResponse(
 ) : TepidJackson
 
 data class ErrorResponse(
-        var message: String = ""
-) : TepidJackson {
-
-    override fun toString(): String {
-        return "{ message: \"$message\" }"
-    }
-}
+        val status: Int,
+        val message: String = "",
+        val extras: List<String>
+) : TepidJackson
