@@ -27,7 +27,7 @@ val api: ITepid by lazy {
     TepidApi(TestUtils.TEST_URL, true).create {
         tokenRetriever = {
             println(session.authHeader)
-            println(FullSession.decodeHeader(session.authHeader))
+            println(Session.decodeHeader(session.authHeader))
             session.authHeader
         }
     }
