@@ -10,3 +10,12 @@ data class PutResponse(
         var id: String = "",
         var rev: String = ""
 ) : TepidJackson
+
+data class ErrorResponse(
+        var message: String = ""
+) : TepidJackson {
+
+    override fun toString(): String {
+        return "{ message: \"$message\" }"
+    }
+}
