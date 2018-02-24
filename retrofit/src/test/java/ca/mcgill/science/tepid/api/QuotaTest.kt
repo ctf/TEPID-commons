@@ -8,7 +8,7 @@ class QuotaTest {
 
     @Test
     fun get() {
-        api.getQuota(TEST_USER_SHORT).executeTest().apply {
+        api.getQuota(TEST_USER_SHORT).get().apply {
             assertTrue(this in 0..99999, "Should the quota really be outside this range?")
         }
     }

@@ -1,7 +1,7 @@
 package ca.mcgill.science.tepid.models.enums
 
 /**
- * Created by Allan Wang on 2017-12-09,.
+ * Created by Allan Wang on 2017-12-09.
  */
 enum class PrinterId(val serialNumber: String) {
     _1B16_North(***REMOVED***),
@@ -16,6 +16,7 @@ enum class PrinterId(val serialNumber: String) {
 
     companion object {
         val values = values()
+        val names = values.map(PrinterId::toString).toSet()
     }
 }
 
@@ -29,5 +30,6 @@ enum class Room(vararg val printers: PrinterId) {
 
     companion object {
         val values = values()
+        val names = values.map(Room::toString).toSet()
     }
 }

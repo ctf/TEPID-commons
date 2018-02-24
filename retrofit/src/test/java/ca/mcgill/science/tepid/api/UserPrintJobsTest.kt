@@ -7,7 +7,7 @@ class UserPrintJobsTest {
 
     @Test
     fun get() {
-        api.getUserPrintJobs(TEST_USER_SHORT).executeTest()
+        api.getUserPrintJobs(TEST_USER_SHORT).get()
     }
 
     @Test

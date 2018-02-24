@@ -33,12 +33,14 @@ data class FullDestination(
 ) : TepidDb by TepidDbDelegate() {
 
     /**
-     * Returned a filtered destination variant depending on the session role
+     * Returned a filtered destination variant depending on the role if supplied
      * Some values will be filtered out regardless
+     *
+     * Role can come from [Session.role] or any other derivative
      */
-    fun toDestination(session: FullSession): Destination {
-        val isElder = session.role == ELDER
-        val isCtfer = session.role == CTFER
+    fun toDestination(role: String? = null): Destination {
+        val isElder = role == ELDER
+        val isCtfer = role == CTFER
         return Destination(
                 name = name,
                 protocol = if (isElder) protocol else null,
