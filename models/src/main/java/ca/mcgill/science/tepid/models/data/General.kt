@@ -23,3 +23,8 @@ data class ErrorResponse(
         val message: String,
         val extras: List<String> = emptyList()
 ) : TepidJackson
+
+data class ChangeDelta(
+        val id: String,
+        val rev: String
+) : TepidJackson

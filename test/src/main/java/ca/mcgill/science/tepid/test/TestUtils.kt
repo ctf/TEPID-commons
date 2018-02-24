@@ -1,7 +1,6 @@
 package ca.mcgill.science.tepid.test
 
 import ca.mcgill.science.tepid.utils.PropUtils
-import sun.plugin.dom.exception.InvalidStateException
 import java.util.*
 
 /**
@@ -30,6 +29,8 @@ object TestUtils {
         println("Using test url $url")
         url
     }
+
+    val IS_NOT_PRODUCTION: Boolean by lazy { TEST_URL != TEPID_URL_PRODUCTION }
 
     private const val TEPID_URL_PRODUCTION = "https://tepid.science.mcgill.ca:8443/tepid/"
     private const val TEPID_URL_TEST = "http://testpid.science.mcgill.ca:8080/tepid/"

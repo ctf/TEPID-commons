@@ -5,7 +5,7 @@ import ca.mcgill.science.tepid.models.bindings.ELDER
 import ca.mcgill.science.tepid.models.bindings.USER
 import ca.mcgill.science.tepid.models.data.*
 import ca.mcgill.science.tepid.models.enums.PrinterId
-import com.fasterxml.jackson.databind.node.ObjectNode
+import ca.mcgill.science.tepid.models.enums.Room
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -110,7 +110,7 @@ interface ITepid {
      */
     @GET("users/autosuggest/{expr}")
     @MinAuthority(CTFER)
-    fun getUserQuery(@Path("expr") query: String, @Query("limit") limit: Int): Call<List<UserQuery>>
+    fun queryUsers(@Path("expr") query: String, @Query("limit") limit: Int): Call<List<UserQuery>>
 
     /**
      * Sets the exchange student status for the given user
@@ -268,7 +268,7 @@ interface ITepid {
     /**
      * Create a print job
      *
-     * todo verify and check return type
+     * Note that a job's must be one of [Room.toString]
      */
     @POST("jobs")
     @MinAuthority(USER)
@@ -284,20 +284,18 @@ interface ITepid {
     fun addJobData(@Path("id") id: String, @Body input: InputStream): Call<String>
 
     /**
-     * Get the print job with the id
+     * Get the print job with the [PrintJob._id]
      */
     @GET("jobs/job/{id}")
     @MinAuthority(USER)
     fun getJob(@Path("id") id: String): Call<PrintJob>
 
     /**
-     * Refund the print job with the supplied id
-     *
-     * todo validate response
+     * Refund the print job with the supplied [PrintJob._id]
      */
     @PUT("jobs/job/{id}/refunded")
     @MinAuthority(CTFER)
-    fun refundJob(@Path("id") id: String): Call<PutResponse>
+    fun refundJob(@Path("id") id: String, @Body refund: Boolean): Call<PutResponse>
 
     /**
      * Reprint the print job with the supplied id
@@ -307,11 +305,11 @@ interface ITepid {
     fun reprintJob(@Path("id") id: String): Call<String>
 
     /**
-     * Get and wait for a change in the specified job id
+     * Get changes for the specified job id
      */
-    @GET("jobs/job/{id}/_changes?feed=longpoll&since=now")
+    @GET("jobs/job/{id}/_changes")
     @MinAuthority(USER)
-    fun getJobChanges(@Path("id") id: String): Call<ObjectNode>
+    fun getJobChanges(@Path("id") id: String, @Query("feed") feed: String, @Query("since") since: String): Call<List<ChangeDelta>>
 
 
     /*
@@ -334,9 +332,6 @@ interface ITepid {
     @GET("endpoints")
     @MinAuthority(CTFER)
     fun getEndpoints(): Call<String>
-
-    @PUT("jobs/job/{id}/refunded")
-    fun refund(@Path("id") id: String, @Body refund: Boolean): Call<Void>
 
 //    @GET("barcode/_wait")
 //    fun scanBarcode(): Call<UserBarcode>
@@ -364,7 +359,7 @@ fun ITepid.enableColor(id: Int, enable: Boolean) = enableColor(id.toString(), en
 fun ITepid.setJobExpiration(id: Int, jobExpiration: Long) = setJobExpiration(id.toString(), jobExpiration)
 fun ITepid.getQuota(id: Int) = getQuota(id.toString())
 fun ITepid.getUserPrintJobs(id: Int) = getUserPrintJobs(id.toString())
-
+fun ITepid.refundJob(id: String) = refundJob(id, true)
 /*
  * -------------------------------------------
  * Query extensions
@@ -372,4 +367,9 @@ fun ITepid.getUserPrintJobs(id: Int) = getUserPrintJobs(id.toString())
  * Supplies defaults to certain queries
  * -------------------------------------------
  */
-fun ITepid.getUserQuery(query: String) = getUserQuery(query, -1)
+fun ITepid.queryUsers(query: String) = queryUsers(query, -1)
+
+fun ITepid.getPrintJobs(query: String) = getPrintJobs(query, -1)
+
+fun ITepid.getJobChanges(id: String) = getJobChanges(id, "longpoll", "now")
+//fun ITepid.getJobChanges(id: String, since: Long) = getJobChanges(id, "longpoll", since.toString())

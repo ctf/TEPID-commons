@@ -2,6 +2,7 @@ package ca.mcgill.science.tepid.api.internal
 
 import ca.mcgill.science.tepid.models.data.User
 import retrofit2.Call
+import java.util.concurrent.CompletableFuture
 import kotlin.test.fail
 
 /**
@@ -37,9 +38,9 @@ internal fun <T> T.assertComponentsEqual(value: T.() -> List<Pair<Any?, Any?>>):
 }
 
 /**
- * Generic version of [executeDiy]
+ * Equivalent to [Call.execute] with validation checks and a guaranteed data return if successful
  */
-internal fun <T> Call<T>.executeTest(): T {
+internal fun <T> Call<T>.get(): T {
     try {
         val response = execute()
         if (response.isSuccessful) {
@@ -52,6 +53,8 @@ internal fun <T> Call<T>.executeTest(): T {
         fail("An exception occurred: ${exception.message}")
     }
 }
+
+internal fun <T> Call<T>.getFuture() = CompletableFuture.supplyAsync { get() }
 
 /**
  * Execute a response while expecting an error of code [expectedCode]

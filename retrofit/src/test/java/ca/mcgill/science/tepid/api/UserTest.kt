@@ -8,13 +8,13 @@ class UserTest {
 
     @Test
     fun isConfigured() {
-        val result = apiUnauth.isConfigured().executeTest()
+        val result = apiUnauth.isConfigured().get()
         assertTrue(result, "Tepid is not configured")
     }
 
     @Test
     fun getByShortUser() {
-        api.getUser(TEST_USER_SHORT).executeTest().assertTestUser()
+        api.getUser(TEST_USER_SHORT).get().assertTestUser()
     }
 
     @Test
@@ -24,7 +24,7 @@ class UserTest {
 
     @Test
     fun getById() {
-        api.getUser(TEST_USER_ID).executeTest().assertTestUser()
+        api.getUser(TEST_USER_ID).get().assertTestUser()
     }
 
     @Test
