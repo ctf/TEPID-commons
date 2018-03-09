@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 data class FullSession(
         var role: String = "",
         var user: FullUser,
-        var expiration: Long = -1,
+        var expiration: Long = -1L,
         var persistent: Boolean = true
 ) : TepidDb by TepidDbDelegate() {
 
@@ -34,12 +34,14 @@ data class FullSession(
 data class Session(
         var user: User,
         var role: String = user.role,
-        var expiration: Long = -1,
+        var expiration: Long = -1L,
         var persistent: Boolean = true
 ) : TepidId by TepidIdDelegate() {
     val authHeader: String
         @JsonIgnore
         get() = encodeToHeader(user.shortUser, _id)
+
+    fun isValid() = expiration == -1L || expiration > System.currentTimeMillis()
 
     companion object {
 
