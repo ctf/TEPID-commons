@@ -17,6 +17,7 @@ data class Semester(val season: Season, val year: Int) : TepidJackson, Comparabl
         /**
          * Get the current semester
          */
+        @JvmStatic
         val current: Semester
             get() = with(Calendar.getInstance()) {
                 Semester(Season.fromMonth(get(Calendar.MONTH)), get(Calendar.YEAR))

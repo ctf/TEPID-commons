@@ -52,6 +52,7 @@ data class Session(
          * Naturally, this will only be valid to the server if the supplied
          * parameters are valid
          */
+        @JvmStatic
         fun encodeToHeader(shortUser: String?, id: String?): String =
                 Base64.encodeToString("$shortUser:$id".toByteArray(), BASE_64_FLAGS)
 
@@ -60,6 +61,7 @@ data class Session(
          * This ensures that the decode always matches the encoder
          * used to find [authHeader]
          */
+        @JvmStatic
         fun decodeHeader(header: String): String? =
                 try {
                     String(Base64.decode(header, BASE_64_FLAGS))
