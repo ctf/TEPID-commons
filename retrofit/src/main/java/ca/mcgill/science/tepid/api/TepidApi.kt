@@ -18,7 +18,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  * val API: ITepid by  lazy { TepidApi(...).create() }
  */
 class TepidApi(private val url: String,
-               private val debug: Boolean = url != TEPID_URL_PRODUCTION) {
+               private val debug: Boolean = url != TEPID_URL_PRODUCTION,
+               private val cacheMaxAge: Int = 5,
+               private val cacheMaxStale: Int = 5) {
 
     var clientBuilder: (builder: OkHttpClient.Builder) -> Unit = {}
 
@@ -35,6 +37,11 @@ class TepidApi(private val url: String,
         val client = OkHttpClient.Builder()
         clientBuilder(client)
         if (debug) debugBuilder(client)
+        client.addNetworkInterceptor({
+            it.proceed(it.request()).newBuilder()
+                    .header("Cache-Control", String.format("max-age=%d, only-if-cached, max-stale=%d", cacheMaxAge, cacheMaxStale))
+                    .build()
+        })
 
         config.tokenRetriever?.apply { client.addInterceptor(TokenInterceptor(this)) }
 
