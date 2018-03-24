@@ -13,7 +13,11 @@ object PropUtils {
      * else null
      */
     fun loadProps(vararg path: String): Properties? {
-        val valid = path.map(::File).firstOrNull(File::exists) ?: return null
+        val valid = path.map(::File).firstOrNull(File::exists)
+        if (valid == null) {
+            println("No properties found")
+            return null
+        }
         println("Found properties at ${valid.absolutePath}")
         val props = Properties()
         FileInputStream(valid).use { props.load(it) }

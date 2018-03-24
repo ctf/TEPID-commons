@@ -12,7 +12,7 @@ const val ADMIN = "admin"
 const val LOCAL = "local"
 
 const val TEPID_URL_PRODUCTION = "https://tepid.science.mcgill.ca:8443/tepid/"
-const val TEPID_URL_TEST = "http://testpid.science.mcgill.ca:8080/tepid/"
+const val TEPID_URL_TEST = "https://testpid.science.mcgill.ca:8443/tepid/"
 const val TEPID_LOCAL = "http://localhost:8080/"
 
 internal val elderGroups = arrayOf("***REMOVED***")
