@@ -1,7 +1,9 @@
 package ca.mcgill.science.tepid.utils
 
+import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.apache.logging.log4j.core.LoggerContext
 import kotlin.reflect.full.companionObject
 
 
@@ -38,4 +40,17 @@ interface Loggable {
  */
 abstract class WithLogging : Loggable {
     override val log: Logger by lazy { this.logger() }
+}
+
+object LogUtils {
+
+    fun setLoggingLevel(log: Logger, level: Level) {
+        log.info("Updating log level to $level")
+        val ctx = LogManager.getContext(false) as LoggerContext
+        val config = ctx.configuration
+        val loggerConfig = config.getLoggerConfig(LogManager.ROOT_LOGGER_NAME)
+        loggerConfig.level = level
+        ctx.updateLoggers()
+    }
+
 }
