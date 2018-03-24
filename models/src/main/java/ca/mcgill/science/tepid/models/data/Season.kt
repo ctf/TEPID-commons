@@ -9,14 +9,12 @@ enum class Season {
 
     companion object {
 
-        @JvmStatic
         fun fromMonth(month: Int) = when (month) {
             in Calendar.SEPTEMBER..Calendar.DECEMBER -> FALL
             in Calendar.JANUARY..Calendar.MAY -> WINTER
             else -> SUMMER
         }
 
-        @JvmStatic
         operator fun invoke(name: String) = valueOf(name.toUpperCase(Locale.CANADA))
     }
 }
