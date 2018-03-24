@@ -4,7 +4,7 @@ import ca.mcgill.science.tepid.api.ITepid
 import ca.mcgill.science.tepid.api.TepidApi
 import ca.mcgill.science.tepid.api.executeDirect
 import ca.mcgill.science.tepid.models.bindings.TEPID_URL_PRODUCTION
-import ca.mcgill.science.tepid.models.bindings.TEPID_URL_TEST
+import ca.mcgill.science.tepid.models.bindings.tepidUrl
 import ca.mcgill.science.tepid.models.data.Session
 import ca.mcgill.science.tepid.models.data.SessionRequest
 import ca.mcgill.science.tepid.utils.Loggable
@@ -23,7 +23,6 @@ interface TestUtilsContract {
     val testPassword: String
     val testToken: String
     val testUrl: String
-    fun getUrl(key: String): String
 
     val isNotProduction: Boolean
     val hasTestUser: Boolean
@@ -38,36 +37,26 @@ open class TestUtilsDelegate(
         vararg propPath: String = arrayOf("priv.properties", "../priv.properties")
 ) : Loggable by WithLogging(), TestUtilsContract {
 
-    operator fun get(key: String): String = props.getProperty(key, "")
+    fun get(key: String): String = props.getProperty(key, "")
 
     override val testAuth: Pair<String, String> by lazy { testUser to testPassword }
 
     override val testUser: String by lazy {
-        this["TEST_USER"]
+        get("TEST_USER")
     }
 
     override val testPassword: String by lazy {
-        this["TEST_PASSWORD"]
+        get("TEST_PASSWORD")
     }
 
     override val testToken: String by lazy {
-        this["TEST_TOKEN"]
+        get("TEST_TOKEN")
     }
 
     override val testUrl: String by lazy {
-        val url = getUrl("TEST_URL")
+        val url = tepidUrl(get("TEST_URL"))
         println("Using test url $url")
         url
-    }
-
-    override fun getUrl(key: String): String {
-        var url = props.getProperty(key, TEPID_URL_TEST)
-        url = when (url.toLowerCase()) {
-            "tepid" -> TEPID_URL_PRODUCTION
-            "testpid", "" -> TEPID_URL_TEST
-            else -> url
-        }
-        return url
     }
 
     override val isNotProduction: Boolean by lazy { testUrl != TEPID_URL_PRODUCTION }
