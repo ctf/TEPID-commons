@@ -38,7 +38,7 @@ open class TestUtilsDelegate(
         vararg propPath: String = arrayOf("priv.properties", "../priv.properties")
 ) : Loggable by WithLogging(), TestUtilsContract {
 
-    private operator fun get(key: String) = props.getProperty(key, "")
+    operator fun get(key: String): String = props.getProperty(key, "")
 
     override val testAuth: Pair<String, String> by lazy { testUser to testPassword }
 
