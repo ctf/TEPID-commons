@@ -1,7 +1,6 @@
 package ca.mcgill.science.tepid.api
 
 import ca.mcgill.science.tepid.api.internal.api
-import ca.mcgill.science.tepid.api.internal.executeExpectingError
 import ca.mcgill.science.tepid.api.internal.get
 import ca.mcgill.science.tepid.api.internal.getFuture
 import ca.mcgill.science.tepid.models.data.PrintJob
@@ -16,7 +15,7 @@ class JobModifyingTest {
     companion object {
 
         init {
-            Assume.assumeTrue("Testing mutable job tests", TestUtils.IS_NOT_PRODUCTION)
+            Assume.assumeTrue("Testing mutable job tests", TestUtils.isNotProduction)
         }
 
     }

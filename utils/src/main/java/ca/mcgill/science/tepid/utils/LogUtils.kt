@@ -38,7 +38,7 @@ interface Loggable {
  *
  * companion object: WithLogging()
  */
-abstract class WithLogging : Loggable {
+open class WithLogging : Loggable {
     override val log: Logger by lazy { this.logger() }
 }
 

@@ -7,7 +7,9 @@ import ca.mcgill.science.tepid.models.bindings.TEPID_URL_PRODUCTION
 import ca.mcgill.science.tepid.models.bindings.TEPID_URL_TEST
 import ca.mcgill.science.tepid.models.data.Session
 import ca.mcgill.science.tepid.models.data.SessionRequest
+import ca.mcgill.science.tepid.utils.Loggable
 import ca.mcgill.science.tepid.utils.PropUtils
+import ca.mcgill.science.tepid.utils.WithLogging
 import java.util.*
 
 object TestUtils : TestUtilsDelegate()
@@ -16,45 +18,50 @@ object TestUtils : TestUtilsDelegate()
  * Global attributes to pull from priv.properties for testing
  */
 interface TestUtilsContract {
-    val TEST_AUTH: Pair<String, String>
-    val TEST_USER: String
-    val TEST_PASSWORD: String
-    val TEST_TOKEN: String
-    val TEST_URL: String
+    val testAuth: Pair<String, String>
+    val testUser: String
+    val testPassword: String
+    val testToken: String
+    val testUrl: String
     fun getUrl(key: String): String
 
-    val IS_NOT_PRODUCTION: Boolean
-    val HAS_TEST_USER: Boolean
-    val PROPS: Properties
-    val TEST_SESSION: Session?
+    val isNotProduction: Boolean
+    val hasTestUser: Boolean
+    val props: Properties
+    val testSession: Session?
+
+    val testApiUnauth: ITepid
+    val testApi: ITepid
 }
 
-open class TestUtilsDelegate(vararg propPath: String = arrayOf("priv.properties", "../priv.properties")) : TestUtilsContract {
+open class TestUtilsDelegate(
+        vararg propPath: String = arrayOf("priv.properties", "../priv.properties")
+) : Loggable by WithLogging(), TestUtilsContract {
 
-    private operator fun get(key: String) = PROPS.getProperty(key, "")
+    private operator fun get(key: String) = props.getProperty(key, "")
 
-    override val TEST_AUTH: Pair<String, String> by lazy { TEST_USER to TEST_PASSWORD }
+    override val testAuth: Pair<String, String> by lazy { testUser to testPassword }
 
-    override val TEST_USER: String by lazy {
+    override val testUser: String by lazy {
         this["TEST_USER"]
     }
 
-    override val TEST_PASSWORD: String by lazy {
+    override val testPassword: String by lazy {
         this["TEST_PASSWORD"]
     }
 
-    override val TEST_TOKEN: String by lazy {
+    override val testToken: String by lazy {
         this["TEST_TOKEN"]
     }
 
-    override val TEST_URL: String by lazy {
+    override val testUrl: String by lazy {
         val url = getUrl("TEST_URL")
         println("Using test url $url")
         url
     }
 
     override fun getUrl(key: String): String {
-        var url = PROPS.getProperty(key, TEPID_URL_TEST)
+        var url = props.getProperty(key, TEPID_URL_TEST)
         url = when (url.toLowerCase()) {
             "tepid" -> TEPID_URL_PRODUCTION
             "testpid", "" -> TEPID_URL_TEST
@@ -63,13 +70,13 @@ open class TestUtilsDelegate(vararg propPath: String = arrayOf("priv.properties"
         return url
     }
 
-    override val IS_NOT_PRODUCTION: Boolean by lazy { TEST_URL != TEPID_URL_PRODUCTION }
+    override val isNotProduction: Boolean by lazy { testUrl != TEPID_URL_PRODUCTION }
 
-    override val HAS_TEST_USER: Boolean by lazy {
-        TEST_USER.isNotBlank() && (TEST_PASSWORD.isNotBlank() || TEST_TOKEN.isNotBlank())
+    override val hasTestUser: Boolean by lazy {
+        testUser.isNotBlank() && (testPassword.isNotBlank() || testToken.isNotBlank())
     }
 
-    override val PROPS: Properties by lazy {
+    override val props: Properties by lazy {
         PropUtils.loadProps(*propPath) ?: defaultProps()
     }
 
@@ -78,21 +85,48 @@ open class TestUtilsDelegate(vararg propPath: String = arrayOf("priv.properties"
         return Properties()
     }
 
-    override val TEST_SESSION: Session? by lazy {
-        val api: ITepid by lazy { TepidApi(TEST_URL, true).create() }
-        if (TEST_PASSWORD.isNotBlank()) {
+    override val testSession: Session? by lazy {
+        val api: ITepid by lazy { TepidApi(testUrl, true).create() }
+        if (testPassword.isNotBlank()) {
             val session = api.getSession(
-                    SessionRequest(TEST_USER, TEST_PASSWORD, true, true)
+                    SessionRequest(testUser, testPassword, true, true)
             ).executeDirect()
             if (session != null)
                 return@lazy session
         }
-        if (TEST_TOKEN.isNotBlank()) {
-            val session = api.validateToken(TEST_USER, TEST_TOKEN).executeDirect()
+        if (testToken.isNotBlank()) {
+            val session = api.validateToken(testUser, testToken).executeDirect()
             if (session != null)
                 return@lazy session
         }
         null
+    }
+
+    override val testApiUnauth: ITepid by lazy {
+        when {
+            testUrl.isBlank() -> log.error("Requesting apiUnauth for empty url")
+            else -> log.info("Initialized test apiUnauth")
+        }
+        TepidApi(testUrl, true).create()
+    }
+
+    override val testApi: ITepid by lazy {
+        when {
+            testUrl.isBlank() -> log.error("Requesting api for empty url")
+            !hasTestUser -> {
+                log.error("--------------------------------------------------------------------------\n")
+                log.error("Requesting api for $testUrl with a blank username or password")
+                log.error("\n--------------------------------------------------------------------------")
+            }
+        }
+        val session = testSession
+        if (session == null) {
+            println("Could not retrieve authenticated test api")
+            return@lazy testApiUnauth
+        }
+        TepidApi(testUrl, true).create {
+            tokenRetriever = session::authHeader
+        }
     }
 
 }

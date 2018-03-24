@@ -14,14 +14,14 @@ class LdapTest : LdapBase() {
 
         init {
             Assume.assumeTrue("Testing LDAP connection",
-                    LdapBase().queryUser(***REMOVED***, TestUtils.TEST_AUTH) != null)
+                    LdapBase().queryUser(***REMOVED***, TestUtils.testAuth) != null)
         }
 
     }
 
     @Test
     fun bindSelf() {
-        val user = queryUser(***REMOVED***, TestUtils.TEST_AUTH)
+        val user = queryUser(***REMOVED***, TestUtils.testAuth)
         assertNotNull(user)
         println(user!!)
         assertEquals("Ctf Science", user.displayName)
@@ -32,7 +32,7 @@ class LdapTest : LdapBase() {
 
     @Test
     fun bindOtherLong() {
-        val user = queryUser("allan.wang", TestUtils.TEST_AUTH)
+        val user = queryUser("allan.wang", TestUtils.testAuth)
         assertNotNull(user)
         println(user!!)
     }
@@ -43,7 +43,7 @@ class LdapTest : LdapBase() {
     @Test
     fun bindOtherUser() {
         val shortUser = "***REMOVED***"
-        val user = queryUser(shortUser, TestUtils.TEST_AUTH) ?: fail("Null user")
+        val user = queryUser(shortUser, TestUtils.testAuth) ?: fail("Null user")
         println(user)
         assertEquals(shortUser, user.shortUser, "short user mismatch")
         assertEquals(-1, user.studentId, "unexpected studentId from external TEST_AUTH")
@@ -51,7 +51,7 @@ class LdapTest : LdapBase() {
 
     @Test
     fun bind() {
-        val user = queryUser("azsedzzz", TestUtils.TEST_AUTH)
+        val user = queryUser("azsedzzz", TestUtils.testAuth)
         assertNull(user, "User azsedzzz should be null")
     }
 

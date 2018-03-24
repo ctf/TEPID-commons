@@ -1,5 +1,9 @@
+apply plugin: 'ca.mcgill.science.tepid.commons'
+
 dependencies {
     compile project(':utils')
     compile project(':models')
     compile project(':retrofit')
+    compile tepidDependency.junit
+    compile tepidDependency.kotlinTest
 }

@@ -1,6 +1,11 @@
 package ca.mcgill.science.tepid.api
 
-import ca.mcgill.science.tepid.api.internal.*
+import ca.mcgill.science.tepid.api.internal.TEST_USER_ID
+import ca.mcgill.science.tepid.api.internal.TEST_USER_SHORT
+import ca.mcgill.science.tepid.api.internal.assertTestUser
+import ca.mcgill.science.tepid.api.internal.executeExpectingError
+import ca.mcgill.science.tepid.test.TestUtils
+import ca.mcgill.science.tepid.test.get
 import org.junit.Test
 import kotlin.test.assertTrue
 
@@ -8,28 +13,28 @@ class UserTest {
 
     @Test
     fun isConfigured() {
-        val result = apiUnauth.isConfigured().get()
+        val result = TestUtils.testApiUnauth.isConfigured().get()
         assertTrue(result, "Tepid is not configured")
     }
 
     @Test
     fun getByShortUser() {
-        api.getUser(TEST_USER_SHORT).get().assertTestUser()
+        TestUtils.testApi.getUser(TEST_USER_SHORT).get().assertTestUser()
     }
 
     @Test
     fun unauthByShortUser() {
-        apiUnauth.getUser(TEST_USER_SHORT).executeExpectingError(401)
+        TestUtils.testApiUnauth.getUser(TEST_USER_SHORT).executeExpectingError(401)
     }
 
     @Test
     fun getById() {
-        api.getUser(TEST_USER_ID).get().assertTestUser()
+        TestUtils.testApi.getUser(TEST_USER_ID).get().assertTestUser()
     }
 
     @Test
     fun unauthById() {
-        apiUnauth.getUser(TEST_USER_ID).executeExpectingError(401)
+        TestUtils.testApiUnauth.getUser(TEST_USER_ID).executeExpectingError(401)
     }
 
 }

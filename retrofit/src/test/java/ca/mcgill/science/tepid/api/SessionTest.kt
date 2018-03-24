@@ -15,6 +15,6 @@ class SessionTest {
 
     @Test
     fun validateToken() {
-        apiUnauth.validateToken(TestUtils.TEST_USER, session.getId()).get()
+        apiUnauth.validateToken(TestUtils.testUser, session.getId()).get()
     }
 }
