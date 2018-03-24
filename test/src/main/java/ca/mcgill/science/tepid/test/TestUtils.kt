@@ -11,43 +11,65 @@ import ca.mcgill.science.tepid.utils.PropUtils
 import java.util.*
 
 object TestUtils : TestUtilsDelegate()
+
 /**
  * Global attributes to pull from priv.properties for testing
  */
-open class TestUtilsDelegate(vararg propPath: String = arrayOf("priv.properties", "../priv.properties")) {
+interface TestUtilsContract {
+    val TEST_AUTH: Pair<String, String>
+    val TEST_USER: String
+    val TEST_PASSWORD: String
+    val TEST_TOKEN: String
+    val TEST_URL: String
+    fun getUrl(key: String): String
 
-    val TEST_AUTH: Pair<String, String> by lazy { TEST_USER to TEST_PASSWORD }
+    val IS_NOT_PRODUCTION: Boolean
+    val HAS_TEST_USER: Boolean
+    val PROPS: Properties
+    val TEST_SESSION: Session?
+}
 
-    val TEST_USER: String by lazy {
-        PROPS.getProperty("TEST_USER", "")
+open class TestUtilsDelegate(vararg propPath: String = arrayOf("priv.properties", "../priv.properties")) : TestUtilsContract {
+
+    private operator fun get(key: String) = PROPS.getProperty(key, "")
+
+    override val TEST_AUTH: Pair<String, String> by lazy { TEST_USER to TEST_PASSWORD }
+
+    override val TEST_USER: String by lazy {
+        this["TEST_USER"]
     }
 
-    val TEST_PASSWORD: String by lazy {
-        PROPS.getProperty("TEST_PASSWORD", "")
+    override val TEST_PASSWORD: String by lazy {
+        this["TEST_PASSWORD"]
     }
 
-    val TEST_TOKEN: String by lazy {
-        PROPS.getProperty("TEST_TOKEN", "")
+    override val TEST_TOKEN: String by lazy {
+        this["TEST_TOKEN"]
     }
 
-    val TEST_URL: String by lazy {
-        var url = PROPS.getProperty("TEST_URL", "")
+    override val TEST_URL: String by lazy {
+        val url = getUrl("TEST_URL")
+        println("Using test url $url")
+        url
+    }
+
+    override fun getUrl(key: String): String {
+        var url = PROPS.getProperty(key, TEPID_URL_TEST)
         url = when (url.toLowerCase()) {
             "tepid" -> TEPID_URL_PRODUCTION
             "testpid", "" -> TEPID_URL_TEST
             else -> url
         }
-        println("Using test url $url")
-        url
+        return url
     }
 
-    val IS_NOT_PRODUCTION: Boolean by lazy { TEST_URL != TEPID_URL_PRODUCTION }
+    override val IS_NOT_PRODUCTION: Boolean by lazy { TEST_URL != TEPID_URL_PRODUCTION }
 
-    val HAS_TEST_USER: Boolean by lazy {
+    override val HAS_TEST_USER: Boolean by lazy {
         TEST_USER.isNotBlank() && (TEST_PASSWORD.isNotBlank() || TEST_TOKEN.isNotBlank())
     }
 
-    val PROPS: Properties by lazy {
+    override val PROPS: Properties by lazy {
         PropUtils.loadProps(*propPath) ?: defaultProps()
     }
 
@@ -56,7 +78,7 @@ open class TestUtilsDelegate(vararg propPath: String = arrayOf("priv.properties"
         return Properties()
     }
 
-    val TEST_SESSION: Session? by lazy {
+    override val TEST_SESSION: Session? by lazy {
         val api: ITepid by lazy { TepidApi(TEST_URL, true).create() }
         if (TEST_PASSWORD.isNotBlank()) {
             val session = api.getSession(
