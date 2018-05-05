@@ -130,6 +130,7 @@ open class LdapBase : LdapContract, LdapHelperContract by LdapHelperDelegate() {
 
     /**
      * Create [LdapContext] for given credentials
+     * [user] must be short username!
      */
     fun bindLdap(user: String, password: String): LdapContext? {
         try {
