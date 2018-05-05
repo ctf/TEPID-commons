@@ -30,7 +30,7 @@ dependencies {
     compile "ca.mcgill:tepid-commons:$TEPID_COMMONS"
     
     // to include specific module
-    compile "ca.mcgill:tepid-commons:models:$TEPID_COMMONS"
+    compile "ca.mcgill.tepid-commons:models:$TEPID_COMMONS"
 }
 ```
 

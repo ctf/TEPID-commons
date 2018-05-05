@@ -9,6 +9,7 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${tepid.kotlin}"
     }
+    wrapper.setDistributionType(Wrapper.DistributionType.ALL)
 }
 
 apply plugin: "ca.mcgill.science.tepid.commons"
