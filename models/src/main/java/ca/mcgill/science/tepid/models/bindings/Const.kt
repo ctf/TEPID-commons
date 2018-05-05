@@ -15,10 +15,10 @@ const val TEPID_URL_PRODUCTION = "https://tepid.science.mcgill.ca:8443/tepid/"
 const val TEPID_URL_TEST = "https://testpid.science.mcgill.ca:8443/tepid/"
 const val TEPID_LOCAL = "http://localhost:8080/"
 
-fun tepidUrl(url: String) = when (url.toLowerCase()) {
+fun tepidUrl(url: String?) = when (url?.toLowerCase()) {
     "tepid" -> TEPID_URL_PRODUCTION
     "local" -> TEPID_LOCAL
-    "", "testpid" -> TEPID_URL_TEST
+    null, "", "testpid" -> TEPID_URL_TEST
     else -> url
 }
 

@@ -3,7 +3,6 @@ package ca.mcgill.science.tepid.api.internal
 import ca.mcgill.science.tepid.models.data.User
 import ca.mcgill.science.tepid.test.assertComponentsEqual
 import retrofit2.Call
-import java.util.concurrent.CompletableFuture
 import kotlin.test.fail
 
 /**

@@ -1,5 +1,8 @@
 package ca.mcgill.science.tepid.test
 
+import ca.allanwang.kit.logger.Loggable
+import ca.allanwang.kit.logger.WithLogging
+import ca.allanwang.kit.props.PropHolder
 import ca.mcgill.science.tepid.api.ITepid
 import ca.mcgill.science.tepid.api.TepidApi
 import ca.mcgill.science.tepid.api.executeDirect
@@ -7,10 +10,6 @@ import ca.mcgill.science.tepid.models.bindings.TEPID_URL_PRODUCTION
 import ca.mcgill.science.tepid.models.bindings.tepidUrl
 import ca.mcgill.science.tepid.models.data.Session
 import ca.mcgill.science.tepid.models.data.SessionRequest
-import ca.mcgill.science.tepid.utils.Loggable
-import ca.mcgill.science.tepid.utils.PropUtils
-import ca.mcgill.science.tepid.utils.WithLogging
-import java.util.*
 
 object TestUtils : TestUtilsDelegate()
 
@@ -26,7 +25,6 @@ interface TestUtilsContract {
 
     val isNotProduction: Boolean
     val hasTestUser: Boolean
-    val props: Properties
     val testSession: Session?
 
     val testApiUnauth: ITepid
@@ -35,27 +33,19 @@ interface TestUtilsContract {
 
 open class TestUtilsDelegate(
         vararg propPath: String = arrayOf("priv.properties", "../priv.properties")
-) : Loggable by WithLogging(), TestUtilsContract {
-
-    fun get(key: String): String = props.getProperty(key, "")
+) : PropHolder(*propPath), Loggable by WithLogging(), TestUtilsContract {
 
     override val testAuth: Pair<String, String> by lazy { testUser to testPassword }
 
-    override val testUser: String by lazy {
-        get("TEST_USER")
-    }
+    override val testUser: String by string("TEST_USER", errorMessage = "No test user supplied")
 
-    override val testPassword: String by lazy {
-        get("TEST_PASSWORD")
-    }
+    override val testPassword: String by string("TEST_PASSWORD", errorMessage = "No test password supplied")
 
-    override val testToken: String by lazy {
-        get("TEST_TOKEN")
-    }
+    override val testToken: String by string("TEST_TOKEN")
 
     override val testUrl: String by lazy {
         val url = tepidUrl(get("TEST_URL"))
-        println("Using test url $url")
+        log.info("Using test url $url")
         url
     }
 
@@ -63,15 +53,6 @@ open class TestUtilsDelegate(
 
     override val hasTestUser: Boolean by lazy {
         testUser.isNotBlank() && (testPassword.isNotBlank() || testToken.isNotBlank())
-    }
-
-    override val props: Properties by lazy {
-        PropUtils.loadProps(*propPath) ?: defaultProps()
-    }
-
-    private fun defaultProps(): Properties {
-        println("Could not find test props")
-        return Properties()
     }
 
     override val testSession: Session? by lazy {
