@@ -1,17 +1,16 @@
 package ca.mcgill.science.tepid.api
 
-import ca.mcgill.science.tepid.api.internal.api
-import ca.mcgill.science.tepid.api.internal.apiUnauth
 import ca.mcgill.science.tepid.api.internal.executeExpectingError
-import ca.mcgill.science.tepid.api.internal.get
 import ca.mcgill.science.tepid.models.enums.PrinterId
+import ca.mcgill.science.tepid.test.TestUtils
+import ca.mcgill.science.tepid.test.get
 import org.junit.Test
 
 class PrinterInfoTest {
 
     @Test
     fun get() {
-        val data = api.getDestinations().get()
+        val data = TestUtils.testApi.getDestinations().get()
         assert(data.size == PrinterId.values.size) {
             "Not all printers are mapped"
         }
@@ -31,6 +30,6 @@ class PrinterInfoTest {
 
     @Test
     fun unauth() {
-        apiUnauth.getDestinations().executeExpectingError(401)
+        TestUtils.testApiUnauth.getDestinations().executeExpectingError(401)
     }
 }

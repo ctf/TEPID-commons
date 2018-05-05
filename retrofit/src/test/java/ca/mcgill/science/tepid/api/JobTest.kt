@@ -1,14 +1,14 @@
 package ca.mcgill.science.tepid.api
 
-import ca.mcgill.science.tepid.api.internal.api
-import ca.mcgill.science.tepid.api.internal.get
+import ca.mcgill.science.tepid.test.TestUtils
+import ca.mcgill.science.tepid.test.get
 import org.junit.Test
 
 class JobTest {
 
     @Test
     fun getJobList() {
-        api.getUserPrintJobs("***REMOVED***").get()
+        TestUtils.testApi.getUserPrintJobs("***REMOVED***").get()
     }
 
 }

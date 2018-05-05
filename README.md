@@ -9,7 +9,6 @@ More notably:
 | Model | Contents |
 | --- | --- |
 | `:core` | Promise & hashing libraries |
-| `:ldap` | User query through McGill's LDAP |
 | `:models` | Jackson data models |
 | `:retrofit` | Public API endpoints |
 | `:test` | Unit test helper (internal) |
