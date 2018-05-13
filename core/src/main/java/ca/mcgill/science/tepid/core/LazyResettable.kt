@@ -1,4 +1,4 @@
-package ca.allanwang.kotlin
+package ca.mcgill.science.tepid.core
 
 import java.io.Serializable
 import kotlin.reflect.KProperty
