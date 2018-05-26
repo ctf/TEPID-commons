@@ -25,3 +25,11 @@ object PropsDB : PropHolder ("config/DB.properties") {
     val COUCHDB_PASSWORD by PropsDB.string ("COUCHDB_PASSWORD", errorMessage = "COUCHDB_PASSWORD not set")
     val COUCHDB_URL by PropsDB.string("COUCHDB_URL", errorMessage = "COUCHDB_URL not set")
 }
+
+object PropsScreensaver : PropHolder ("config/screensaver.properties") {
+    val OFFICE_REGEX by PropsScreensaver.string("OFFICE_REGEX", errorMessage = "OFFICE_REGEX not set")
+    val GRAVATAR_SEARCH_TERMS by PropsScreensaver.string("GRAVATAR_SEARCH_TERMS", errorMessage = "GRAVATAR_SEARCH_TERMS not set")
+    val REPORT_MALFUNCTIONING_COMPUTER_TEXT by PropsScreensaver.string("REPORT_MALFUNCTIONING_COMPUTER_TEXT", errorMessage = "REPORT_MALFUNCTIONING_COMPUTER_TEXT not set")
+    val BACKGROUND_PICTURE_LOCATION by PropsScreensaver.string("BACKGROUND_PICTURE_LOCATION", errorMessage = "BACKGROUND_PICTURE_LOCATION not set")
+    val ANNOUNCEMENT_SLIDE_LOCATION by PropsScreensaver.string("ANNOUNCEMENT_SLIDE_LOCATION", errorMessage = "ANNOUNCEMENT_SLIDE_LOCATION not set")
+}
