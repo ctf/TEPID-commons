@@ -32,4 +32,6 @@ object PropsScreensaver : PropHolder ("config/screensaver.properties") {
     val REPORT_MALFUNCTIONING_COMPUTER_TEXT by PropsScreensaver.string("REPORT_MALFUNCTIONING_COMPUTER_TEXT", errorMessage = "REPORT_MALFUNCTIONING_COMPUTER_TEXT not set")
     val BACKGROUND_PICTURE_LOCATION by PropsScreensaver.string("BACKGROUND_PICTURE_LOCATION", errorMessage = "BACKGROUND_PICTURE_LOCATION not set")
     val ANNOUNCEMENT_SLIDE_LOCATION by PropsScreensaver.string("ANNOUNCEMENT_SLIDE_LOCATION", errorMessage = "ANNOUNCEMENT_SLIDE_LOCATION not set")
+    val GOOGLE_CUSTOM_SEARCH_KEY by PropsScreensaver.string("GOOGLE_CUSTOM_SEARCH_KEY", errorMessage = "GOOGLE_CUSTOM_SEARCH_KEY not set")
+    val ICS_CALENDAR_ADDRESS by PropsScreensaver.string("ICS_CALENDAR_ADDRESS", errorMessage = "ICS_CALENDAR_ADDRESS not set")
 }
