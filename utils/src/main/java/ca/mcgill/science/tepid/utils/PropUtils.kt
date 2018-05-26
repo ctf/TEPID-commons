@@ -19,3 +19,9 @@ object PropsLDAP : PropHolder ("config/LDAP.properties") {
     val PROVIDER_URL by PropsLDAP.string("PROVIDER_URL", errorMessage = "PROVIDER_URL not set")
     val SECURITY_PRINCIPAL_PREFIX by PropsLDAP.string("SECURITY_PRINCIPAL_PREFIX", errorMessage = "SECURITY_PRINCIPAL_PREFIX not set")
 }
+
+object PropsDB : PropHolder ("config/DB.properties") {
+    val COUCHDB_USERNAME by PropsDB.string("COUCHDB_USERNAME", errorMessage = "COUCHDB_USERNAME not set")
+    val COUCHDB_PASSWORD by PropsDB.string ("COUCHDB_PASSWORD", errorMessage = "COUCHDB_PASSWORD not set")
+    val COUCHDB_URL by PropsDB.string("COUCHDB_URL", errorMessage = "COUCHDB_URL not set")
+}
