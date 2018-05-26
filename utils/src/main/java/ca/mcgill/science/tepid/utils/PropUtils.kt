@@ -6,6 +6,11 @@ import java.io.FileOutputStream
 import java.util.*
 import ca.allanwang.kit.props.PropHolder
 
+object PropsURL : PropHolder("config/URL.properties") {
+    val URL_TESTING by PropsURL.string("URL_TESTING")
+    val URL_PRODUCTION by PropsURL.string("URL_PRODUCTION")
+}
+
 object PropsLDAP : PropHolder ("config/LDAP.properties") {
     val LDAP_SEARCH_BASE by PropsLDAP.string("LDAP_SEARCH_BASE", errorMessage = "LDAP_SEARCH_BASE not set")
     val ACCOUNT_DOMAIN by PropsLDAP.string("ACCOUNT_DOMAIN", errorMessage = "ACCOUNT_DOMAIN not set")
