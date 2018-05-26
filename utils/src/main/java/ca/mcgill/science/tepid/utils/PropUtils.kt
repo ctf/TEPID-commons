@@ -7,8 +7,10 @@ import java.util.*
 import ca.allanwang.kit.props.PropHolder
 
 object PropsURL : PropHolder("config/URL.properties") {
-    val URL_TESTING by PropsURL.string("URL_TESTING")
-    val URL_PRODUCTION by PropsURL.string("URL_PRODUCTION")
+    val SERVER_URL_TESTING by PropsURL.string("URL_TESTING", errorMessage = "SERVER_URL_TESTING not set")
+    val SERVER_URL_PRODUCTION by PropsURL.string("URL_PRODUCTION", errorMessage = "SERVER_URL_PRODUCTION not set")
+    val WEB_URL_TESTING by PropsURL.string("WEB_URL_TESTING", errorMessage = "WEB_URL_TESTING not set")
+    val WEB_URL_PRODUCTION by PropsURL.string("WEB_URL_PRODUCTION", errorMessage = "WEB_URL_PRODUCTION not set")
 }
 
 object PropsLDAP : PropHolder ("config/LDAP.properties") {
