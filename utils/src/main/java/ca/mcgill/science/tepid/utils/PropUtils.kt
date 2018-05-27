@@ -6,6 +6,13 @@ import java.io.FileOutputStream
 import java.util.*
 import ca.allanwang.kit.props.PropHolder
 
+object PropsCreationInfo : PropHolder("config/creationInformation") {
+    val HASH by PropsCreationInfo.string("HASH", errorMessage = "HASH not set")
+    val TAG by PropsCreationInfo.string("TAG", errorMessage = "TAG not set")
+    val CREATION_TIMESTAMP by PropsCreationInfo.string("CREATION_TIMESTAMP", errorMessage = "CREATION_TIMESTAMP not set")
+    val CREATION_TIME by PropsCreationInfo.string("CREATION_TIME", errorMessage = "CREATION_TIME not set")
+}
+
 object PropsURL : PropHolder("config/URL.properties") {
     val TESTING by PropsURL.string("TESTING", "true", errorMessage = "TESTING not set")
     val SERVER_URL_TESTING by PropsURL.string("SERVER_URL_TESTING", errorMessage = "SERVER_URL_TESTING not set")
