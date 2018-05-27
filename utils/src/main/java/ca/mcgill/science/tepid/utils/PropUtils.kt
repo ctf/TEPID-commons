@@ -8,7 +8,7 @@ import ca.allanwang.kit.props.PropHolder
 
 var basedir = ""
 
-object PropsCreationInfo : PropHolder("${basedir}config/creationInformation", "config/creationInformation") {
+object PropsCreationInfo : PropHolder("${basedir}config/creationInformation.properties", "config/creationInformation.properties") {
     val HASH by PropsCreationInfo.string("HASH", errorMessage = "HASH not set")
     val TAG by PropsCreationInfo.string("TAG", errorMessage = "TAG not set")
     val CREATION_TIMESTAMP by PropsCreationInfo.string("CREATION_TIMESTAMP", errorMessage = "CREATION_TIMESTAMP not set")
@@ -39,7 +39,7 @@ object PropsLDAPResource : PropHolder ("${basedir}config/LDAPResource.properties
 object PropsLDAPGroups : PropHolder ("${basedir}config/LDAPGroups.properties", "config/LDAPGroups.properties") {
     val EXCHANGE_STUDENTS_GROUP_BASE by PropsLDAPGroups.string("EXCHANGE_STUDENTS_GROUP_BASE", errorMessage = "EXCHANGE_STUDENTS_GROUP_BASE not set")
     val EXCHANGE_STUDENTS_GROUP_LOCATION by PropsLDAPGroups.string("EXCHANGE_STUDENTS_GROUP_LOCATION", errorMessage = "EXCHANGE_STUDENTS_GROUP_LOCATION not set")
-    val ELDERS_GROUPS by PropsLDAPGroups.string("ELDERS_GROUP", errorMessage = "ELDERS_GROUP not set")
+    val ELDERS_GROUPS by PropsLDAPGroups.string("ELDERS_GROUPS", errorMessage = "ELDERS_GROUPS not set")
     val CTFERS_GROUPS by PropsLDAPGroups.string("CTFERS_GROUPS", errorMessage = "CTFERS_GROUPS not set")
     val USERS_GROUPS by PropsLDAPGroups.string("USERS_GROUPS", errorMessage = "USERS_GROUPS not set")
 }
