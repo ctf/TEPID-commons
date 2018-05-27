@@ -31,12 +31,12 @@ object PropsLDAP : PropHolder ("${basedir}config/LDAP.properties", "config/LDAP.
     val SECURITY_PRINCIPAL_PREFIX by PropsLDAP.string("SECURITY_PRINCIPAL_PREFIX", errorMessage = "SECURITY_PRINCIPAL_PREFIX not set")
 }
 
-object PropsLDAPResource : PropHolder ("${basedir}config/LDAPResource", "config/LDAPResource") {
+object PropsLDAPResource : PropHolder ("${basedir}config/LDAPResource.properties", "config/LDAPResource.properties") {
     val LDAP_RESOURCE_USER by PropsLDAPResource.string("LDAP_RESOURCE_USER", errorMessage = "LDAP_RESOURCE_USER not set")
     val LDAP_RESOURCE_CREDENTIALS by PropsLDAPResource.string("LDAP_RESOURCE_CREDENTIALS", errorMessage = "LDAP_RESOURCE_CREDENTIALS not set")
 }
 
-object PropsLDAPGroups : PropHolder ("${basedir}config/LDAPResource", "config/LDAPGroups") {
+object PropsLDAPGroups : PropHolder ("${basedir}config/LDAPGroups.properties", "config/LDAPGroups.properties") {
     val EXCHANGE_STUDENTS_GROUP_BASE by PropsLDAPGroups.string("EXCHANGE_STUDENTS_GROUP_BASE", errorMessage = "EXCHANGE_STUDENTS_GROUP_BASE not set")
     val EXCHANGE_STUDENTS_GROUP_LOCATION by PropsLDAPGroups.string("EXCHANGE_STUDENTS_GROUP_LOCATION", errorMessage = "EXCHANGE_STUDENTS_GROUP_LOCATION not set")
     val ELDERS_GROUPS by PropsLDAPGroups.string("ELDERS_GROUP", errorMessage = "ELDERS_GROUP not set")
@@ -44,7 +44,7 @@ object PropsLDAPGroups : PropHolder ("${basedir}config/LDAPResource", "config/LD
     val USERS_GROUPS by PropsLDAPGroups.string("USERS_GROUPS", errorMessage = "USERS_GROUPS not set")
 }
 
-object PropsLDAPTestUser : PropHolder ("${basedir}config/LDAPTestUser", "config/LDAPTestUser") {
+object PropsLDAPTestUser : PropHolder ("${basedir}config/LDAPTestUser.properties", "config/LDAPTestUser.properties") {
     val TEST_USER by PropsLDAPTestUser.string("TEST_USER", errorMessage = "TEST_USER not set")
     val TEST_PASSWORD by PropsLDAPTestUser.string("TEST_PASSWORD", errorMessage = "TEST_PASSWORD not set")
 }
