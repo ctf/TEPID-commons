@@ -15,6 +15,7 @@ object PropsURL : PropHolder("config/URL.properties") {
 }
 
 object PropsLDAP : PropHolder ("config/LDAP.properties") {
+    val LDAP_ENABLED by string("LDAP_ENABLED", "true", errorMessage = "LDAP_ENABLED not set")
     val LDAP_SEARCH_BASE by PropsLDAP.string("LDAP_SEARCH_BASE", errorMessage = "LDAP_SEARCH_BASE not set")
     val ACCOUNT_DOMAIN by PropsLDAP.string("ACCOUNT_DOMAIN", errorMessage = "ACCOUNT_DOMAIN not set")
     val PROVIDER_URL by PropsLDAP.string("PROVIDER_URL", errorMessage = "PROVIDER_URL not set")
