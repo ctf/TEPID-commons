@@ -57,6 +57,12 @@ object PropsTEM : PropHolder("config/TEM.properties"){
     val TEM_URL by PropsTEM.string("TEM_URL", errorMessage = "TEM_URL not set")
 }
 
+object PropsBarcode : PropHolder("config/barcode.properties"){
+    val BARCODES_URL by PropsBarcode.string("BARCODES_URL", errorMessage = "BARCODES_URL not set")
+    val BARCODES_DB_USERNAME by PropsBarcode.string("BARCODES_DB_URL", errorMessage = "BARCODES_DB_URL not set")
+    val BARCODES_DB_PASSWORD by PropsBarcode.string("BARCODES_DB_PASSWORD", errorMessage = "BARCODES_DB_PASSWORD not set")
+}
+
 object PropsScreensaver : PropHolder ("config/screensaver.properties") {
     val OFFICE_REGEX by PropsScreensaver.string("OFFICE_REGEX", errorMessage = "OFFICE_REGEX not set")
     val GRAVATAR_SEARCH_TERMS by PropsScreensaver.string("GRAVATAR_SEARCH_TERMS", errorMessage = "GRAVATAR_SEARCH_TERMS not set")
