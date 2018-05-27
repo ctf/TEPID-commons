@@ -42,10 +42,19 @@ object PropsLDAPGroups : PropHolder ("config/LDAPGroups") {
     val USERS_GROUPS by PropsLDAPGroups.string("USERS_GROUPS", errorMessage = "USERS_GROUPS not set")
 }
 
+object PropsLDAPTestUser : PropHolder ("config/LDAPTestUser") {
+    val TEST_USER by PropsLDAPTestUser.string("TEST_USER", errorMessage = "TEST_USER not set")
+    val TEST_PASSWORD by PropsLDAPTestUser.string("TEST_PASSWORD", errorMessage = "TEST_PASSWORD not set")
+}
+
 object PropsDB : PropHolder ("config/DB.properties") {
     val COUCHDB_USERNAME by PropsDB.string("COUCHDB_USERNAME", errorMessage = "COUCHDB_USERNAME not set")
     val COUCHDB_PASSWORD by PropsDB.string ("COUCHDB_PASSWORD", errorMessage = "COUCHDB_PASSWORD not set")
     val COUCHDB_URL by PropsDB.string("COUCHDB_URL", errorMessage = "COUCHDB_URL not set")
+}
+
+object PropsTEM : PropHolder("config/TEM.properties"){
+    val TEM_URL by PropsTEM.string("TEM_URL", errorMessage = "TEM_URL not set")
 }
 
 object PropsScreensaver : PropHolder ("config/screensaver.properties") {
