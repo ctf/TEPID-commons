@@ -22,6 +22,19 @@ object PropsLDAP : PropHolder ("config/LDAP.properties") {
     val SECURITY_PRINCIPAL_PREFIX by PropsLDAP.string("SECURITY_PRINCIPAL_PREFIX", errorMessage = "SECURITY_PRINCIPAL_PREFIX not set")
 }
 
+object PropsLDAPResource : PropHolder ("config/LDAPResource") {
+    val LDAP_RESOURCE_USER by PropsLDAPResource.string("LDAP_RESOURCE_USER", errorMessage = "LDAP_RESOURCE_USER not set")
+    val LDAP_RESOURCE_CREDENTIALS by PropsLDAPResource.string("LDAP_RESOURCE_CREDENTIALS", errorMessage = "LDAP_RESOURCE_CREDENTIALS not set")
+}
+
+object PropsLDAPGroups : PropHolder ("config/LDAPGroups") {
+    val EXCHANGE_STUDENTS_GROUP_BASE by PropsLDAPGroups.string("EXCHANGE_STUDENTS_GROUP_BASE", errorMessage = "EXCHANGE_STUDENTS_GROUP_BASE not set")
+    val EXCHANGE_STUDENTS_GROUP_LOCATION by PropsLDAPGroups.string("EXCHANGE_STUDENTS_GROUP_LOCATION", errorMessage = "EXCHANGE_STUDENTS_GROUP_LOCATION not set")
+    val ELDERS_GROUPS by PropsLDAPGroups.string("ELDERS_GROUP", errorMessage = "ELDERS_GROUP not set")
+    val CTFERS_GROUPS by PropsLDAPGroups.string("CTFERS_GROUPS", errorMessage = "CTFERS_GROUPS not set")
+    val USERS_GROUPS by PropsLDAPGroups.string("USERS_GROUPS", errorMessage = "USERS_GROUPS not set")
+}
+
 object PropsDB : PropHolder ("config/DB.properties") {
     val COUCHDB_USERNAME by PropsDB.string("COUCHDB_USERNAME", errorMessage = "COUCHDB_USERNAME not set")
     val COUCHDB_PASSWORD by PropsDB.string ("COUCHDB_PASSWORD", errorMessage = "COUCHDB_PASSWORD not set")
