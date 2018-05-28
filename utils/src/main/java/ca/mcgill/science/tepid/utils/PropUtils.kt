@@ -5,14 +5,14 @@ import ca.allanwang.kit.props.PropHolder
 var externalConfigLocation = ""
 var internalConfigLocation = "config/"
 
-object PropsCreationInfo : PropHolder("${externalConfigLocation}creationInformation.properties", "${internalConfigLocation}creationInformation.properties") {
+object PropsCreationInfo : PropHolder("${externalConfigLocation}creationInformation.properties", "${internalConfigLocation}creationInformation.properties", "creationInformation.properties") {
     val HASH by PropsCreationInfo.string("HASH", errorMessage = "HASH not set")
     val TAG by PropsCreationInfo.string("TAG", errorMessage = "TAG not set")
     val CREATION_TIMESTAMP by PropsCreationInfo.string("CREATION_TIMESTAMP", errorMessage = "CREATION_TIMESTAMP not set")
     val CREATION_TIME by PropsCreationInfo.string("CREATION_TIME", errorMessage = "CREATION_TIME not set")
 }
 
-object PropsURL : PropHolder("${externalConfigLocation}URL.properties", "${internalConfigLocation}URL.properties") {
+object PropsURL : PropHolder("${externalConfigLocation}URL.properties", "${internalConfigLocation}URL.properties", "creationInformation.properties") {
     val TESTING by PropsURL.string("TESTING", "true", errorMessage = "TESTING not set")
     val SERVER_URL_TESTING by PropsURL.string("SERVER_URL_TESTING", errorMessage = "SERVER_URL_TESTING not set")
     val SERVER_URL_PRODUCTION by PropsURL.string("SERVER_URL_PRODUCTION", errorMessage = "SERVER_URL_PRODUCTION not set")
@@ -20,7 +20,7 @@ object PropsURL : PropHolder("${externalConfigLocation}URL.properties", "${inter
     val WEB_URL_PRODUCTION by PropsURL.string("WEB_URL_PRODUCTION", errorMessage = "WEB_URL_PRODUCTION not set")
 }
 
-object PropsLDAP : PropHolder ("${externalConfigLocation}LDAP.properties", "${internalConfigLocation}LDAP.properties") {
+object PropsLDAP : PropHolder ("${externalConfigLocation}LDAP.properties", "${internalConfigLocation}LDAP.properties", "creationInformation.properties") {
     val LDAP_ENABLED by string("LDAP_ENABLED", "true", errorMessage = "LDAP_ENABLED not set")
     val LDAP_SEARCH_BASE by PropsLDAP.string("LDAP_SEARCH_BASE", errorMessage = "LDAP_SEARCH_BASE not set")
     val ACCOUNT_DOMAIN by PropsLDAP.string("ACCOUNT_DOMAIN", errorMessage = "ACCOUNT_DOMAIN not set")
@@ -28,12 +28,12 @@ object PropsLDAP : PropHolder ("${externalConfigLocation}LDAP.properties", "${in
     val SECURITY_PRINCIPAL_PREFIX by PropsLDAP.string("SECURITY_PRINCIPAL_PREFIX", errorMessage = "SECURITY_PRINCIPAL_PREFIX not set")
 }
 
-object PropsLDAPResource : PropHolder ("${externalConfigLocation}LDAPResource.properties", "${internalConfigLocation}LDAPResource.properties") {
+object PropsLDAPResource : PropHolder ("${externalConfigLocation}LDAPResource.properties", "${internalConfigLocation}LDAPResource.properties", "creationInformation.properties") {
     val LDAP_RESOURCE_USER by PropsLDAPResource.string("LDAP_RESOURCE_USER", errorMessage = "LDAP_RESOURCE_USER not set")
     val LDAP_RESOURCE_CREDENTIALS by PropsLDAPResource.string("LDAP_RESOURCE_CREDENTIALS", errorMessage = "LDAP_RESOURCE_CREDENTIALS not set")
 }
 
-object PropsLDAPGroups : PropHolder ("${externalConfigLocation}LDAPGroups.properties", "${internalConfigLocation}LDAPGroups.properties") {
+object PropsLDAPGroups : PropHolder ("${externalConfigLocation}LDAPGroups.properties", "${internalConfigLocation}LDAPGroups.properties", "creationInformation.properties") {
     val EXCHANGE_STUDENTS_GROUP_BASE by PropsLDAPGroups.string("EXCHANGE_STUDENTS_GROUP_BASE", errorMessage = "EXCHANGE_STUDENTS_GROUP_BASE not set")
     val EXCHANGE_STUDENTS_GROUP_LOCATION by PropsLDAPGroups.string("EXCHANGE_STUDENTS_GROUP_LOCATION", errorMessage = "EXCHANGE_STUDENTS_GROUP_LOCATION not set")
     val ELDERS_GROUPS by PropsLDAPGroups.string("ELDERS_GROUPS", errorMessage = "ELDERS_GROUPS not set")
@@ -41,28 +41,28 @@ object PropsLDAPGroups : PropHolder ("${externalConfigLocation}LDAPGroups.proper
     val USERS_GROUPS by PropsLDAPGroups.string("USERS_GROUPS", errorMessage = "USERS_GROUPS not set")
 }
 
-object PropsLDAPTestUser : PropHolder ("${externalConfigLocation}LDAPTestUser.properties", "${internalConfigLocation}LDAPTestUser.properties") {
+object PropsLDAPTestUser : PropHolder ("${externalConfigLocation}LDAPTestUser.properties", "${internalConfigLocation}LDAPTestUser.properties", "creationInformation.properties") {
     val TEST_USER by PropsLDAPTestUser.string("TEST_USER", errorMessage = "TEST_USER not set")
     val TEST_PASSWORD by PropsLDAPTestUser.string("TEST_PASSWORD", errorMessage = "TEST_PASSWORD not set")
 }
 
-object PropsDB : PropHolder ("${externalConfigLocation}DB.properties", "${internalConfigLocation}DB.properties") {
+object PropsDB : PropHolder ("${externalConfigLocation}DB.properties", "${internalConfigLocation}DB.properties", "creationInformation.properties") {
     val COUCHDB_USERNAME by PropsDB.string("COUCHDB_USERNAME", errorMessage = "COUCHDB_USERNAME not set")
     val COUCHDB_PASSWORD by PropsDB.string ("COUCHDB_PASSWORD", errorMessage = "COUCHDB_PASSWORD not set")
     val COUCHDB_URL by PropsDB.string("COUCHDB_URL", errorMessage = "COUCHDB_URL not set")
 }
 
-object PropsTEM : PropHolder("${externalConfigLocation}TEM.properties", "${internalConfigLocation}TEM.properties"){
+object PropsTEM : PropHolder("${externalConfigLocation}TEM.properties", "${internalConfigLocation}TEM.properties", "creationInformation.properties"){
     val TEM_URL by PropsTEM.string("TEM_URL", errorMessage = "TEM_URL not set")
 }
 
-object PropsBarcode : PropHolder("${externalConfigLocation}barcode.properties", "${internalConfigLocation}barcode.properties"){
+object PropsBarcode : PropHolder("${externalConfigLocation}barcode.properties", "${internalConfigLocation}barcode.properties", "creationInformation.properties"){
     val BARCODES_URL by PropsBarcode.string("BARCODES_URL", errorMessage = "BARCODES_URL not set")
     val BARCODES_DB_USERNAME by PropsBarcode.string("BARCODES_DB_URL", errorMessage = "BARCODES_DB_URL not set")
     val BARCODES_DB_PASSWORD by PropsBarcode.string("BARCODES_DB_PASSWORD", errorMessage = "BARCODES_DB_PASSWORD not set")
 }
 
-object PropsScreensaver : PropHolder ("${externalConfigLocation}screensaver.properties", "${internalConfigLocation}screensaver.properties") {
+object PropsScreensaver : PropHolder ("${externalConfigLocation}screensaver.properties", "${internalConfigLocation}screensaver.properties", "creationInformation.properties") {
     val OFFICE_REGEX by PropsScreensaver.string("OFFICE_REGEX", errorMessage = "OFFICE_REGEX not set")
     val GRAVATAR_SEARCH_TERMS by PropsScreensaver.string("GRAVATAR_SEARCH_TERMS", errorMessage = "GRAVATAR_SEARCH_TERMS not set")
     val REPORT_MALFUNCTIONING_COMPUTER_TEXT by PropsScreensaver.string("REPORT_MALFUNCTIONING_COMPUTER_TEXT", errorMessage = "REPORT_MALFUNCTIONING_COMPUTER_TEXT not set")
