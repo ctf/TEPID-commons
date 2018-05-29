@@ -51,3 +51,13 @@ Configurations are defined in the common config files. The configs use the TEPID
     - As an environment variable "tepid_config_dir"
 A lookup for the environment variable only occurs if the project property is not defined in one of the other two ways.
 
+The configs are explained as follows:
+- [DB](#db.properties)
+- [LDAP](#LDAP.properties)
+- [LDAP Groups](#LDAPGroups.properties)
+- [LDAP Resource Account](#LDAPResource.properties)
+- [LDAP Test Account](#LDAPTest.properties)
+- [Screensaver](#screensaver.properties)
+- [TEPID Endpoint Manager](#TEM.properties)
+- [URLs](#URL.properties)
+
