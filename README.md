@@ -61,6 +61,8 @@ The configs are explained as follows:
 - [TEPID Endpoint Manager](#TEM.properties)
 - [URLs](#URL.properties)
 
+## barcode.properties
+An option to have a barcode reader as a way for users to identify themselves to office support staff, so that they don't have to spell out their names. Currently nonfunctional.
 
 ## DB.properties
 - COUCHDB_USERNAME : the username for the database user
