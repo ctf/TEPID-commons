@@ -52,6 +52,7 @@ Configurations are defined in the common config files. The configs use the TEPID
 A lookup for the environment variable only occurs if the project property is not defined in one of the other two ways.
 
 The configs are explained as follows:
+- [About](#about.properties)
 - [DB](#db.properties)
 - [LDAP](#LDAP.properties)
 - [LDAP Groups](#LDAPGroups.properties)
@@ -60,6 +61,9 @@ The configs are explained as follows:
 - [Screensaver](#screensaver.properties)
 - [TEPID Endpoint Manager](#TEM.properties)
 - [URLs](#URL.properties)
+
+## about.properties
+Common properties specifying information about the organisation. Notably includes links to Terms of Service.
 
 ## barcode.properties
 An option to have a barcode reader as a way for users to identify themselves to office support staff, so that they don't have to spell out their names. Currently nonfunctional.

@@ -2,8 +2,24 @@ package ca.mcgill.science.tepid.utils
 
 import ca.allanwang.kit.props.PropHolder
 
+/**
+ * Configurations for any TEPID project. This way, sharing config interfaces is the default action.
+ * Configs first look in the external directory (think /etc/application), then in a customised internal directory (internal to the path of the WAR or JAR, useful also to point to an exploded WAR from the root of the Tomcat process), then in a default fallback location of config inside the root of the WAR.
+ *
+ * I wanted to pull all of these back into a list or a mutableList or a function which returned a list of paths for the file in all desired locations, but I kept getting utter failures to launch the program (no errors, just sadness). Maybe someone smarter than I could fix this. lilatomic, 2018-05-28
+ *
+ * ===ADDING A NEW CONFIG===
+ * When you add a new config here. make sure to document it in the README as well!
+* */
+
 var internalConfigLocation = ""
 var externalConfigLocation = ""
+
+object PropsAbout : PropHolder("${externalConfigLocation}creationInformation.properties", "${internalConfigLocation}config/creationInformation.properties", "config/creationInformation.properties") {
+    val LINK_MAIN by PropsAbout.string("LINK_MAIN", errorMessage = "LINK_MAIN not set")
+    val LINK_TOS by PropsAbout.string("LINK_TOS", errorMessage = "LINK_TOS not set")
+    val ORG_NAME by PropsAbout.string("ORG_NAME", errorMessage = "ORG_NAME not set")
+}
 
 object PropsCreationInfo : PropHolder("${externalConfigLocation}creationInformation.properties", "${internalConfigLocation}config/creationInformation.properties", "config/creationInformation.properties") {
     val HASH by PropsCreationInfo.string("HASH", errorMessage = "HASH not set")
