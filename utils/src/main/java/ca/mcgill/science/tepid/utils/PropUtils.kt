@@ -35,7 +35,7 @@ object PropsLDAPResource : PropHolder ("${externalConfigLocation}LDAPResource.pr
 
 object PropsLDAPGroups : PropHolder ("${externalConfigLocation}LDAPGroups.properties", "${internalConfigLocation}LDAPGroups.properties", "config/LDAPGroups.properties") {
     val EXCHANGE_STUDENTS_GROUP_BASE by PropsLDAPGroups.string("EXCHANGE_STUDENTS_GROUP_BASE", errorMessage = "EXCHANGE_STUDENTS_GROUP_BASE not set")
-    val EXCHANGE_STUDENTS_GROUP_LOCATION by PropsLDAPGroups.string("EXCHANGE_STUDENTS_GROUP_LOCATION", errorMessage = "EXCHANGE_STUDENTS_GROUP_LOCATION not set")
+    val GROUPS_LOCATION by PropsLDAPGroups.string("GROUPS_LOCATION", errorMessage = "GROUPS_LOCATION not set")
     val ELDERS_GROUPS by PropsLDAPGroups.string("ELDERS_GROUPS", errorMessage = "ELDERS_GROUPS not set")
     val CTFERS_GROUPS by PropsLDAPGroups.string("CTFERS_GROUPS", errorMessage = "CTFERS_GROUPS not set")
     val USERS_GROUPS by PropsLDAPGroups.string("USERS_GROUPS", errorMessage = "USERS_GROUPS not set")
