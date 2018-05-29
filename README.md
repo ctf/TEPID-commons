@@ -61,3 +61,18 @@ The configs are explained as follows:
 - [TEPID Endpoint Manager](#TEM.properties)
 - [URLs](#URL.properties)
 
+## screensaver.properties
+Properties used to configure the screensaver
+- OFFICE_REGEX : regex string to match office computers, which will have office relevant options like an avatar and internal announcements
+- GRAVATAR_SEARCH_TERMS : search terms to help narrow down the results for the avatar picture in case a gravatar is not found, such as your organisation name
+- GOOGLE_CUSTOM_SEARCH_KEY : the custom part of the url containing your key and the cx
+- ICS_CALENDAR_ADDRESS : address of ics to pull events from
+- REPORT_MALFUNCTIONING_COMPUTER_TEXT : completes the sentence to "Report this malfunctioning computer to", displayed when a computer cannot contact the network
+- BACKGROUND_PICTURE_LOCATION : location for the background picture
+- ANNOUNCEMENT_SLIDE_LOCATION : directory containing the announcement slides
+
+## URL.properties
+- Testing : (boolean) chooses between the testing and production URL
+Both of these options have testing and production
+- Server URL : the URL for the application root of the server with all the rest endpoints
+- Web URL : the URL for the web server, typically the same but without the slug targetting the tomcat webapp
