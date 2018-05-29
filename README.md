@@ -61,6 +61,39 @@ The configs are explained as follows:
 - [TEPID Endpoint Manager](#TEM.properties)
 - [URLs](#URL.properties)
 
+
+## DB.properties
+- COUCHDB_USERNAME : the username for the database user
+- COUCHDB_PASSWORD : the password for the database user
+- COUCHDB_URL : the url of the couchdb database, like http://testpid.example.com:5984/tepid-clone
+
+## LDAP.properties
+General properties relating to the LDAP domain itself
+- LDAP_ENABLED : currently only TRUE is supported, but it's nice to dream
+- LDAP_SEARCH_BASE : the "dc=..." part of the locator
+- ACCOUNT_DOMAIN : the "@example.com" part of your domain accounts
+- PROVIDER_URL : the origin of the LDAP server (ldap://us.example.com:389)
+- SECURITY_PRINCIPAL_PREFIX : the domain identifier thing before your domain account's actual name, like "DOMAIN\" in "DOMAIN\jdoe123"
+
+## LDAPGroups.properties
+The permissions levels are explained further in the server component. Briefly : Elders are admins; CTFers are worker bees (1st tier support, lab managers) who need to refund people or mark printers as down (for example); Users are users, who are able to print; Exchange Students are also users, but limited to printing for a certain time period. Note that multiple groups can be specified by separating the groups with any of the illegal LDAP characters ( ,+"\<>;= )
+- GROUPS_LOCATION : the location of the LDAP groups
+- EXCHANGE_STUDENTS_GROUP_BASE : the base name of group for LDAP access for exchange students. Do be sure to create the groups as time moves on.
+- ELDERS_GROUP : LDAP groups for Elders
+- CTFERS_GROUPS : LDAP groups for CTFers
+- USERS_GROUPS : LDAP groups for Users
+
+
+## LDAPResource.properties
+TEPID uses a resource account to do critical stuff as well as fun stuff like username search.
+- LDAP_RESOURCE_USER : the username of the LDAP resource account
+- LDAP_RESOURCE_CREDENTIALS : the password of the LDAP resource account
+
+## LDAPTest.properties
+Information for testing LDAP functionality.
+TEST_USER : the username of the user to be used for testing
+TEST_PASSWORD : the password for the user to be used for testing
+
 ## screensaver.properties
 Properties used to configure the screensaver
 - OFFICE_REGEX : regex string to match office computers, which will have office relevant options like an avatar and internal announcements
@@ -70,6 +103,10 @@ Properties used to configure the screensaver
 - REPORT_MALFUNCTIONING_COMPUTER_TEXT : completes the sentence to "Report this malfunctioning computer to", displayed when a computer cannot contact the network
 - BACKGROUND_PICTURE_LOCATION : location for the background picture
 - ANNOUNCEMENT_SLIDE_LOCATION : directory containing the announcement slides
+
+## TEM.properties
+Properties for the TEPID Endpoint Manager, which is currently a work in progress
+- TEM_URL : the URL for the TEM server
 
 ## URL.properties
 - Testing : (boolean) chooses between the testing and production URL
