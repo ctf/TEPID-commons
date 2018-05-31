@@ -1,11 +1,11 @@
 package ca.mcgill.science.tepid
 
 class Versions {
-    static def tepidCommons = '1.1.0'
+    static def tepidCommons = '1.2.0'
 
     static def kotlin = '1.2.41'
 
-    static def kit = '1731de0'
+    static def kit = '9bee08d'
 
     static def apache = '2.10.0'
     static def jackson = '2.9.4'
