@@ -5,6 +5,7 @@ dependencies {
     compile "ca.allanwang.kit:logger:${tepid.kit}"
     compile project(':models')
     compile project(':retrofit')
+    compile project(':utils')
     compile tepidDependency.junit
     compile tepidDependency.kotlinTest
 }
