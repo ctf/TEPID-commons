@@ -21,11 +21,3 @@ fun tepidUrl(url: String?) = when (url?.toLowerCase()) {
     null, "", "testpid" -> TEPID_URL_TEST
     else -> url
 }
-
-internal val elderGroups = arrayOf("***REMOVED***")
-internal val userGroups: Array<String>
-    get() {
-        val cal = Calendar.getInstance()
-        return arrayOf("***REMOVED***", "***REMOVED***" + cal.get(Calendar.YEAR) + if (cal.get(Calendar.MONTH) < 8) "W" else "F")
-    }
-internal val ctferGroups = arrayOf("***REMOVED***", "***REMOVED***")
