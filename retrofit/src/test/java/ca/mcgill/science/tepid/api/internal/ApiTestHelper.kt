@@ -2,6 +2,8 @@ package ca.mcgill.science.tepid.api.internal
 
 import ca.mcgill.science.tepid.models.data.User
 import ca.mcgill.science.tepid.test.assertComponentsEqual
+import ca.mcgill.science.tepid.utils.PropsLDAPTestUser
+import ca.mcgill.science.tepid.utils.PropsLDAPTestUser.TEST_USER
 import retrofit2.Call
 import kotlin.test.fail
 
@@ -21,8 +23,7 @@ internal fun <T> Call<T>.executeExpectingError(expectedCode: Int, message: Strin
     }
 }
 
-const val TEST_USER_SHORT = "***REMOVED***"
-const val TEST_USER_ID = ***REMOVED***
+val TEST_USER_SHORT = TEST_USER
 
 internal fun User.assertTestUser() = assertComponentsEqual {
     listOf(
@@ -32,7 +33,6 @@ internal fun User.assertTestUser() = assertComponentsEqual {
             email to "test.EM@example.com",
             faculty to "testFactulty",
             realName to "testRealName",
-            shortUser to TEST_USER_SHORT,
-            studentId to TEST_USER_ID
+            shortUser to TEST_USER_SHORT
     )
 }
