@@ -26,12 +26,12 @@ const val TEST_USER_ID = ***REMOVED***
 
 internal fun User.assertTestUser() = assertComponentsEqual {
     listOf(
-            givenName to "Allan",
-            lastName to "Wang",
-            longUser to "***REMOVED***",
-            email to "***REMOVED***",
-            faculty to "***REMOVED***",
-            realName to "Allan Wang",
+            givenName to "testGN",
+            lastName to "testLN",
+            longUser to "test.LU@example.com",
+            email to "test.EM@example.com",
+            faculty to "testFactulty",
+            realName to "testRealName",
             shortUser to TEST_USER_SHORT,
             studentId to TEST_USER_ID
     )
