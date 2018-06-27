@@ -57,6 +57,7 @@ fun <T : TepidDb> T.withDbData(main: TepidDb): T {
 class TepidDbDelegate : TepidDb, TepidId by TepidIdDelegate() {
     override var _rev: String? = null
     override var type: String? = null
+    override var _schema: String? = null
 }
 
 interface TepidId : TepidJackson {
