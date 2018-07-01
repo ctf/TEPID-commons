@@ -27,7 +27,7 @@ interface TepidJackson
 interface TepidDb : TepidId {
     var _rev: String?
     var type: String?
-    var _schema: String?
+    var schema: String?
 
     /*
      * Helper function to retrieve a nonnull rev
@@ -40,7 +40,7 @@ interface TepidDb : TepidId {
      * Defaults to 0-0-0
      */
     @JsonIgnore
-    fun getSchema() = _schema ?: "0-0-0"
+    fun getSchema() = schema ?: "00-00-00"
 }
 
 /**
@@ -50,7 +50,7 @@ fun <T : TepidDb> T.withDbData(main: TepidDb): T {
     withIdData(main)
     _rev = main._rev
     type = main.type
-    _schema = main._schema
+    schema = main.schema
     return this
 }
 
