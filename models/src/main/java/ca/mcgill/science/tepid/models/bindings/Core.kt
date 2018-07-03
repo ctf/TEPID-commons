@@ -35,12 +35,6 @@ interface TepidDb : TepidId {
      */
     @JsonIgnore
     fun getRev() = _rev ?: ""
-    /*
-     * Helper function to retrieve default schema version
-     * Defaults to 0-0-0
-     */
-    @JsonIgnore
-    fun getSchema() = schema ?: "00-00-00"
 }
 
 /**
