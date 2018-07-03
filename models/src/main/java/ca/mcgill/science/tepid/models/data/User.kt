@@ -103,28 +103,6 @@ data class FullUser(
     fun getSemesters(): Set<Semester> =
             courses.map(Course::semester).toSet()
 
-    /**
-     * Returns either an empty role, or one of
-     * [USER], [CTFER], or [ELDER]
-     *
-     * Note that this differs from the full user role,
-     * which may include being a local admin
-     */
-    @JsonIgnore
-    fun getCtfRole(): String {
-        if (groups.isEmpty())
-            return ""
-        if (authType == null || authType != LOCAL) {
-            val g = groups.toSet()
-            if (elderGroups.any(g::contains)) return ELDER
-            if (ctferGroups.any(g::contains)) return CTFER
-            if (userGroups.any(g::contains)) return USER
-            return ""
-        } else {
-            return if (role == ADMIN) ELDER else USER
-        }
-    }
-
     fun toUser(): User = User(
             displayName = displayName,
             givenName = givenName,
@@ -137,7 +115,7 @@ data class FullUser(
             nick = nick,
             salutation = salutation,
             authType = authType,
-            role = getCtfRole(),
+            role = role,
             preferredName = preferredName,
             activeSince = activeSince,
             studentId = studentId,

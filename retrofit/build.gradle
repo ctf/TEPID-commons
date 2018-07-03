@@ -1,5 +1,6 @@
 dependencies {
     compile project(':models')
+    compile project(':utils')
     compile "com.squareup.retrofit2:retrofit:${tepid.retrofit}"
     compile "com.squareup.retrofit2:converter-moshi:${tepid.retrofit}"
     compile "com.squareup.moshi:moshi:${tepid.moshi}"

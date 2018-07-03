@@ -1,6 +1,6 @@
 package ca.mcgill.science.tepid.api
 
-import ca.mcgill.science.tepid.models.bindings.TEPID_URL_PRODUCTION
+import ca.mcgill.science.tepid.utils.PropsURL
 import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
@@ -18,7 +18,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  * val API: ITepid by  lazy { TepidApi(...).create() }
  */
 class TepidApi(private val url: String,
-               private val debug: Boolean = url != TEPID_URL_PRODUCTION,
+               private val debug: Boolean = PropsURL.TESTING.toBoolean(),
                private val cacheMaxAge: Int = 5,
                private val cacheMaxStale: Int = 5) {
 

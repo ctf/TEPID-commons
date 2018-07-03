@@ -27,6 +27,7 @@ interface TepidJackson
 interface TepidDb : TepidId {
     var _rev: String?
     var type: String?
+    var schema: String?
 
     /*
      * Helper function to retrieve a nonnull rev
@@ -43,12 +44,14 @@ fun <T : TepidDb> T.withDbData(main: TepidDb): T {
     withIdData(main)
     _rev = main._rev
     type = main.type
+    schema = main.schema
     return this
 }
 
 class TepidDbDelegate : TepidDb, TepidId by TepidIdDelegate() {
     override var _rev: String? = null
     override var type: String? = null
+    override var schema: String? = null
 }
 
 interface TepidId : TepidJackson {

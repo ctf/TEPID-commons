@@ -42,8 +42,8 @@ You may copy over `priv.sample.properties` to `priv.properties` and paste your t
 
 As all tests requiring private arguments pull form that properties file,
 we've allocated some common global variables in our `test` module.
-
-# Configs
+#Utils
+## Configs
 The configs defined in here are for the main TEPID server and the TEPID projects.
 Configurations are defined in the common config files. The configs use the TEPID standard configuration system. This allows them to be defined once, outside of the project's file tree, and used across all TEPID programs. The Gradle task copyConfigs will copy the configs from the project property "tepid_config_dir", which can be set in a number of ways:
     - As a standard project property
@@ -62,18 +62,18 @@ The configs are explained as follows:
 - [TEPID Endpoint Manager](#TEM.properties)
 - [URLs](#URL.properties)
 
-## about.properties
+### about.properties
 Common properties specifying information about the organisation. Notably includes links to Terms of Service.
 
-## barcode.properties
+### barcode.properties
 An option to have a barcode reader as a way for users to identify themselves to office support staff, so that they don't have to spell out their names. Currently nonfunctional.
 
-## DB.properties
+### DB.properties
 - COUCHDB_USERNAME : the username for the database user
 - COUCHDB_PASSWORD : the password for the database user
 - COUCHDB_URL : the url of the couchdb database, like http://testpid.example.com:5984/tepid-clone
 
-## LDAP.properties
+### LDAP.properties
 General properties relating to the LDAP domain itself
 - LDAP_ENABLED : currently only TRUE is supported, but it's nice to dream
 - LDAP_SEARCH_BASE : the "dc=..." part of the locator
@@ -81,7 +81,7 @@ General properties relating to the LDAP domain itself
 - PROVIDER_URL : the origin of the LDAP server (ldap://us.example.com:389)
 - SECURITY_PRINCIPAL_PREFIX : the domain identifier thing before your domain account's actual name, like "DOMAIN\" in "DOMAIN\jdoe123"
 
-## LDAPGroups.properties
+### LDAPGroups.properties
 The permissions levels are explained further in the server component. Briefly : Elders are admins; CTFers are worker bees (1st tier support, lab managers) who need to refund people or mark printers as down (for example); Users are users, who are able to print; Exchange Students are also users, but limited to printing for a certain time period. Note that multiple groups can be specified by separating the groups with any of the illegal LDAP characters ( ,+"\<>;= )
 - GROUPS_LOCATION : the location of the LDAP groups
 - EXCHANGE_STUDENTS_GROUP_BASE : the base name of group for LDAP access for exchange students. Do be sure to create the groups as time moves on.
@@ -90,17 +90,17 @@ The permissions levels are explained further in the server component. Briefly : 
 - USERS_GROUPS : LDAP groups for Users
 
 
-## LDAPResource.properties
+### LDAPResource.properties
 TEPID uses a resource account to do critical stuff as well as fun stuff like username search.
 - LDAP_RESOURCE_USER : the username of the LDAP resource account
 - LDAP_RESOURCE_CREDENTIALS : the password of the LDAP resource account
 
-## LDAPTest.properties
+### LDAPTest.properties
 Information for testing LDAP functionality.
 TEST_USER : the username of the user to be used for testing
 TEST_PASSWORD : the password for the user to be used for testing
 
-## screensaver.properties
+### screensaver.properties
 Properties used to configure the screensaver
 - OFFICE_REGEX : regex string to match office computers, which will have office relevant options like an avatar and internal announcements
 - GRAVATAR_SEARCH_TERMS : search terms to help narrow down the results for the avatar picture in case a gravatar is not found, such as your organisation name
@@ -110,11 +110,11 @@ Properties used to configure the screensaver
 - BACKGROUND_PICTURE_LOCATION : location for the background picture
 - ANNOUNCEMENT_SLIDE_LOCATION : directory containing the announcement slides
 
-## TEM.properties
+### TEM.properties
 Properties for the TEPID Endpoint Manager, which is currently a work in progress
 - TEM_URL : the URL for the TEM server
 
-## URL.properties
+### URL.properties
 - Testing : (boolean) chooses between the testing and production URL
 Both of these options have testing and production
 - Server URL : the URL for the application root of the server with all the rest endpoints

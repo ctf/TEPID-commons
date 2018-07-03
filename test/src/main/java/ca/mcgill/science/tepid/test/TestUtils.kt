@@ -6,10 +6,9 @@ import ca.allanwang.kit.props.PropHolder
 import ca.mcgill.science.tepid.api.ITepid
 import ca.mcgill.science.tepid.api.TepidApi
 import ca.mcgill.science.tepid.api.executeDirect
-import ca.mcgill.science.tepid.models.bindings.TEPID_URL_PRODUCTION
-import ca.mcgill.science.tepid.models.bindings.tepidUrl
 import ca.mcgill.science.tepid.models.data.Session
 import ca.mcgill.science.tepid.models.data.SessionRequest
+import ca.mcgill.science.tepid.utils.PropsURL
 
 object TestUtils : TestUtilsDelegate()
 
@@ -44,12 +43,12 @@ open class TestUtilsDelegate(
     override val testToken: String by string("TEST_TOKEN")
 
     override val testUrl: String by lazy {
-        val url = tepidUrl(get("TEST_URL"))
+        val url = get("TEST_URL") ?: "localhost:8080"
         log.info("Using test url $url")
         url
     }
 
-    override val isNotProduction: Boolean by lazy { testUrl != TEPID_URL_PRODUCTION }
+    override val isNotProduction: Boolean by lazy { PropsURL.TESTING.toBoolean() }
 
     override val hasTestUser: Boolean by lazy {
         testUser.isNotBlank() && (testPassword.isNotBlank() || testToken.isNotBlank())

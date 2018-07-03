@@ -8,7 +8,7 @@ class JobTest {
 
     @Test
     fun getJobList() {
-        TestUtils.testApi.getUserPrintJobs("***REMOVED***").get()
+        TestUtils.testApi.getUserPrintJobs("testSU").get()
     }
 
 }
