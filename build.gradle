@@ -55,6 +55,7 @@ subprojects {
 
         testCompile tepidDependency.junit
         testCompile tepidDependency.kotlinTest
+        testCompile "io.mockk:mockk:1.8"
     }
 
 }
