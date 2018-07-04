@@ -23,8 +23,12 @@ interface PropLoader {
 
 }
 
-class FilePropLoader(val filePath:String) : PropLoader, WithLogging(){
+class FilePropLoader(val filePath: String) : PropLoader, WithLogging(){
     val props = Properties()
+    init {
+        this.loadProps()
+    }
+
 
     override fun loadProps(): Boolean {
         val file = File(filePath)
@@ -45,6 +49,9 @@ class FilePropLoader(val filePath:String) : PropLoader, WithLogging(){
 
 class JarPropLoader(val fileName:String) : PropLoader, WithLogging(){
     val props = Properties()
+    init {
+        this.loadProps()
+    }
 
     override fun loadProps(): Boolean {
         val file = this.javaClass.getResourceAsStream(fileName)

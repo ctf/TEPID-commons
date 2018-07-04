@@ -10,6 +10,6 @@ class PropHolder(val propLoaders: List<PropLoader>) : WithLogging(){
     }
 
     fun getNonNull(key:String):String {
-        return get(key) ?: throw NoSuchElementException("Could not load property $key")
+        return this.get(key) ?: throw NoSuchElementException("Could not load property $key")
     }
 }

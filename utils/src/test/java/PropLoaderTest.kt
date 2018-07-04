@@ -1,14 +1,7 @@
 import ca.mcgill.science.tepid.utils.FilePropLoader
 import ca.mcgill.science.tepid.utils.JarPropLoader
-import io.mockk.*
-import org.junit.After
-import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.fail
 
 /**
  * only seems to work when launched from the gradle task
