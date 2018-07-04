@@ -1,3 +1,4 @@
+import ca.mcgill.science.tepid.utils.FilePropLoader
 import io.mockk.*
 import org.junit.After
 import org.junit.Before
@@ -8,26 +9,39 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.fail
 
+/**
+ * only seems to work when launched from the gradle task
+ */
 class FilePropLoaderTest {
 
     @Test
     fun testLoadFileNotExist(){
-        fail("NI")
+        val h = FilePropLoader("does/not/exist/")
+        val actual = h.loadProps()
+        assertEquals(false, actual, "Does not return false if file does not exist")
     }
 
     @Test
     fun testLoadFileExists(){
-        fail("NI")
+        val h = FilePropLoader("src/test/resources/FilePropLoaderTest.properties")
+        val actual = h.loadProps()
+        assertEquals(true, actual, "Does not return true if file does exist;\nCurrently only works when run from gradle, tho, so check that")
     }
 
     @Test
     fun testGetPropertyNotExists(){
-        fail("NI")
+        val h = FilePropLoader("src/test/resources/FilePropLoaderTest.properties")
+        h.loadProps()
+        val actual = h.get("nonExistentProperty")
+        assertEquals(null, actual, "Does not return null if property does not exist;\nCurrently only works when run from gradle, tho, so check that")
     }
 
     @Test
     fun testGetPropertyExists(){
-        fail("NI")
+        val h = FilePropLoader("src/test/resources/FilePropLoaderTest.properties")
+        h.loadProps()
+        val actual = h.get("property2")
+        assertEquals("Test2", actual, "Does not return property if property does not exist;\nCurrently only works when run from gradle, tho, so check that")
     }
 }
 
