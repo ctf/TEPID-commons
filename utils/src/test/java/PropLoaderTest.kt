@@ -1,4 +1,5 @@
 import ca.mcgill.science.tepid.utils.FilePropLoader
+import ca.mcgill.science.tepid.utils.JarPropLoader
 import io.mockk.*
 import org.junit.After
 import org.junit.Before
@@ -49,21 +50,32 @@ class JarPropLoaderTest {
 
     @Test
     fun testLoadFileNotExist(){
-        fail("NI")
+        val h = JarPropLoader("does/not/exist/")
+        val actual = h.loadProps()
+        assertEquals(false, actual, "Does not return false if file does not exist")
     }
 
     @Test
     fun testLoadFileExists(){
-        fail("NI")
+        val h = JarPropLoader("FilePropLoaderTest.properties")
+        val actual = h.loadProps()
+        assertEquals(true, actual, "Does not return true if file does exist")
     }
 
     @Test
     fun testGetPropertyNotExists(){
-        fail("NI")
+        val h = JarPropLoader("FilePropLoaderTest.properties")
+        h.loadProps()
+        val actual = h.get("nonExistentProperty")
+        assertEquals(null, actual, "Does not return null if property does not exist")
+
     }
 
     @Test
     fun testGetPropertyExists(){
-        fail("NI")
+        val h = JarPropLoader("FilePropLoaderTest.properties")
+        h.loadProps()
+        val actual = h.get("property2")
+        assertEquals("Test2", actual, "Does not return property if property does not exist")
     }
 }
