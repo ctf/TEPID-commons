@@ -57,14 +57,14 @@ class JarPropLoaderTest {
 
     @Test
     fun testLoadFileExists(){
-        val h = JarPropLoader("FilePropLoaderTest.properties")
+        val h = JarPropLoader("/FilePropLoaderTest.properties")
         val actual = h.loadProps()
         assertEquals(true, actual, "Does not return true if file does exist")
     }
 
     @Test
     fun testGetPropertyNotExists(){
-        val h = JarPropLoader("FilePropLoaderTest.properties")
+        val h = JarPropLoader("/FilePropLoaderTest.properties")
         h.loadProps()
         val actual = h.get("nonExistentProperty")
         assertEquals(null, actual, "Does not return null if property does not exist")
@@ -73,7 +73,7 @@ class JarPropLoaderTest {
 
     @Test
     fun testGetPropertyExists(){
-        val h = JarPropLoader("FilePropLoaderTest.properties")
+        val h = JarPropLoader("/FilePropLoaderTest.properties")
         h.loadProps()
         val actual = h.get("property2")
         assertEquals("Test2", actual, "Does not return property if property does not exist")
