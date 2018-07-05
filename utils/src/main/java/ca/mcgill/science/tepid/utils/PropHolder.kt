@@ -1,6 +1,6 @@
 package ca.mcgill.science.tepid.utils
 
-class PropHolder(propLoaders:List<PropLoader>) : WithLogging(){
+open class PropHolder(propLoaders:List<PropLoader>) : WithLogging(){
     val propLoaders: List<PropLoader> by lazy {propLoaders}
     fun get(key:String):Lazy<String?> {
         for (loader in propLoaders){
