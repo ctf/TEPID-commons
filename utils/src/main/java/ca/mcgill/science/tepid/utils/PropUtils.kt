@@ -15,10 +15,6 @@ import ca.allanwang.kit.props.PropHolder
 var internalConfigLocation = ""
 var externalConfigLocation = ""
 
-object PropsAbout : PropHolder("${externalConfigLocation}creationInformation.properties", "${internalConfigLocation}config/creationInformation.properties", "config/creationInformation.properties") {
-    val LINK_MAIN by PropsAbout.string("LINK_MAIN", errorMessage = "LINK_MAIN not set")
-    val LINK_TOS by PropsAbout.string("LINK_TOS", errorMessage = "LINK_TOS not set")
-    val ORG_NAME by PropsAbout.string("ORG_NAME", errorMessage = "ORG_NAME not set")
 object DefaultProps{
     var withName: (String) -> List<PropLoader> =  {fileName -> listOf(
             FilePropLoader(fileName),
@@ -26,6 +22,10 @@ object DefaultProps{
     )}
 }
 
+object PropsAbout : ca.mcgill.science.tepid.utils.PropHolder(DefaultProps.withName("creationInformation.properties")) {
+    val LINK_MAIN by PropsAbout.get("LINK_MAIN")
+    val LINK_TOS by PropsAbout.get("LINK_TOS")
+    val ORG_NAME by PropsAbout.get("ORG_NAME")
 }
 
 object PropsCreationInfo : PropHolder("${externalConfigLocation}creationInformation.properties", "${internalConfigLocation}config/creationInformation.properties", "config/creationInformation.properties") {
