@@ -1,6 +1,4 @@
-import ca.mcgill.science.tepid.utils.FilePropLoader
-import ca.mcgill.science.tepid.utils.JarPropLoader
-import ca.mcgill.science.tepid.utils.PropHolder
+import ca.mcgill.science.tepid.utils.*
 import org.junit.Test
 import org.junit.Ignore
 import kotlin.test.assertEquals
@@ -9,15 +7,14 @@ import kotlin.test.fail
 class PropertiesTest{
     @Test
     fun testLoadPropsDefault(){
-        fail("NI")
+        assertEquals("v1", PropsAbout.LINK_MAIN)
     }
 
     @Test
     fun testLoadPropsNonDefault(){
-        fail("NI")
+        DefaultProps.withName = {fileName -> listOf(
+                JarPropLoader("/Other$fileName")
+        )}
+        assertEquals("v1other", PropsAbout.LINK_MAIN)
     }
-
-    @Test
-    fun test
-
 }
