@@ -19,6 +19,13 @@ object PropsAbout : PropHolder("${externalConfigLocation}creationInformation.pro
     val LINK_MAIN by PropsAbout.string("LINK_MAIN", errorMessage = "LINK_MAIN not set")
     val LINK_TOS by PropsAbout.string("LINK_TOS", errorMessage = "LINK_TOS not set")
     val ORG_NAME by PropsAbout.string("ORG_NAME", errorMessage = "ORG_NAME not set")
+object DefaultProps{
+    var withName: (String) -> List<PropLoader> =  {fileName -> listOf(
+            FilePropLoader(fileName),
+            JarPropLoader("/$fileName")
+    )}
+}
+
 }
 
 object PropsCreationInfo : PropHolder("${externalConfigLocation}creationInformation.properties", "${internalConfigLocation}config/creationInformation.properties", "config/creationInformation.properties") {
