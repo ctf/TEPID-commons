@@ -4,16 +4,11 @@ package ca.mcgill.science.tepid.utils
 
 /**
  * Configurations for any TEPID project. This way, sharing config interfaces is the default action.
- * Configs first look in the external directory (think /etc/application), then in a customised internal directory (internal to the path of the WAR or JAR, useful also to point to an exploded WAR from the root of the Tomcat process), then in a default fallback location of config inside the root of the WAR.
- *
- * I wanted to pull all of these back into a list or a mutableList or a function which returned a list of paths for the file in all desired locations, but I kept getting utter failures to launch the program (no errors, just sadness). Maybe someone smarter than I could fix this. lilatomic, 2018-05-28
- *
+ * The configs are loaded triply lazily: The config objects will only be built on first use; the PropLoaders are stored in a lazy property; and the individual properties are lazy themselves.
+ * The DefaultProps generator can be changed before any initialisation happens
  * ===ADDING A NEW CONFIG===
  * When you add a new config here. make sure to document it in the README as well!
 * */
-
-var internalConfigLocation = ""
-var externalConfigLocation = ""
 
 object DefaultProps{
     var withName: (String) -> List<PropLoader> =  {fileName -> listOf(
