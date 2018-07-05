@@ -15,31 +15,31 @@ class PropHolderTest{
     @Test
     fun testLoadsSingleFile(){
         val singleHolder = PropHolder(listOf(fileLoader))
-        val actual = singleHolder.get("property2")
+        val actual = singleHolder.get("property2").value
         assertEquals("Test2", actual)
     }
 
     @Test
     fun testFoundFirstAndSecond(){
-        val actual = propHolder.get("property1")
+        val actual = propHolder.get("property1").value
         assertEquals("Test1", actual)
     }
 
     @Test
     fun testFoundFirstNotInSecond(){
-        val actual = propHolder.get("property2")
+        val actual = propHolder.get("property2").value
         assertEquals("Test2", actual)
     }
 
     @Test
     fun testMissedFirstInSecond(){
-        val actual = propHolder.get("property3")
+        val actual = propHolder.get("property3").value
         assertEquals("Test3", actual)
     }
 
     @Test
     fun testMissedInAll(){
-        val actual = propHolder.get("doesNotExist")
+        val actual = propHolder.get("doesNotExist").value
         assertEquals(null, actual)
     }
 
