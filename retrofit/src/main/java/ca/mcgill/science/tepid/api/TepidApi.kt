@@ -18,7 +18,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  * val API: ITepid by  lazy { TepidApi(...).create() }
  */
 class TepidApi(private val url: String,
-               private val debug: Boolean = PropsURL.TESTING.toBoolean(),
+               private val debug: Boolean = PropsURL.TESTING?.toBoolean() ?: true,
                private val cacheMaxAge: Int = 5,
                private val cacheMaxStale: Int = 5) {
 

@@ -48,7 +48,7 @@ open class TestUtilsDelegate(
         url
     }
 
-    override val isNotProduction: Boolean by lazy { PropsURL.TESTING.toBoolean() }
+    override val isNotProduction: Boolean by lazy { PropsURL.TESTING?.toBoolean() ?: true }
 
     override val hasTestUser: Boolean by lazy {
         testUser.isNotBlank() && (testPassword.isNotBlank() || testToken.isNotBlank())
