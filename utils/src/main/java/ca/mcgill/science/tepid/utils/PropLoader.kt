@@ -34,6 +34,7 @@ class FilePropLoader(val filePath: String) : PropLoader, WithLogging(){
         val file = File(filePath)
         if (file.isFile){
             FileInputStream(file).use(props::load)
+            log.info("Found readable file at $filePath")
             return true
         }
         else {
@@ -57,6 +58,7 @@ class JarPropLoader(val fileName:String) : PropLoader, WithLogging(){
         val file = this.javaClass.getResourceAsStream(fileName)
         if (file != null){
             props.load(file)
+            log.info("Found readable file inside JAR at $fileName")
             return true
         }
         else{
