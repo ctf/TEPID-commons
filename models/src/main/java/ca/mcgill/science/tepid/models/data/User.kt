@@ -90,7 +90,7 @@ data class FullUser(
      * Adds information relating to the name of a student to a FullUser [user]
      */
     fun updateUserNameInformation() {
-        salutation = if (user.nick == null)
+        salutation = if (nick == null)
             if (!preferredName.isEmpty()) preferredName[preferredName.size - 1]
             else givenName else nick
         if (!preferredName.isEmpty())
