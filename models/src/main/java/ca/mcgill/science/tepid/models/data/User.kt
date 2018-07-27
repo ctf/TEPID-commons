@@ -86,6 +86,19 @@ data class FullUser(
         var colorPrinting: Boolean = false
 ) : TepidDb by TepidDbDelegate() {
 
+    /**
+     * Adds information relating to the name of a student to a FullUser [user]
+     */
+    fun updateUserNameInformation() {
+        salutation = if (user.nick == null)
+            if (!preferredName.isEmpty()) preferredName[preferredName.size - 1]
+            else givenName else nick
+        if (!preferredName.isEmpty())
+            realName = preferredName.asReversed().joinToString(" ")
+        else
+            realName = "${givenName} ${lastName}"
+    }
+
     override var type: String? = "user"
 
     /**
