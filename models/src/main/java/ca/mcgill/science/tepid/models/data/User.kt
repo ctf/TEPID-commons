@@ -86,6 +86,10 @@ data class FullUser(
         var colorPrinting: Boolean = false
 ) : TepidDb by TepidDbDelegate() {
 
+    init {
+    	updateUserNameInformation()
+    }
+
     /**
      * Adds information relating to the name of a student to a FullUser [user]
      */
