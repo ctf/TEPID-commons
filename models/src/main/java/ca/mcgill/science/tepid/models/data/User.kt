@@ -5,9 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.concurrent.TimeUnit
 
 /**
- * Created by Allan Wang on 2017-05-14.
- *
- * The main user data model with public variables
  * Note that this is typically created from using [FullUser.toUser]
  */
 data class User(
@@ -59,31 +56,32 @@ data class UserQuery(
 
 /**
  * The complete collection of user attributes
- * Note that this is for back end only as it has content that should not be queried
- * BEWARE that the password is printed in user.toString(). It's also a public variable...
+ * Note that this is the main user model used for the backend.
+ * It contains sensitive information, and therefore should not be used for interchange over the network
+ * BEWARE that, for builtin users, the hashed password is printed in user.toString().
  */
 data class FullUser(
-        var displayName: String? = null,
-        var givenName: String? = null,
-        var middleName: String? = null,
-        var lastName: String? = null,
-        var shortUser: String? = null,
-        var longUser: String? = null,
-        var email: String? = null,
-        var faculty: String? = null,
-        var nick: String? = null,
-        var realName: String? = null,
-        var salutation: String? = null,
+        var displayName: String? = null,                    // LDAP authoritative
+        var givenName: String? = null,                      // LDAP authoritative
+        var middleName: String? = null,                     // LDAP authoritative
+        var lastName: String? = null,                       // LDAP authoritative
+        var shortUser: String? = null,                      // LDAP authoritative
+        var longUser: String? = null,                       //Expected lower case
+        var email: String? = null,                          // LDAP authoritative
+        var faculty: String? = null,                        // LDAP authoritative
+        var nick: String? = null,                           // DB authoritative
+        var realName: String? = null,                       // Computed
+        var salutation: String? = null,                     // Computed
         var authType: String? = null,
-        var role: String = "",
-        var password: String? = null,
-        var groups: List<String> = emptyList(),
-        var courses: List<Course> = emptyList(),
-        var preferredName: List<String> = emptyList(),
-        var activeSince: Long = System.currentTimeMillis(),
+        var role: String = "",                              // Computed
+        var password: String? = null,                       // Password encrypted with bcrypt for local users
+        var groups: List<String> = emptyList(),             // Computed, from LDAP
+        var courses: List<Course> = emptyList(),            // Computer, from LDAP
+        var preferredName: List<String> = emptyList(),      // DB authoritative
+        var activeSince: Long = System.currentTimeMillis(), // LDAP authoritative
         var studentId: Int = -1,
-        var jobExpiration: Long = TimeUnit.DAYS.toMillis(7),//why is this here
-        var colorPrinting: Boolean = false
+        var jobExpiration: Long = TimeUnit.DAYS.toMillis(7), // DB authoritative
+        var colorPrinting: Boolean = false // DB authoritative
 ) : TepidDb by TepidDbDelegate() {
 
     init {
@@ -170,4 +168,3 @@ data class NameUser(
         var salutation: String? = null,
         var preferredName: List<String> = emptyList()
 )
-
