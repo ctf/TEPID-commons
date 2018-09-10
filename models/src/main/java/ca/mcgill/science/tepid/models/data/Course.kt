@@ -24,6 +24,6 @@ data class Semester(val season: Season, val year: Int) : TepidJackson, Comparabl
 
         fun winter(year: Int) = Semester(Season.WINTER, year)
         fun fall(year: Int) = Semester(Season.FALL, year)
-        fun summer(year: Int) = Semester(Season SUMMER, year)
+        fun summer(year: Int) = Semester(Season.SUMMER, year)
     }
 }
