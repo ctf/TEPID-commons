@@ -1,20 +1,21 @@
 package ca.mcgill.science.tepid.utils
 
 
-
 /**
  * Configurations for any TEPID project. This way, sharing config interfaces is the default action.
  * The configs are loaded triply lazily: The config objects will only be built on first use; the PropLoaders are stored in a lazy property; and the individual properties are lazy themselves.
  * The DefaultProps generator can be changed before any initialisation happens
  * ===ADDING A NEW CONFIG===
  * When you add a new config here. make sure to document it in the README as well!
-* */
+ * */
 
-object DefaultProps{
-    var withName: (String) -> List<PropLoader> =  {fileName -> listOf(
-            FilePropLoader(fileName),
-            JarPropLoader("/$fileName")
-    )}
+object DefaultProps {
+    var withName: (String) -> List<PropLoader> = { fileName ->
+        listOf(
+                FilePropLoader(fileName),
+                JarPropLoader("/$fileName")
+        )
+    }
 }
 
 object PropsAbout : PropHolder(DefaultProps.withName("creationInformation.properties")) {
@@ -38,7 +39,7 @@ object PropsURL : PropHolder(DefaultProps.withName("URL.properties")) {
     val WEB_URL_PRODUCTION by PropsURL.get("WEB_URL_PRODUCTION")
 }
 
-object PropsLDAP : PropHolder (DefaultProps.withName("LDAP.properties")) {
+object PropsLDAP : PropHolder(DefaultProps.withName("LDAP.properties")) {
     val LDAP_ENABLED by PropsLDAP.get("LDAP_ENABLED")
     val LDAP_SEARCH_BASE by PropsLDAP.get("LDAP_SEARCH_BASE")
     val ACCOUNT_DOMAIN by PropsLDAP.get("ACCOUNT_DOMAIN")
@@ -46,12 +47,12 @@ object PropsLDAP : PropHolder (DefaultProps.withName("LDAP.properties")) {
     val SECURITY_PRINCIPAL_PREFIX by PropsLDAP.get("SECURITY_PRINCIPAL_PREFIX")
 }
 
-object PropsLDAPResource : PropHolder (DefaultProps.withName("LDAPResource.properties")) {
+object PropsLDAPResource : PropHolder(DefaultProps.withName("LDAPResource.properties")) {
     val LDAP_RESOURCE_USER by PropsLDAPResource.get("LDAP_RESOURCE_USER")
     val LDAP_RESOURCE_CREDENTIALS by PropsLDAPResource.get("LDAP_RESOURCE_CREDENTIALS")
 }
 
-object PropsLDAPGroups : PropHolder (DefaultProps.withName("LDAPGroups.properties")) {
+object PropsLDAPGroups : PropHolder(DefaultProps.withName("LDAPGroups.properties")) {
     val EXCHANGE_STUDENTS_GROUP_BASE by PropsLDAPGroups.get("EXCHANGE_STUDENTS_GROUP_BASE")
     val GROUPS_LOCATION by PropsLDAPGroups.get("GROUPS_LOCATION")
     val ELDERS_GROUPS by PropsLDAPGroups.get("ELDERS_GROUPS")
@@ -59,28 +60,28 @@ object PropsLDAPGroups : PropHolder (DefaultProps.withName("LDAPGroups.propertie
     val USERS_GROUPS by PropsLDAPGroups.get("USERS_GROUPS")
 }
 
-object PropsLDAPTestUser : PropHolder (DefaultProps.withName("LDAPTestUser.properties")) {
+object PropsLDAPTestUser : PropHolder(DefaultProps.withName("LDAPTestUser.properties")) {
     val TEST_USER by PropsLDAPTestUser.get("TEST_USER")
     val TEST_PASSWORD by PropsLDAPTestUser.get("TEST_PASSWORD")
 }
 
-object PropsDB : PropHolder (DefaultProps.withName("DB.properties")) {
+object PropsDB : PropHolder(DefaultProps.withName("DB.properties")) {
     val COUCHDB_USERNAME by PropsDB.get("COUCHDB_USERNAME")
-    val COUCHDB_PASSWORD by PropsDB.get ("COUCHDB_PASSWORD")
+    val COUCHDB_PASSWORD by PropsDB.get("COUCHDB_PASSWORD")
     val COUCHDB_URL by PropsDB.get("COUCHDB_URL")
 }
 
-object PropsTEM : PropHolder(DefaultProps.withName("TEM.properties")){
+object PropsTEM : PropHolder(DefaultProps.withName("TEM.properties")) {
     val TEM_URL by PropsTEM.get("TEM_URL")
 }
 
-object PropsBarcode : PropHolder(DefaultProps.withName("barcode.properties")){
+object PropsBarcode : PropHolder(DefaultProps.withName("barcode.properties")) {
     val BARCODES_URL by PropsBarcode.get("BARCODES_URL")
     val BARCODES_DB_USERNAME by PropsBarcode.get("BARCODES_DB_URL")
     val BARCODES_DB_PASSWORD by PropsBarcode.get("BARCODES_DB_PASSWORD")
 }
 
-object PropsScreensaver : PropHolder (DefaultProps.withName("screensaver.properties")) {
+object PropsScreensaver : PropHolder(DefaultProps.withName("screensaver.properties")) {
     val OFFICE_REGEX by PropsScreensaver.get("OFFICE_REGEX")
     val GRAVATAR_SEARCH_TERMS by PropsScreensaver.get("GRAVATAR_SEARCH_TERMS")
     val REPORT_MALFUNCTIONING_COMPUTER_TEXT by PropsScreensaver.get("REPORT_MALFUNCTIONING_COMPUTER_TEXT")

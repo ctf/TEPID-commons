@@ -1,20 +1,22 @@
-import ca.mcgill.science.tepid.utils.*
+import ca.mcgill.science.tepid.utils.DefaultProps
+import ca.mcgill.science.tepid.utils.JarPropLoader
+import ca.mcgill.science.tepid.utils.PropsAbout
 import org.junit.Test
-import org.junit.Ignore
 import kotlin.test.assertEquals
-import kotlin.test.fail
 
-class PropertiesTest{
+class PropertiesTest {
     @Test
-    fun testLoadPropsDefault(){
+    fun testLoadPropsDefault() {
         assertEquals("v1", PropsAbout.LINK_MAIN)
     }
 
     @Test
-    fun testLoadPropsNonDefault(){
-        DefaultProps.withName = {fileName -> listOf(
-                JarPropLoader("/Other$fileName")
-        )}
+    fun testLoadPropsNonDefault() {
+        DefaultProps.withName = { fileName ->
+            listOf(
+                    JarPropLoader("/Other$fileName")
+            )
+        }
         assertEquals("v1other", PropsAbout.LINK_MAIN)
     }
 }
