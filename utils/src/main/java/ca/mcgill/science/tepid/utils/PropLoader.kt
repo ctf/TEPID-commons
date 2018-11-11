@@ -19,12 +19,13 @@ interface PropLoader {
      */
     fun loadProps(): Boolean
 
-    fun get (key:String) : String?
+    fun get(key: String): String?
 
 }
 
-class FilePropLoader(val filePath: String) : PropLoader, WithLogging(){
+class FilePropLoader(val filePath: String) : PropLoader, WithLogging() {
     val props = Properties()
+
     init {
         this.loadProps()
     }
@@ -32,12 +33,11 @@ class FilePropLoader(val filePath: String) : PropLoader, WithLogging(){
 
     override fun loadProps(): Boolean {
         val file = File(filePath)
-        if (file.isFile){
+        if (file.isFile) {
             FileInputStream(file).use(props::load)
             log.info("Found readable file at $filePath")
             return true
-        }
-        else {
+        } else {
             log.info("Did not find readable file at $filePath")
             return false
         }
@@ -48,20 +48,20 @@ class FilePropLoader(val filePath: String) : PropLoader, WithLogging(){
     }
 }
 
-class JarPropLoader(val fileName:String) : PropLoader, WithLogging(){
+class JarPropLoader(val fileName: String) : PropLoader, WithLogging() {
     val props = Properties()
+
     init {
         this.loadProps()
     }
 
     override fun loadProps(): Boolean {
         val file = this.javaClass.getResourceAsStream(fileName)
-        if (file != null){
+        if (file != null) {
             props.load(file)
             log.info("Found readable file inside JAR at $fileName")
             return true
-        }
-        else{
+        } else {
             log.info("Did not find readable file inside JAR at $fileName")
             return false
         }

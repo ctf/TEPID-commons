@@ -1,6 +1,9 @@
 package ca.mcgill.science.tepid.models.data
 
-import ca.mcgill.science.tepid.models.bindings.*
+import ca.mcgill.science.tepid.models.bindings.TepidDb
+import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
+import ca.mcgill.science.tepid.models.bindings.TepidJackson
+import ca.mcgill.science.tepid.models.bindings.withDbData
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.concurrent.TimeUnit
 
@@ -85,7 +88,7 @@ data class FullUser(
 ) : TepidDb by TepidDbDelegate() {
 
     init {
-    	updateUserNameInformation()
+        updateUserNameInformation()
     }
 
     /**
