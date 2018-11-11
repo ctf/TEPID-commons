@@ -25,6 +25,10 @@ interface ITepidScreensaver {
     @MinAuthority(NONE)
     fun listJobs(@Path("queue") queueName: String, @Query("limit") limit: Int, @Query("from") from: Long): Call<Collection<PrintJob>>
 
+    @GET("screensaver/queues/{queue}")
+    @MinAuthority(NONE)
+    fun listJobs(@Path("queue") queueName: String): Call<Collection<PrintJob>>
+
     @GET("screensaver/queues/status")
     @MinAuthority(NONE)
     fun getQueueStatus(): Call<Map<String, Boolean>>
