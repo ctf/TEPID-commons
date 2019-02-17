@@ -3,9 +3,7 @@ package ca.mcgill.science.tepid.test
 import ca.allanwang.kit.logger.Loggable
 import ca.allanwang.kit.logger.WithLogging
 import ca.allanwang.kit.props.PropHolder
-import ca.mcgill.science.tepid.api.ITepid
-import ca.mcgill.science.tepid.api.TepidApi
-import ca.mcgill.science.tepid.api.executeDirect
+import ca.mcgill.science.tepid.api.*
 import ca.mcgill.science.tepid.models.data.Session
 import ca.mcgill.science.tepid.models.data.SessionRequest
 import ca.mcgill.science.tepid.utils.PropsURL
@@ -28,6 +26,7 @@ interface TestUtilsContract {
 
     val testApiUnauth: ITepid
     val testApi: ITepid
+    val testScreensaverApi: ITepidScreensaver
 }
 
 open class TestUtilsDelegate(
@@ -96,6 +95,14 @@ open class TestUtilsDelegate(
         TepidApi(testUrl, true).create {
             tokenRetriever = session::authHeader
         }
+    }
+
+    override val testScreensaverApi: ITepidScreensaver by lazy {
+        when {
+            testUrl.isBlank() -> log.error("Requesting testScreensaverApi for empty url")
+            else -> log.info("Initialized testScreensaverApi")
+        }
+        TepidScreensaverApi(testUrl, true).create()
     }
 
 }
