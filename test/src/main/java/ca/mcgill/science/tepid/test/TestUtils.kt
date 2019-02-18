@@ -13,7 +13,7 @@ import ca.mcgill.science.tepid.utils.PropsURL
 object TestUtils : TestUtilsDelegate()
 
 /**
- * Global attributes to pull from priv.properties for testing
+ * Global attributes to pull from properties for testing
  */
 interface TestUtilsContract {
     val testAuth: Pair<String, String>

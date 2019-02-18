@@ -9,3 +9,12 @@ dependencies {
 
     testCompile project(':test')
 }
+
+sourceSets {
+    test {
+        resources {
+            srcDir "src/test/resources"
+            srcDir "../config"
+        }
+    }
+}
