@@ -97,8 +97,9 @@ TEPID uses a resource account to do critical stuff as well as fun stuff like use
 
 ### LDAPTest.properties
 Information for testing LDAP functionality.
-TEST_USER : the username of the user to be used for testing
-TEST_PASSWORD : the password for the user to be used for testing
+- TEST_USER : the username of the user to be used for testing
+- TEST_PASSWORD : the password for the user to be used for testing
+- TEST_ID : the ID for the user to be used for testing
 
 ### screensaver.properties
 Properties used to configure the screensaver
