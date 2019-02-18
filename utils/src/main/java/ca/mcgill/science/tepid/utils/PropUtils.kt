@@ -61,8 +61,9 @@ object PropsLDAPGroups : PropHolder(DefaultProps.withName("LDAPGroups.properties
 }
 
 object PropsLDAPTestUser : PropHolder(DefaultProps.withName("LDAPTestUser.properties")) {
-    val TEST_USER by PropsLDAPTestUser.get("TEST_USER")
-    val TEST_PASSWORD by PropsLDAPTestUser.get("TEST_PASSWORD")
+    val TEST_USER by PropsLDAPTestUser.getNonNull("TEST_USER")
+    val TEST_PASSWORD by PropsLDAPTestUser.getNonNull("TEST_PASSWORD")
+    val TEST_ID by PropsLDAPTestUser.getNonNull("TEST_ID")
 }
 
 object PropsDB : PropHolder(DefaultProps.withName("DB.properties")) {
