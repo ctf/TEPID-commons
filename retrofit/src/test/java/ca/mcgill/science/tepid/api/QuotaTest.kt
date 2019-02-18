@@ -4,6 +4,7 @@ import ca.mcgill.science.tepid.api.internal.TEST_USER_SHORT
 import ca.mcgill.science.tepid.api.internal.executeExpectingError
 import ca.mcgill.science.tepid.test.TestUtils
 import ca.mcgill.science.tepid.test.get
+import ca.mcgill.science.tepid.utils.PropsLDAPTestUser
 import org.junit.Test
 import kotlin.test.assertTrue
 
