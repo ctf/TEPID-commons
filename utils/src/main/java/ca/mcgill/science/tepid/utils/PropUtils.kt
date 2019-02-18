@@ -66,9 +66,10 @@ object PropsLDAPTestUser : PropHolder(DefaultProps.withName("LDAPTestUser.proper
 }
 
 object PropsDB : PropHolder(DefaultProps.withName("DB.properties")) {
-    val COUCHDB_USERNAME by PropsDB.get("COUCHDB_USERNAME")
-    val COUCHDB_PASSWORD by PropsDB.get("COUCHDB_PASSWORD")
-    val COUCHDB_URL by PropsDB.get("COUCHDB_URL")
+    val DB_TYPE by PropsDB.getNonNull("DB_TYPE")
+    val USERNAME by PropsDB.getNonNull("USERNAME")
+    val PASSWORD by PropsDB.getNonNull("PASSWORD")
+    val URL by PropsDB.getNonNull("URL")
 }
 
 object PropsTEM : PropHolder(DefaultProps.withName("TEM.properties")) {
