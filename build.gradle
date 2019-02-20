@@ -20,14 +20,8 @@ allprojects {
 }
 
 ext {
-    // can be passed with -Ptepid_config_dir=CONFIG_DIR, or set in an environment variable "tepid_config_dir
-    if (! project.hasProperty('tepid_config_dir')){
-        tepid_config_dir = "$System.env.tepid_config_dir"
-        println("$tepid_config_dir")
-    }
-    if (! project.hasProperty('tepid_config_dir')){
-        println('WARN tepid_config_dir not found')
-    }
+    // can be passed with -Ptepid_config_dir=CONFIG_DIR, or set in an environment variable "tepid_config_dir"
+    tepid_config_dir = project.findProperty('tepid_config_dir') ?: "$System.env.tepid_config_dir"
 }
 
 task copyConfigs(type: Copy) {
