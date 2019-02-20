@@ -1,6 +1,7 @@
 package ca.mcgill.science.tepid.api
 
 import ca.mcgill.science.tepid.api.internal.TEST_USER_SHORT
+import ca.mcgill.science.tepid.api.internal.TEST_USER_ID
 import ca.mcgill.science.tepid.api.internal.assertTestUser
 import ca.mcgill.science.tepid.api.internal.executeExpectingError
 import ca.mcgill.science.tepid.test.TestUtils

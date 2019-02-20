@@ -6,12 +6,14 @@ import ca.allanwang.kit.props.PropHolder
 import ca.mcgill.science.tepid.api.*
 import ca.mcgill.science.tepid.models.data.Session
 import ca.mcgill.science.tepid.models.data.SessionRequest
+import ca.mcgill.science.tepid.utils.PropsLDAP
+import ca.mcgill.science.tepid.utils.PropsLDAPTestUser
 import ca.mcgill.science.tepid.utils.PropsURL
 
 object TestUtils : TestUtilsDelegate()
 
 /**
- * Global attributes to pull from priv.properties for testing
+ * Global attributes to pull from properties for testing
  */
 interface TestUtilsContract {
     val testAuth: Pair<String, String>
@@ -35,17 +37,13 @@ open class TestUtilsDelegate(
 
     override val testAuth: Pair<String, String> by lazy { testUser to testPassword }
 
-    override val testUser: String by string("TEST_USER", errorMessage = "No test user supplied")
+    override val testUser: String = PropsLDAPTestUser.TEST_USER
 
-    override val testPassword: String by string("TEST_PASSWORD", errorMessage = "No test password supplied")
+    override val testPassword: String = PropsLDAPTestUser.TEST_PASSWORD
 
     override val testToken: String by string("TEST_TOKEN")
 
-    override val testUrl: String by lazy {
-        val url = get("TEST_URL") ?: "localhost:8080"
-        log.info("Using test url $url")
-        url
-    }
+    override val testUrl: String = "https://${PropsURL.SERVER_URL_TESTING!!}/"
 
     override val isNotProduction: Boolean by lazy { PropsURL.TESTING?.toBoolean() ?: true }
 

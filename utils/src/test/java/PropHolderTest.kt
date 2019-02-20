@@ -43,11 +43,9 @@ class PropHolderTest {
         assertEquals(null, actual)
     }
 
-    // I can't figure out why this isn't working :(
-    @Ignore
     @Test(expected = NoSuchElementException::class)
     fun testGetNonNullNull() {
-        val actual = propHolder.get("doesNotExist").value
+        val actual = propHolder.getNonNull("doesNotExist").value
         fail("Did not throw error")
     }
 

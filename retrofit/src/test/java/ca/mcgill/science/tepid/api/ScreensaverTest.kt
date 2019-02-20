@@ -1,5 +1,6 @@
 package ca.mcgill.science.tepid.api
 
+import ca.mcgill.science.tepid.api.internal.TEST_USER_SHORT
 import ca.mcgill.science.tepid.test.TestUtils
 import ca.mcgill.science.tepid.test.get
 import org.junit.Test
@@ -41,6 +42,6 @@ class ScreensaverTest {
 
     @Test
     fun getUserNick(){
-        TestUtils.testScreensaverApi.getUserNick("testSU").get()
+        TestUtils.testScreensaverApi.getUserNick(TEST_USER_SHORT).get()
     }
 }

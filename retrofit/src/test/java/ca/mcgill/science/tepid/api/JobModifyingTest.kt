@@ -29,7 +29,7 @@ class JobModifyingTest {
     @Test
     fun getJobChanges() {
         val now = System.currentTimeMillis()
-        val job = TestUtils.testApi.createNewJob(PrintJob(name = "PrintTest $now", queueName = Room._1B16.toString())).get()
+        val job = TestUtils.testApi.createNewJob(PrintJob(name = "PrintTest $now", queueName = "1B16")).get()
         val futureChanges = TestUtils.testApi.getJobChanges(job.id).getFuture()
         Thread.sleep(100)
         TestUtils.testApi.refundJob(job.id).get()
