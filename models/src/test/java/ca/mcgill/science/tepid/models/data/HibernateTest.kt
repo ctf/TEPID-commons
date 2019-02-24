@@ -52,11 +52,29 @@ class HibernateTest {
         val testCourse = Course("TEST101", Season.SUMMER, 1337)
         em.persist(testCourse)
         em.transaction.commit()
-        val retrievedCoure = em.find(Course::class.java, Course("TEST101", Season.SUMMER, 1337))
+        val retrievedCourse = em.find(Course::class.java, Course("TEST101", Season.SUMMER, 1337))
 
-        assertNotNull(retrievedCoure)
-        assertEquals(testCourse, retrievedCoure)
-        println(retrievedCoure)
+        assertNotNull(retrievedCourse)
+        assertEquals(testCourse, retrievedCourse)
+        println(retrievedCourse)
+    }
+
+    @Test
+    fun testQueryCourse(){
+        em.transaction.begin();
+        val testCourse = Course("TEST101", Season.SUMMER, 1337)
+        em.persist(testCourse)
+        em.transaction.commit()
+
+        val jpql = "select e from Course e where e.name = :name"
+
+        val retrievedCourse : Course = em.createQuery(jpql, Course::class.java)
+                .setParameter("name", "TEST101")
+                .singleResult
+
+        println(retrievedCourse)
+        assertEquals(testCourse, retrievedCourse)
+
     }
 
     /*@BeforeEach
