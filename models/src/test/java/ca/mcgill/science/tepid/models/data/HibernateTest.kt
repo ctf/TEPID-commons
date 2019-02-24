@@ -46,6 +46,19 @@ class HibernateTest {
         assertEquals(testFullUser, retrievedUser)
     }
 
+    @Test
+    fun testAddCourse(){
+        em.transaction.begin();
+        val testCourse = Course("TEST101", Season.SUMMER, 1337)
+        em.persist(testCourse)
+        em.transaction.commit()
+        val retrievedCoure = em.find(Course::class.java, Course("TEST101", Season.SUMMER, 1337))
+
+        assertNotNull(retrievedCoure)
+        assertEquals(testCourse, retrievedCoure)
+        println(retrievedCoure)
+    }
+
     /*@BeforeEach
     fun initialiseDb(){
         val session = em.unwrap(Session::class.java);
