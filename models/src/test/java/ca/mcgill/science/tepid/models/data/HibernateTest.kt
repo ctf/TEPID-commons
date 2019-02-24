@@ -1,7 +1,7 @@
 package ca.mcgill.science.tepid.models.data
 
-import ca.mcgill.science.tepid.models.bindings.TepidId
-import ca.mcgill.science.tepid.models.bindings.TepidIdDelegate
+import ca.mcgill.science.tepid.models.bindings.TepidDb
+import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -16,13 +16,14 @@ data class TestEntity(
 //        @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(nullable = false)
         var content: String = ""
-): @javax.persistence.EmbeddedId TepidId by TepidIdDelegate()
+): @EmbeddedId TepidDb by TepidDbDelegate()
 
 class HibernateTest {
 
     @Test
     fun testAddObject(){
-        em.getTransaction().begin();
+
+        em.transaction.begin();
         val test = TestEntity(content = "t")
         em.persist(test)
         em.transaction.commit();

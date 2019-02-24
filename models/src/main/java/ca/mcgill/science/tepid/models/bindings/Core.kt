@@ -3,7 +3,9 @@ package ca.mcgill.science.tepid.models.bindings
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Embeddable
+import javax.persistence.Id
 
 /**
  * DB Metadata common to all db related classes
@@ -34,6 +36,7 @@ interface TepidDb : TepidId {
      */
     @JsonIgnore
     fun getRev() = _rev ?: ""
+    fun setRev(value: String?) { _rev = value} // necessary for Hibernate, since this is a property with backing field
 }
 
 /**
@@ -65,7 +68,7 @@ interface TepidId : TepidJackson {
     @Id
     @Column(columnDefinition = "char(36) default 'undefined'")
     fun getId() = _id ?: ""
-    fun setId(value: String?) {_id=value} // necessary for Hibernate
+    fun setId(value: String?) {_id=value} // necessary for Hibernate, since this is a property with backing field
 }
 
 class TepidIdDelegate : TepidId {
