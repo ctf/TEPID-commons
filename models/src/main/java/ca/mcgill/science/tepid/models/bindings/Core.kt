@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import javax.persistence.*
 
 /**
- * Created by Allan Wang on 2017-10-29.
- *
- * Base variables that are in all db related classes
+ * DB Metadata common to all db related classes
  */
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
