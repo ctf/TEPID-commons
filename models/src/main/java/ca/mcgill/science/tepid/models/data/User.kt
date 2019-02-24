@@ -6,6 +6,8 @@ import ca.mcgill.science.tepid.models.bindings.TepidJackson
 import ca.mcgill.science.tepid.models.bindings.withDbData
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.concurrent.TimeUnit
+import javax.persistence.EmbeddedId
+import javax.persistence.Entity
 
 /**
  * Note that this is typically created from using [FullUser.toUser]
@@ -63,6 +65,7 @@ data class UserQuery(
  * It contains sensitive information, and therefore should not be used for interchange over the network
  * BEWARE that, for builtin users, the hashed password is printed in user.toString().
  */
+@Entity
 data class FullUser(
         var displayName: String? = null,                    // LDAP authoritative
         var givenName: String? = null,                      // LDAP authoritative
@@ -85,7 +88,7 @@ data class FullUser(
         var studentId: Int = -1,
         var jobExpiration: Long = TimeUnit.DAYS.toMillis(7), // DB authoritative
         var colorPrinting: Boolean = false // DB authoritative
-) : TepidDb by TepidDbDelegate() {
+) : @EmbeddedId TepidDb by TepidDbDelegate() {
 
     init {
         updateUserNameInformation()

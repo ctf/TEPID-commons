@@ -34,6 +34,18 @@ class HibernateTest {
         println(te._id)
     }
 
+    @Test
+    fun testAddFullUser(){
+        em.transaction.begin();
+        val testFullUser = FullUser(shortUser = "shortUname")
+        em.persist(testFullUser)
+        em.transaction.commit()
+        val retrievedUser : FullUser = em.find(FullUser::class.java ,testFullUser._id)
+
+        assertNotNull(retrievedUser);
+        assertEquals(testFullUser, retrievedUser)
+    }
+
     /*@BeforeEach
     fun initialiseDb(){
         val session = em.unwrap(Session::class.java);
