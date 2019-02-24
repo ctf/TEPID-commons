@@ -3,6 +3,7 @@ package ca.mcgill.science.tepid.models.bindings
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
+import javax.persistence.*
 
 /**
  * Created by Allan Wang on 2017-10-29.
@@ -54,6 +55,7 @@ class TepidDbDelegate : TepidDb, TepidId by TepidIdDelegate() {
     override var schema: String? = null
 }
 
+@Embeddable
 interface TepidId : TepidJackson {
     var _id: String?
 
@@ -62,7 +64,10 @@ interface TepidId : TepidJackson {
      * Defaults to an empty string
      */
     @JsonIgnore
+    @Id
+    @Column(columnDefinition = "char(36) default 'undefined'")
     fun getId() = _id ?: ""
+    fun setId(value: String?) {_id=value} // necessary for Hibernate
 }
 
 class TepidIdDelegate : TepidId {
