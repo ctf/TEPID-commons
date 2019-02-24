@@ -1,7 +1,7 @@
 package ca.mcgill.science.tepid
 
 class Versions {
-    static def tepidCommons = '1.2.1'
+    static def tepidCommons = '1.3.1'
 
     static def kotlin = '1.2.61'
 
@@ -28,4 +28,7 @@ class Versions {
     static def rxKotlin = '2.3.0'
 
     static def junit = '4.12'
+
+    // Hibernate
+    static def hibernate = '5.4.1.Final'
 }
