@@ -3,7 +3,7 @@ package ca.mcgill.science.tepid
 class Versions {
     static def tepidCommons = '1.3.1'
 
-    static def kotlin = '1.2.61'
+    static def kotlin = '1.3.10'
 
     static def kit = '9bee08d'
 

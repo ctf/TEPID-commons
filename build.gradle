@@ -65,7 +65,14 @@ subprojects {
     dependencies {
         compile tepidDependency.kotlin
 
+        testRuntimeOnly(
+                'org.junit.jupiter:junit-jupiter-engine:5.1.0',
+                'org.junit.vintage:junit-vintage-engine:5.1.0'
+        )
+        
         testCompile tepidDependency.junit
+        testCompile "org.junit.jupiter:junit-jupiter-engine:5.3.1"
+        testCompile 'org.junit.jupiter:junit-jupiter-api:5.1.0'
         testCompile tepidDependency.kotlinTest
         testCompile "io.mockk:mockk:1.8"
     }
