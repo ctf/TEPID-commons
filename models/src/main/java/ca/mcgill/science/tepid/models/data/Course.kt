@@ -1,13 +1,11 @@
 package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidJackson
-import java.io.Serializable
 import java.util.*
-import javax.persistence.Entity
-import javax.persistence.Id
+import javax.persistence.Embeddable
 
-@Entity
-data class Course(@Id val name: String, @Id val season: Season, @Id val year: Int) : TepidJackson, Serializable {
+@Embeddable
+data class Course(val name: String, val season: Season, val year: Int) : TepidJackson {
     fun semester() = Semester(season, year)
 }
 
