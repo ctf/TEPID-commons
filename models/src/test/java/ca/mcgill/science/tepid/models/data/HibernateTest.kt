@@ -2,13 +2,25 @@ package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
+import org.junit.Ignore
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import java.io.Serializable
 import javax.persistence.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
+
+@Embeddable
+data class TestEmbeddable(var data:String) : Serializable
+
+@Entity
+data class TestEmbedding(
+        @Embedded
+        @ElementCollection(targetClass = TestEmbeddable::class)
+        var datas : HashSet<TestEmbeddable>
+) : @EmbeddedId TepidDb by TepidDbDelegate()
 
 @Entity
 data class TestEntity(
@@ -16,7 +28,7 @@ data class TestEntity(
 //        @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(nullable = false)
         var content: String = ""
-): @EmbeddedId TepidDb by TepidDbDelegate()
+) : @EmbeddedId TepidDb by TepidDbDelegate()
 
 class HibernateTest {
 

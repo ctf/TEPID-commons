@@ -7,8 +7,9 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <!-- add classes -->
         <class>ca.mcgill.science.tepid.models.data.TestEntity</class>
-        <class>ca.mcgill.science.tepid.models.data.Course</class>
+        <!--<class>ca.mcgill.science.tepid.models.data.Course</class>-->
         <!--<class>ca.mcgill.science.tepid.models.data.FullUser</class>-->
+        <class>ca.mcgill.science.tepid.models.data.TestEmbedding</class>
 
         <properties>
             <!-- Configuring JDBC properties -->
