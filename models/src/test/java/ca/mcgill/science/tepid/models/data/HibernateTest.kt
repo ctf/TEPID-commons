@@ -35,6 +35,22 @@ class HibernateTest {
     }
 
     @Test
+    fun testAddEmbeddingObject(){
+        em.transaction.begin();
+        val e1 = TestEmbeddable("1")
+        val e2 = TestEmbeddable("2")
+        val test = TestEmbedding(HashSet(setOf(e1,e2)))
+        em.persist(test)
+        em.transaction.commit();
+        val te = em.find(TestEmbedding::class.java, test._id);
+
+        assertNotNull(te);
+        assertEquals(test, te)
+        println(te._id)
+    }
+
+    @Ignore
+    @Test
     fun testAddFullUser(){
         em.transaction.begin();
         val testFullUser = FullUser(shortUser = "shortUname")
