@@ -2,6 +2,7 @@ package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
+import org.hibernate.annotations.TypeDef
 import org.junit.Ignore
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -11,6 +12,10 @@ import javax.persistence.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
+@TypeDef(
+        name = "ListTest",
+        typeClass = ArrayList::class
+)
 
 @Embeddable
 data class TestEmbeddable(var data:String) : Serializable
