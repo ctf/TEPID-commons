@@ -37,9 +37,9 @@ data class TestList(
 
 @Entity
 data class TestEmbedding(
-        @Embedded
-        @ElementCollection(targetClass = TestEmbeddable::class)
-        var datas : HashSet<TestEmbeddable>
+    @Access(AccessType.FIELD)
+    @ElementCollection(targetClass = TestEmbeddable::class)
+    var datas: List<TestEmbeddable> = listOf<TestEmbeddable>()
 ) : @EmbeddedId TepidDb by TepidDbDelegate()
 
 @Entity
@@ -89,7 +89,9 @@ class HibernateTest {
         em.transaction.begin();
         val e1 = TestEmbeddable("1")
         val e2 = TestEmbeddable("2")
-        val test = TestEmbedding(HashSet(setOf(e1,e2)))
+        val test = TestEmbedding(listOf(e1,e2))
+//        em.persist(e1)
+//        em.persist(e2)
         em.persist(test)
         em.transaction.commit();
         val te = em.find(TestEmbedding::class.java, test._id);
