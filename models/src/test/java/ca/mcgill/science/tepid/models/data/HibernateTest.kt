@@ -30,6 +30,7 @@ data class TestList(
 //    @Type(type="ListTest")
 //    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "data")
 //    @OneToMany(mappedBy = "data")
+    @Access(AccessType.FIELD)
     @OneToMany(targetEntity = TestListedEntity::class)
     var datas: List<TestListedEntity> = listOf<TestListedEntity>()
 }

@@ -8,6 +8,7 @@
         <!-- add classes -->
         <class>ca.mcgill.science.tepid.models.data.TestEntity</class>
         <class>ca.mcgill.science.tepid.models.data.TestListedEntity</class>
+        <class>ca.mcgill.science.tepid.models.data.TestEmbedding</class>
         <class>ca.mcgill.science.tepid.models.data.TestEmbeddable</class>
         <!--<class>ca.mcgill.science.tepid.models.data.Course</class>-->
         <!--<class>ca.mcgill.science.tepid.models.data.FullUser</class>-->
