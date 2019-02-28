@@ -43,6 +43,16 @@ data class TestEmbedding(
 ) : @EmbeddedId TepidDb by TepidDbDelegate()
 
 @Entity
+data class TestImmutableField(@Id val data:String) : Serializable
+
+@Entity
+data class TestListWithVal(
+    @Access(AccessType.FIELD)
+    @ElementCollection(targetClass = TestImmutableField::class)
+    var datas: List<TestImmutableField> = listOf<TestImmutableField>()
+) : @EmbeddedId TepidDb by TepidDbDelegate()
+
+@Entity
 data class TestEntity(
 //        @javax.persistence.Id
 //        @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -95,6 +105,23 @@ class HibernateTest {
         em.persist(test)
         em.transaction.commit();
         val te = em.find(TestEmbedding::class.java, test._id);
+
+        assertNotNull(te);
+        assertEquals(test, te)
+        println(te._id)
+    }
+
+    @Test
+    fun testAddObjectWithImmutableField(){
+        em.transaction.begin();
+        val e1 = TestImmutableField("1")
+        val e2 = TestImmutableField("2")
+        val test = TestListWithVal(listOf(e1,e2))
+        em.persist(e1)
+        em.persist(e2)
+        em.persist(test)
+        em.transaction.commit();
+        val te = em.find(TestListWithVal::class.java, test._id);
 
         assertNotNull(te);
         assertEquals(test, te)
