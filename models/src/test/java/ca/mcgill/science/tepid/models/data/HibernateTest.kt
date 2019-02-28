@@ -21,6 +21,20 @@ import kotlin.test.assertNotNull
 data class TestEmbeddable(var data:String) : Serializable
 
 @Entity
+data class TestListedEntity(@Id var data:String) : Serializable
+
+@Entity
+data class TestList(
+    var t :Int = 0
+) : @EmbeddedId TepidDb by TepidDbDelegate() {
+//    @Type(type="ListTest")
+//    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "data")
+//    @OneToMany(mappedBy = "data")
+    @OneToMany(targetEntity = TestListedEntity::class)
+    var datas: List<TestListedEntity> = listOf<TestListedEntity>()
+}
+
+@Entity
 data class TestEmbedding(
         @Embedded
         @ElementCollection(targetClass = TestEmbeddable::class)
@@ -45,6 +59,24 @@ class HibernateTest {
         em.persist(test)
         em.transaction.commit();
         val te = em.find(TestEntity::class.java, test._id);
+
+        assertNotNull(te);
+        assertEquals(test, te)
+        println(te._id)
+    }
+
+    @Test
+    fun testAddListingObject(){
+        em.transaction.begin();
+        val e1 = TestListedEntity("1")
+        val e2 = TestListedEntity("2")
+        val test = TestList()
+        test.datas = listOf(e1,e2)
+        em.persist(e1)
+        em.persist(e2)
+        em.persist(test)
+        em.transaction.commit();
+        val te = em.find(TestList::class.java, test._id);
 
         assertNotNull(te);
         assertEquals(test, te)
