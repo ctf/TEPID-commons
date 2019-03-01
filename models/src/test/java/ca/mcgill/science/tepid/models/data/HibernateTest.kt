@@ -6,6 +6,7 @@ import org.hibernate.annotations.TypeDef
 import org.junit.Ignore
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.Serializable
 import javax.persistence.*
@@ -103,77 +104,26 @@ class HibernateTest {
     }
 
     @Test
-    fun test(){
+    fun testAddListingEntity(){
         collectionTest<TestList, TestListedEntity>({ l -> TestList(l)}, { s-> TestListedEntity(s)}, true)
-
-    }
-
-    @Test
-    fun testAddListingObject(){
-        em.transaction.begin()
-        val e1 = TestListedEntity("1")
-        val e2 = TestListedEntity("2")
-        val test = TestList()
-        test.datas = listOf(e1,e2)
-        em.persist(e1)
-        em.persist(e2)
-        em.persist(test)
-        em.transaction.commit()
-        val te = em.find(TestList::class.java, test._id)
-
-        assertNotNull(te)
-        assertEquals(test, te)
-        println(te._id)
     }
 
     @Test
     fun testAddEmbeddingObject(){
-        em.transaction.begin()
-        val e1 = TestEmbeddable("1")
-        val e2 = TestEmbeddable("2")
-        val test = TestEmbedding(listOf(e1,e2))
-        em.persist(test)
-        em.transaction.commit()
-        val te = em.find(TestEmbedding::class.java, test._id)
-
-        assertNotNull(te)
-        assertEquals(test, te)
-        println(te._id)
+        collectionTest<TestEmbedding, TestEmbeddable>({l -> TestEmbedding(l) }, { s-> TestEmbeddable(s) }, false)
     }
 
     @Test
     fun testAddObjectWithImmutableField(){
-        em.transaction.begin()
-        val e1 = TestImmutableField("1")
-        val e2 = TestImmutableField("2")
-        val test = TestListWithVal(listOf(e1,e2))
-        em.persist(e1)
-        em.persist(e2)
-        em.persist(test)
-        em.transaction.commit()
-        val te = em.find(TestListWithVal::class.java, test._id)
-
-        assertNotNull(te)
-        assertEquals(test, te)
-        println(te._id)
+        collectionTest<TestListWithVal, TestImmutableField>({l -> TestListWithVal(l) }, { s -> TestImmutableField(s) }, true)
     }
 
     @Test
     fun testAddObjectWithImmutableFieldEmbeddable(){
-        em.transaction.begin()
-        val e1 = TestImmutableFieldEmbeddable("1")
-        val e2 = TestImmutableFieldEmbeddable("2")
-        val test = TestListWithValEmbeddable(listOf(e1,e2))
-        em.persist(test)
-        em.transaction.commit()
-        val te = em.find(TestListWithValEmbeddable::class.java, test._id)
-
-        assertNotNull(te)
-        assertEquals(test, te)
-        println(te._id)
+        collectionTest<TestListWithValEmbeddable, TestImmutableFieldEmbeddable>({l -> TestListWithValEmbeddable(l) }, { s -> TestImmutableFieldEmbeddable(s) }, false)
     }
 
-    @Ignore
+    @Disabled
     @Test
     fun testAddFullUser(){
         em.transaction.begin()
