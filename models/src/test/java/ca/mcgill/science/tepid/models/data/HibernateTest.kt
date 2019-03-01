@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.io.Serializable
 import javax.persistence.*
+import kotlin.jvm.Transient
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -50,6 +51,18 @@ data class TestListWithVal(
     @Access(AccessType.FIELD)
     @ElementCollection(targetClass = TestImmutableField::class)
     var datas: List<TestImmutableField> = listOf<TestImmutableField>()
+) : @EmbeddedId TepidDb by TepidDbDelegate()
+
+@Embeddable
+data class TestImmutableFieldEmbeddable(@Access(AccessType.FIELD) val data:String) : Serializable {
+}
+
+@Entity
+data class TestListWithValEmbeddable(
+        @Access(AccessType.FIELD)
+        @Embedded
+        @ElementCollection(targetClass = TestImmutableFieldEmbeddable::class)
+        var datas: List<TestImmutableFieldEmbeddable> = listOf<TestImmutableFieldEmbeddable>()
 ) : @EmbeddedId TepidDb by TepidDbDelegate()
 
 @Entity
@@ -122,6 +135,21 @@ class HibernateTest {
         em.persist(test)
         em.transaction.commit();
         val te = em.find(TestListWithVal::class.java, test._id);
+
+        assertNotNull(te);
+        assertEquals(test, te)
+        println(te._id)
+    }
+
+    @Test
+    fun testAddObjectWithImmutableFieldEmbeddable(){
+        em.transaction.begin();
+        val e1 = TestImmutableFieldEmbeddable("1")
+        val e2 = TestImmutableFieldEmbeddable("2")
+        val test = TestListWithValEmbeddable(listOf(e1,e2))
+        em.persist(test)
+        em.transaction.commit();
+        val te = em.find(TestListWithValEmbeddable::class.java, test._id);
 
         assertNotNull(te);
         assertEquals(test, te)
