@@ -3,13 +3,17 @@ package ca.mcgill.science.tepid.models.data
 import ca.mcgill.science.tepid.models.bindings.*
 import ca.mcgill.science.tepid.models.internal.Base64
 import com.fasterxml.jackson.annotation.JsonIgnore
+import javax.persistence.*
 
+@Entity
 data class FullSession(
         var role: String = "",
+        @Access(AccessType.FIELD)
+        @ManyToOne(targetEntity = FullUser::class)
         var user: FullUser,
         var expiration: Long = -1L,
         var persistent: Boolean = true
-) : TepidDb by TepidDbDelegate() {
+) : @EmbeddedId TepidDb by TepidDbDelegate() {
 
     override var type: String? = "session"
 
@@ -19,6 +23,7 @@ data class FullSession(
 
     override fun hashCode() = getId().hashCode() * 13 + getRev().hashCode()
 
+    @Transient
     fun isValid() = expiration == -1L || expiration > System.currentTimeMillis()
 
     fun toSession(): Session = Session(
