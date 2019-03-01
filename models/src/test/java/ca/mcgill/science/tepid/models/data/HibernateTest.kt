@@ -18,9 +18,6 @@ import kotlin.test.assertNotNull
         typeClass = ArrayList::class
 )
 
-@Embeddable
-data class TestEmbeddable(var data:String) : Serializable
-
 @Entity
 data class TestListedEntity(@Id var data:String) : Serializable
 
@@ -28,19 +25,19 @@ data class TestListedEntity(@Id var data:String) : Serializable
 data class TestList(
     var t :Int = 0
 ) : @EmbeddedId TepidDb by TepidDbDelegate() {
-//    @Type(type="ListTest")
-//    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "data")
-//    @OneToMany(mappedBy = "data")
     @Access(AccessType.FIELD)
     @OneToMany(targetEntity = TestListedEntity::class)
-    var datas: List<TestListedEntity> = listOf<TestListedEntity>()
+    var datas: List<TestListedEntity> = emptyList()
 }
+
+@Embeddable
+data class TestEmbeddable(var data:String) : Serializable
 
 @Entity
 data class TestEmbedding(
     @Access(AccessType.FIELD)
     @ElementCollection(targetClass = TestEmbeddable::class)
-    var datas: List<TestEmbeddable> = listOf<TestEmbeddable>()
+    var datas: List<TestEmbeddable> = emptyList()
 ) : @EmbeddedId TepidDb by TepidDbDelegate()
 
 @Entity
@@ -50,25 +47,22 @@ data class TestImmutableField(@Id val data:String) : Serializable
 data class TestListWithVal(
     @Access(AccessType.FIELD)
     @ElementCollection(targetClass = TestImmutableField::class)
-    var datas: List<TestImmutableField> = listOf<TestImmutableField>()
+    var datas: List<TestImmutableField> = emptyList()
 ) : @EmbeddedId TepidDb by TepidDbDelegate()
 
 @Embeddable
-data class TestImmutableFieldEmbeddable(@Access(AccessType.FIELD) val data:String) : Serializable {
-}
+data class TestImmutableFieldEmbeddable(@Access(AccessType.FIELD) val data:String) : Serializable
 
 @Entity
 data class TestListWithValEmbeddable(
         @Access(AccessType.FIELD)
         @Embedded
         @ElementCollection(targetClass = TestImmutableFieldEmbeddable::class)
-        var datas: List<TestImmutableFieldEmbeddable> = listOf<TestImmutableFieldEmbeddable>()
+        var datas: List<TestImmutableFieldEmbeddable> = emptyList()
 ) : @EmbeddedId TepidDb by TepidDbDelegate()
 
 @Entity
 data class TestEntity(
-//        @javax.persistence.Id
-//        @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(nullable = false)
         var content: String = ""
 ) : @EmbeddedId TepidDb by TepidDbDelegate()
@@ -78,20 +72,20 @@ class HibernateTest {
     @Test
     fun testAddObject(){
 
-        em.transaction.begin();
+        em.transaction.begin()
         val test = TestEntity(content = "t")
         em.persist(test)
-        em.transaction.commit();
-        val te = em.find(TestEntity::class.java, test._id);
+        em.transaction.commit()
+        val te = em.find(TestEntity::class.java, test._id)
 
-        assertNotNull(te);
+        assertNotNull(te)
         assertEquals(test, te)
         println(te._id)
     }
 
     @Test
     fun testAddListingObject(){
-        em.transaction.begin();
+        em.transaction.begin()
         val e1 = TestListedEntity("1")
         val e2 = TestListedEntity("2")
         val test = TestList()
@@ -99,59 +93,57 @@ class HibernateTest {
         em.persist(e1)
         em.persist(e2)
         em.persist(test)
-        em.transaction.commit();
-        val te = em.find(TestList::class.java, test._id);
+        em.transaction.commit()
+        val te = em.find(TestList::class.java, test._id)
 
-        assertNotNull(te);
+        assertNotNull(te)
         assertEquals(test, te)
         println(te._id)
     }
 
     @Test
     fun testAddEmbeddingObject(){
-        em.transaction.begin();
+        em.transaction.begin()
         val e1 = TestEmbeddable("1")
         val e2 = TestEmbeddable("2")
         val test = TestEmbedding(listOf(e1,e2))
-//        em.persist(e1)
-//        em.persist(e2)
         em.persist(test)
-        em.transaction.commit();
-        val te = em.find(TestEmbedding::class.java, test._id);
+        em.transaction.commit()
+        val te = em.find(TestEmbedding::class.java, test._id)
 
-        assertNotNull(te);
+        assertNotNull(te)
         assertEquals(test, te)
         println(te._id)
     }
 
     @Test
     fun testAddObjectWithImmutableField(){
-        em.transaction.begin();
+        em.transaction.begin()
         val e1 = TestImmutableField("1")
         val e2 = TestImmutableField("2")
         val test = TestListWithVal(listOf(e1,e2))
         em.persist(e1)
         em.persist(e2)
         em.persist(test)
-        em.transaction.commit();
-        val te = em.find(TestListWithVal::class.java, test._id);
+        em.transaction.commit()
+        val te = em.find(TestListWithVal::class.java, test._id)
 
-        assertNotNull(te);
+        assertNotNull(te)
         assertEquals(test, te)
         println(te._id)
     }
 
     @Test
     fun testAddObjectWithImmutableFieldEmbeddable(){
-        em.transaction.begin();
+        em.transaction.begin()
         val e1 = TestImmutableFieldEmbeddable("1")
         val e2 = TestImmutableFieldEmbeddable("2")
         val test = TestListWithValEmbeddable(listOf(e1,e2))
         em.persist(test)
-        em.transaction.commit();
-        val te = em.find(TestListWithValEmbeddable::class.java, test._id);
+        em.transaction.commit()
+        val te = em.find(TestListWithValEmbeddable::class.java, test._id)
 
-        assertNotNull(te);
+        assertNotNull(te)
         assertEquals(test, te)
         println(te._id)
     }
@@ -159,19 +151,19 @@ class HibernateTest {
     @Ignore
     @Test
     fun testAddFullUser(){
-        em.transaction.begin();
+        em.transaction.begin()
         val testFullUser = FullUser(shortUser = "shortUname")
         em.persist(testFullUser)
         em.transaction.commit()
         val retrievedUser : FullUser = em.find(FullUser::class.java ,testFullUser._id)
 
-        assertNotNull(retrievedUser);
+        assertNotNull(retrievedUser)
         assertEquals(testFullUser, retrievedUser)
     }
 
     @Test
     fun testAddCourse(){
-        em.transaction.begin();
+        em.transaction.begin()
         val testCourse = Course("TEST101", Season.SUMMER, 1337)
         em.persist(testCourse)
         em.transaction.commit()
@@ -184,7 +176,7 @@ class HibernateTest {
 
     @Test
     fun testQueryCourse(){
-        em.transaction.begin();
+        em.transaction.begin()
         val testCourse = Course("TEST101", Season.SUMMER, 1337)
         em.persist(testCourse)
         em.transaction.commit()
@@ -216,8 +208,8 @@ class HibernateTest {
         @JvmStatic
         @BeforeAll
         fun initTest() {
-            emf = Persistence.createEntityManagerFactory("hibernate-pu-test");
-            em = emf.createEntityManager();
+            emf = Persistence.createEntityManagerFactory("hibernate-pu-test")
+            em = emf.createEntityManager()
         }
 
         @JvmStatic
