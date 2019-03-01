@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test
 import java.io.Serializable
 import javax.persistence.*
 import kotlin.jvm.Transient
+import kotlin.reflect.KClass
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -23,11 +24,11 @@ data class TestListedEntity(@Id var data:String) : Serializable
 
 @Entity
 data class TestList(
-    var t :Int = 0
-) : @EmbeddedId TepidDb by TepidDbDelegate() {
     @Access(AccessType.FIELD)
     @OneToMany(targetEntity = TestListedEntity::class)
     var datas: List<TestListedEntity> = emptyList()
+) : @EmbeddedId TepidDb by TepidDbDelegate() {
+
 }
 
 @Embeddable
@@ -81,6 +82,30 @@ class HibernateTest {
         assertNotNull(te)
         assertEquals(test, te)
         println(te._id)
+    }
+
+    fun <C : TepidDb, D>collectionTest(collectionClassFactory: (List<D>) -> C, collectedClassFactory: (String) -> D, persistCollected:Boolean = false){
+        em.transaction.begin()
+        val e0 = collectedClassFactory("0")
+        val e1 = collectedClassFactory("1")
+        val test = collectionClassFactory(listOf(e0, e1))
+        test._id = "TEST"
+        if (persistCollected) {
+            em.persist(e0)
+            em.persist(e1)
+        }
+        em.persist(test)
+        em.transaction.commit()
+        val retrieved = em.find(test::class.java, test._id)
+
+        assertNotNull(retrieved)
+        assertEquals(test, retrieved)
+    }
+
+    @Test
+    fun test(){
+        collectionTest<TestList, TestListedEntity>({ l -> TestList(l)}, { s-> TestListedEntity(s)}, true)
+
     }
 
     @Test
