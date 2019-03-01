@@ -123,7 +123,6 @@ class HibernateTest {
         collectionTest<TestListWithValEmbeddable, TestImmutableFieldEmbeddable>({l -> TestListWithValEmbeddable(l) }, { s -> TestImmutableFieldEmbeddable(s) }, false)
     }
 
-    @Disabled
     @Test
     fun testAddFullUser(){
         em.transaction.begin()
@@ -136,6 +135,7 @@ class HibernateTest {
         assertEquals(testFullUser, retrievedUser)
     }
 
+    @Disabled
     @Test
     fun testAddCourse(){
         em.transaction.begin()
@@ -149,6 +149,7 @@ class HibernateTest {
         println(retrievedCourse)
     }
 
+    @Disabled
     @Test
     fun testQueryCourse(){
         em.transaction.begin()

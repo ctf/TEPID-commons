@@ -6,8 +6,7 @@ import ca.mcgill.science.tepid.models.bindings.TepidJackson
 import ca.mcgill.science.tepid.models.bindings.withDbData
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.concurrent.TimeUnit
-import javax.persistence.EmbeddedId
-import javax.persistence.Entity
+import javax.persistence.*
 
 /**
  * Note that this is typically created from using [FullUser.toUser]
@@ -81,8 +80,14 @@ data class FullUser(
         var authType: String? = null,
         var role: String = "",                              // Computed
         var password: String? = null,                       // Password encrypted with bcrypt for local users
+        @Access(AccessType.FIELD)
+        @ElementCollection
         var groups: List<String> = emptyList(),             // Computed, from LDAP
+        @Access(AccessType.FIELD)
+        @ElementCollection(targetClass = Course::class)
         var courses: List<Course> = emptyList(),            // Computer, from LDAP
+        @Access(AccessType.FIELD)
+        @ElementCollection
         var preferredName: List<String> = emptyList(),      // DB authoritative
         var activeSince: Long = System.currentTimeMillis(), // LDAP authoritative
         var studentId: Int = -1,
@@ -120,6 +125,7 @@ data class FullUser(
     /**
      * Get the set of semesters for which the user has had courses
      */
+    @Transient
     @JsonIgnore
     fun getSemesters(): Set<Semester> =
             courses.map(Course::semester).toSet()
