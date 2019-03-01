@@ -10,13 +10,16 @@
         <class>ca.mcgill.science.tepid.models.data.TestListedEntity</class>
         <class>ca.mcgill.science.tepid.models.data.TestEmbedding</class>
         <class>ca.mcgill.science.tepid.models.data.TestEmbeddable</class>
-        <!--<class>ca.mcgill.science.tepid.models.data.Course</class>-->
-        <class>ca.mcgill.science.tepid.models.data.FullUser</class>
         <class>ca.mcgill.science.tepid.models.data.TestList</class>
         <class>ca.mcgill.science.tepid.models.data.TestListWithVal</class>
         <class>ca.mcgill.science.tepid.models.data.TestImmutableField</class>
         <class>ca.mcgill.science.tepid.models.data.TestListWithValEmbeddable</class>
         <class>ca.mcgill.science.tepid.models.data.TestImmutableFieldEmbeddable</class>
+
+
+        <!--<class>ca.mcgill.science.tepid.models.data.Course</class>-->
+        <class>ca.mcgill.science.tepid.models.data.FullUser</class>
+        <class>ca.mcgill.science.tepid.models.data.FullSession</class>
 
         <properties>
             <!-- Configuring JDBC properties -->
