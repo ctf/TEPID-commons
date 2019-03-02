@@ -144,7 +144,7 @@ data class FullUser(
             salutation = salutation,
             authType = authType,
             role = role,
-            preferredName = preferredName,
+            preferredName = preferredName.toList(), //Makes a copy of the list, to avoid "Found shared references to a collection" error
             activeSince = activeSince,
             studentId = studentId,
             jobExpiration = jobExpiration,
