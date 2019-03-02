@@ -135,31 +135,21 @@ class HibernateTest {
 
     @Test
     fun testAddFullUser(){
-        em.transaction.begin()
-        val testFullUser = FullUser(shortUser = "shortUname")
-        em.persist(testFullUser)
-        em.transaction.commit()
-        val retrievedUser : FullUser = em.find(FullUser::class.java ,testFullUser._id)
-
-        assertNotNull(retrievedUser)
-        assertEquals(testFullUser, retrievedUser)
+        val test = FullUser(shortUser = "shortUname")
+        test._id="TEST"
+        crudTest(test)
     }
 
     @Test
     fun testAddFullSession(){
-        em.transaction.begin()
         val testFullUser = FullUser(shortUser = "shortUname")
-        em.persist(testFullUser)
+
+        persist(testFullUser)
 
         val testFullSession = FullSession("testRole", testFullUser, 10000, false)
         testFullSession._id="TEST"
-        em.persist(testFullSession)
-        em.transaction.commit()
 
-        val retrievedSession : FullSession = em.find(FullSession::class.java, testFullSession._id)
-
-        assertNotNull(retrievedSession)
-        assertEquals(testFullSession, retrievedSession)
+        crudTest(testFullSession)
     }
 
 
