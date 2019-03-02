@@ -111,4 +111,9 @@ class JsonTest {
     fun user() {
         sanityTest<FullUser>()
     }
+
+    @Test
+    fun marqueeData(){
+        sanityTest<MarqueeData>()
+    }
 }

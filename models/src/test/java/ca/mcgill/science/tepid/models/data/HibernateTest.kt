@@ -187,6 +187,12 @@ class HibernateTest {
 
     }
 
+    @Test
+    fun testAddMarqueeData(){
+        val testMarqueeData = MarqueeData("TITLE", listOf("A", "B"))
+        crudTest(testMarqueeData)
+    }
+
 
     /*@BeforeEach
     fun initialiseDb(){

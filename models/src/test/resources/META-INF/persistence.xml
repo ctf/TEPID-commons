@@ -25,6 +25,8 @@
         <class>ca.mcgill.science.tepid.models.data.DestinationTicket</class>
         <class>ca.mcgill.science.tepid.models.data.FullDestination</class>
 
+        <class>ca.mcgill.science.tepid.models.data.MarqueeData</class>
+
         <properties>
             <!-- Configuring JDBC properties -->
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test;"/>
