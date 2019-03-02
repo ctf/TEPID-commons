@@ -30,10 +30,9 @@ data class User(
         var studentId: Int = -1,
         var jobExpiration: Long = TimeUnit.DAYS.toMillis(7), //why is this here
         var colorPrinting: Boolean = false
-) : TepidDb by TepidDbDelegate() {
+) {
 
-    override var type: String? = "user"
-
+    @Transient
     fun isMatch(name: String) =
             if (name.contains(".")) longUser == name
             else shortUser == name

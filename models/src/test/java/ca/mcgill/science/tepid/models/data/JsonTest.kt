@@ -105,7 +105,6 @@ class JsonTest {
 
     @Test
     fun user() {
-        sanityTest<User>()
         sanityTest<FullUser>()
     }
 }
