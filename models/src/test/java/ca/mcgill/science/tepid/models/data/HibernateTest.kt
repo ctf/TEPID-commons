@@ -3,15 +3,11 @@ package ca.mcgill.science.tepid.models.data
 import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
 import org.hibernate.annotations.TypeDef
-import org.junit.Ignore
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.Serializable
 import javax.persistence.*
-import kotlin.jvm.Transient
-import kotlin.reflect.KClass
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -152,38 +148,6 @@ class HibernateTest {
         assertEquals(testFullSession, retrievedSession)
     }
 
-    @Disabled
-    @Test
-    fun testAddCourse(){
-        em.transaction.begin()
-        val testCourse = Course("TEST101", Season.SUMMER, 1337)
-        em.persist(testCourse)
-        em.transaction.commit()
-        val retrievedCourse = em.find(Course::class.java, Course("TEST101", Season.SUMMER, 1337))
-
-        assertNotNull(retrievedCourse)
-        assertEquals(testCourse, retrievedCourse)
-        println(retrievedCourse)
-    }
-
-    @Disabled
-    @Test
-    fun testQueryCourse(){
-        em.transaction.begin()
-        val testCourse = Course("TEST101", Season.SUMMER, 1337)
-        em.persist(testCourse)
-        em.transaction.commit()
-
-        val jpql = "select e from Course e where e.name = :name"
-
-        val retrievedCourse : Course = em.createQuery(jpql, Course::class.java)
-                .setParameter("name", "TEST101")
-                .singleResult
-
-        println(retrievedCourse)
-        assertEquals(testCourse, retrievedCourse)
-
-    }
 
     /*@BeforeEach
     fun initialiseDb(){
