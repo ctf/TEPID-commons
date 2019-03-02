@@ -1,6 +1,12 @@
 package ca.mcgill.science.tepid.models.data
 
-import ca.mcgill.science.tepid.models.bindings.*
+import ca.mcgill.science.tepid.models.bindings.CTFER
+import ca.mcgill.science.tepid.models.bindings.ELDER
+import ca.mcgill.science.tepid.models.bindings.TepidDb
+import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
+import javax.persistence.Embedded
+import javax.persistence.EmbeddedId
+import javax.persistence.Entity
 
 /**
  * Created by Allan Wang on 2017-05-03.
@@ -51,7 +57,7 @@ data class FullDestination(
                 ticket = if (isElder || isCtfer) ticket else null,
                 up = up,
                 ppm = ppm
-        ).withDbData(this)
+        )
     }
 
 }
@@ -71,7 +77,7 @@ data class Destination(
         var ticket: DestinationTicket? = null,
         var up: Boolean = false,
         var ppm: Int = 0
-) : TepidDb by TepidDbDelegate()
+)
 
 data class DestinationTicket(
         var up: Boolean = false,

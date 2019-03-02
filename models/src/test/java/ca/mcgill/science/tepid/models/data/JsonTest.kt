@@ -75,7 +75,6 @@ class JsonTest {
 
     @Test
     fun destination() {
-        sanityTest<Destination>()
         sanityTest<FullDestination>()
     }
 
