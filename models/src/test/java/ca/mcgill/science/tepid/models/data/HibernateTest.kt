@@ -159,6 +159,14 @@ class HibernateTest {
         crudTest(testPrintJob)
     }
 
+    @Test
+    fun testAddDestinationTicket(){
+        val testFullUser = FullUser(shortUser = "shortUname")
+        persist(testFullUser)
+        val testDestinationTicket = DestinationTicket(user=testFullUser.toUser())
+        crudTest(testDestinationTicket)
+    }
+
 
     /*@BeforeEach
     fun initialiseDb(){
