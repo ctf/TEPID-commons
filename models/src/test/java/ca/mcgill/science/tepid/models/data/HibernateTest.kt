@@ -167,6 +167,26 @@ class HibernateTest {
         crudTest(testDestinationTicket)
     }
 
+    @Test
+    fun testAddFullDestination(){
+        val testFullDestination = FullDestination(name="testName")
+        crudTest(testFullDestination)
+    }
+
+    @Test
+    fun testAddFullDestinationWithTicket(){
+
+        val testFullUser = FullUser(shortUser = "shortUname")
+        persist(testFullUser)
+        persist(testFullUser)
+        val testDestinationTicket = DestinationTicket(reason="NO REASON AT ALL", user = testFullUser.toUser())
+        persist(testDestinationTicket)
+        val testFullDestination = FullDestination(name="testName", ticket = testDestinationTicket)
+
+        crudTest(testFullDestination)
+
+    }
+
 
     /*@BeforeEach
     fun initialiseDb(){
