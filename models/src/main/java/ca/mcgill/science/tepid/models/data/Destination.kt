@@ -4,13 +4,9 @@ import ca.mcgill.science.tepid.models.bindings.CTFER
 import ca.mcgill.science.tepid.models.bindings.ELDER
 import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
-import javax.persistence.Embedded
-import javax.persistence.EmbeddedId
-import javax.persistence.Entity
+import javax.persistence.*
 
-/**
- * Created by Allan Wang on 2017-05-03.
- */
+@Entity
 data class FullDestination(
         var name: String = "",
         var protocol: String? = null,
@@ -33,10 +29,12 @@ data class FullDestination(
          */
         var path: String? = null,
         var domain: String? = null,
+        @Access(AccessType.FIELD)
+        @OneToOne(targetEntity = DestinationTicket::class)
         var ticket: DestinationTicket? = null,
         var up: Boolean = false,
         var ppm: Int = 0
-) : TepidDb by TepidDbDelegate() {
+) : @EmbeddedId TepidDb by TepidDbDelegate() {
 
     /**
      * Returned a filtered destination variant depending on the role if supplied
