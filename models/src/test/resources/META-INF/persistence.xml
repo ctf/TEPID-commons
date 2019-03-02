@@ -21,6 +21,7 @@
         <class>ca.mcgill.science.tepid.models.data.FullUser</class>
         <class>ca.mcgill.science.tepid.models.data.FullSession</class>
         <class>ca.mcgill.science.tepid.models.data.PrintJob</class>
+        <class>ca.mcgill.science.tepid.models.data.PrintQueue</class>
 
         <class>ca.mcgill.science.tepid.models.data.DestinationTicket</class>
         <class>ca.mcgill.science.tepid.models.data.FullDestination</class>

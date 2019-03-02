@@ -193,6 +193,12 @@ class HibernateTest {
         crudTest(testMarqueeData)
     }
 
+    @Test
+    fun testAddPrintQueue(){
+        val testPrintQueue = PrintQueue("fiddy-fiddy", "false", "Queueueueue", listOf("A", "B"))
+        crudTest(testPrintQueue)
+    }
+
 
     /*@BeforeEach
     fun initialiseDb(){
