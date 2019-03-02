@@ -3,7 +3,6 @@ package ca.mcgill.science.tepid.models.data
 import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
 import ca.mcgill.science.tepid.models.bindings.TepidJackson
-import ca.mcgill.science.tepid.models.bindings.withDbData
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.concurrent.TimeUnit
 import javax.persistence.*
@@ -11,6 +10,7 @@ import javax.persistence.*
 /**
  * Note that this is typically created from using [FullUser.toUser]
  */
+@Embeddable
 data class User(
         var displayName: String? = null,
         var givenName: String? = null,
@@ -25,6 +25,8 @@ data class User(
         var salutation: String? = null,
         var authType: String? = null,
         var role: String = "",
+        @Access(AccessType.FIELD)
+        @ElementCollection
         var preferredName: List<String> = emptyList(),
         var activeSince: Long = -1,
         var studentId: Int = -1,
@@ -147,7 +149,7 @@ data class FullUser(
             studentId = studentId,
             jobExpiration = jobExpiration,
             colorPrinting = colorPrinting
-    ).withDbData(this)
+    )
 
     fun toNameUser(): NameUser = NameUser(
             displayName = displayName,
