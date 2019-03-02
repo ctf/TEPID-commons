@@ -79,6 +79,11 @@ class JsonTest {
     }
 
     @Test
+    fun destinationTicket(){
+        sanityTest<DestinationTicket>()
+    }
+
+    @Test
     fun printJob() {
         sanityTest<PrintJob>()
         checkModel<PrintJob> {

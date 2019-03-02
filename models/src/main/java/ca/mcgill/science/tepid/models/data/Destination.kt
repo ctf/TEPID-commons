@@ -79,9 +79,11 @@ data class Destination(
         var ppm: Int = 0
 )
 
+@Entity
 data class DestinationTicket(
         var up: Boolean = false,
         var reason: String? = null,
+        @Embedded
         var user: User? = null,
         var reported: Long = System.currentTimeMillis()
-) : TepidJackson
+) : @EmbeddedId TepidDb by TepidDbDelegate()

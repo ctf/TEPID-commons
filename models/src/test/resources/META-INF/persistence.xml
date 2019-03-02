@@ -22,6 +22,7 @@
         <class>ca.mcgill.science.tepid.models.data.FullSession</class>
         <class>ca.mcgill.science.tepid.models.data.PrintJob</class>
 
+        <class>ca.mcgill.science.tepid.models.data.DestinationTicket</class>
         <properties>
             <!-- Configuring JDBC properties -->
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test;"/>
