@@ -119,15 +119,20 @@ class HibernateTest {
         collectionTest<TestListWithValEmbeddable, TestImmutableFieldEmbeddable>({l -> TestListWithValEmbeddable(l) }, { s -> TestImmutableFieldEmbeddable(s) }, false)
     }
 
-    fun <C: TepidDb> crudTest (obj: C){
+    fun <C> persist (obj:C){
         em.transaction.begin()
         em.persist(obj)
         em.transaction.commit()
+    }
+
+    fun <C: TepidDb> crudTest (obj: C){
+        persist(obj)
 
         val retrieved : C = em.find(obj::class.java, obj._id)
         assertNotNull(retrieved)
         assertEquals(obj, retrieved)
     }
+
     @Test
     fun testAddFullUser(){
         em.transaction.begin()
