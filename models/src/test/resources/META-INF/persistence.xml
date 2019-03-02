@@ -20,6 +20,7 @@
         <!--<class>ca.mcgill.science.tepid.models.data.Course</class>-->
         <class>ca.mcgill.science.tepid.models.data.FullUser</class>
         <class>ca.mcgill.science.tepid.models.data.FullSession</class>
+        <class>ca.mcgill.science.tepid.models.data.PrintJob</class>
 
         <properties>
             <!-- Configuring JDBC properties -->

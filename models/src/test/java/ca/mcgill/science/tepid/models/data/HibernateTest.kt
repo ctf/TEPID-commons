@@ -152,6 +152,13 @@ class HibernateTest {
         crudTest(testFullSession)
     }
 
+    @Test
+    fun testAddPrintJob(){
+        val testPrintJob = PrintJob(name="Print Print")
+        testPrintJob._id = "TEST"
+        crudTest(testPrintJob)
+    }
+
 
     /*@BeforeEach
     fun initialiseDb(){
