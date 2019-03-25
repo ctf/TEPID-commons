@@ -12,7 +12,7 @@ import retrofit2.http.*
 import java.io.InputStream
 
 /**
- * Created by Allan Wang on 2017-10-28.
+ * API version 1.02.00
  */
 interface ITepid {
 
