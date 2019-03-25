@@ -239,11 +239,6 @@ interface ITepid {
     fun getAttachment(@Path("queue") queue: String, @Path("id") id: String, @Path("file") file: String): Call<ResponseBody>
 
     /**
-     * todo implement
-     */
-    //@GET("queues/_changes")
-
-    /**
      * Return list of load balancers available
      */
     @GET("queues/loadbalancers")
@@ -304,14 +299,6 @@ interface ITepid {
     @MinAuthority(USER)
     fun reprintJob(@Path("id") id: String): Call<String>
 
-    /**
-     * Get changes for the specified job id
-     */
-    @GET("jobs/job/{id}/_changes")
-    @MinAuthority(USER)
-    fun getJobChanges(@Path("id") id: String, @Query("feed") feed: String, @Query("since") since: String): Call<List<ChangeDelta>>
-
-
     /*
      * -------------------------------------------
      * Misc
@@ -370,6 +357,3 @@ fun ITepid.refundJob(id: String) = refundJob(id, true)
 fun ITepid.queryUsers(query: String) = queryUsers(query, -1)
 
 fun ITepid.getPrintJobs(query: String) = getPrintJobs(query, -1)
-
-fun ITepid.getJobChanges(id: String) = getJobChanges(id, "longpoll", "now")
-//fun ITepid.getJobChanges(id: String, since: Long) = getJobChanges(id, "longpoll", since.toString())
