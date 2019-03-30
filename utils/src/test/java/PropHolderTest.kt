@@ -43,10 +43,9 @@ class PropHolderTest {
         assertEquals(null, actual)
     }
 
-    @Test(expected = NoSuchElementException::class)
+    @Test
     fun testGetNonNullNull() {
-        val actual = propHolder.getNonNull("doesNotExist").value
-        fail("Did not throw error")
+        assertThrows<NoSuchElementException>(){ propHolder.getNonNull("doesNotExist").value}
     }
 
     @Test
