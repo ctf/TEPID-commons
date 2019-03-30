@@ -25,8 +25,3 @@ data class ErrorResponse(
         val error: String = "",
         val extras: List<String> = emptyList()
 ) : TepidJackson
-
-data class ChangeDelta(
-        val id: String = "",
-        val extras: List<String> = emptyList()
-) : TepidJackson
