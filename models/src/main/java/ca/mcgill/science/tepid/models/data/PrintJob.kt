@@ -22,6 +22,7 @@ data class PrintJob(
         var printed: Long = -1,
         var failed: Long = -1,
         var received: Long = -1,
+        @Access(AccessType.FIELD)
         var isRefunded: Boolean = false,
         var eta: Long = 0,
         var deleteDataOn: Long = 0
