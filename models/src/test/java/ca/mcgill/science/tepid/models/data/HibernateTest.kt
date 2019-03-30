@@ -179,10 +179,13 @@ class HibernateTest {
 
         val testFullUser = FullUser(shortUser = "shortUname")
         persist(testFullUser)
-        persist(testFullUser)
+        var testFullDestination = FullDestination(name="testName")
+        persist(testFullDestination)
+
         val testDestinationTicket = DestinationTicket(reason="NO REASON AT ALL", user = testFullUser.toUser())
+        testDestinationTicket._id = "testDestinationId"
         persist(testDestinationTicket)
-        val testFullDestination = FullDestination(name="testName", ticket = testDestinationTicket)
+        testFullDestination.ticket = testDestinationTicket
 
         crudTest(testFullDestination)
 
