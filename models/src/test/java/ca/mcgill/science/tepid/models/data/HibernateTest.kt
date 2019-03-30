@@ -4,12 +4,13 @@ import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
 import org.hibernate.annotations.TypeDef
 import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.io.Serializable
 import javax.persistence.*
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 
 @TypeDef(
         name = "ListTest",
@@ -209,7 +210,22 @@ class HibernateTest {
         })
     }*/
 
+    @AfterEach
+    fun truncateUsed(){
+        val u = listOf(FullSession::class.java, FullDestination::class.java, DestinationTicket::class.java, FullUser::class.java)
+        u.forEach{truncate(it)}
+    }
+
+
     companion object {
+        internal fun <T> truncate(classParameter: Class<T>){
+            em.transaction.begin()
+            em.flush()
+            em.clear()
+            em.createQuery("DELETE FROM ${classParameter.simpleName} e").executeUpdate()
+            em.transaction.commit()
+        }
+
         lateinit var emf: EntityManagerFactory
         lateinit var em: EntityManager
 
