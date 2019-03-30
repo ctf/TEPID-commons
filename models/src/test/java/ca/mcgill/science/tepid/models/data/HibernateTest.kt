@@ -161,6 +161,21 @@ class HibernateTest {
     }
 
     @Test
+    fun testIsRefunded(){
+        val testPrintJob = PrintJob(name="TestIsRefunded", isRefunded = true)
+        testPrintJob._id = "TEST"
+        persist(testPrintJob)
+
+        val retrieved = em.find(PrintJob::class.java, testPrintJob._id)
+        assertNotNull(retrieved)
+        assertEquals(retrieved.isRefunded, true)
+
+        val retrievedByQuery = em.createQuery("SELECT c FROM PrintJob c WHERE c.isRefunded = TRUE", PrintJob::class.java).singleResult
+        assertNotNull(retrievedByQuery)
+        assertEquals(retrievedByQuery.isRefunded, true)
+    }
+
+    @Test
     fun testAddDestinationTicket(){
         val testFullUser = FullUser(shortUser = "shortUname")
         persist(testFullUser)
