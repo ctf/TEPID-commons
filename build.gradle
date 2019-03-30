@@ -52,6 +52,7 @@ subprojects {
     test {
         dependsOn cleanTest
         testLogging.showStandardStreams = true
+        useJUnitPlatform()
     }
 
     task sourcesJar(type: Jar, dependsOn: classes) {
