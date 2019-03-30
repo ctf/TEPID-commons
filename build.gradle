@@ -42,6 +42,13 @@ subprojects {
         maven { url "https://jitpack.io" }
     }
 
+    compileKotlin {
+        kotlinOptions.jvmTarget = tepid.jvm_target
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = tepid.jvm_target
+    }
+    
     test {
         dependsOn cleanTest
         testLogging.showStandardStreams = true
