@@ -1,6 +1,6 @@
 import ca.mcgill.science.tepid.utils.FilePropLoader
 import ca.mcgill.science.tepid.utils.JarPropLoader
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 /**

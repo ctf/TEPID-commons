@@ -1,8 +1,8 @@
 import ca.mcgill.science.tepid.utils.FilePropLoader
 import ca.mcgill.science.tepid.utils.JarPropLoader
 import ca.mcgill.science.tepid.utils.PropHolder
-import org.junit.Ignore
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 import kotlin.test.fail
 

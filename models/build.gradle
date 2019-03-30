@@ -17,7 +17,6 @@ dependencies {
     compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:${tepid.jackson}"
     compile "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:${tepid.jackson}"
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:${tepid.jackson}"
-    compile "ca.allanwang:kit:${tepid.kit}"
 
     compile "org.hibernate:hibernate-core:${tepid.hibernate}"
     compile "org.hibernate:hibernate-testing:${tepid.hibernate}"

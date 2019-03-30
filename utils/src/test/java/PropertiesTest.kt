@@ -2,7 +2,7 @@ import ca.mcgill.science.tepid.utils.DefaultProps
 import ca.mcgill.science.tepid.utils.JarPropLoader
 import ca.mcgill.science.tepid.utils.PropHolder
 import ca.mcgill.science.tepid.utils.PropsAbout
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class PropertiesTest {
