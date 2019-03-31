@@ -60,6 +60,19 @@ class TepidDbDelegate : TepidDb, TepidId by TepidIdDelegate() {
 }
 
 @Embeddable
+/** Kotlin and Hibernate don't play nice
+ *  Kotlin cannot have an interface with an actual field, only properties
+ *  This is a problem, since the implementations of the interface must define the field
+ *  And so getting Hibernate to understand this situation is confusing
+ *
+ *  The resolution is to
+ *  1. Provide full getters and setters for the ID, which is not a Property of the interface.
+ *      These may use a Property of the interface.
+ *      Remember that the interface does not (because it cannot) have fields
+ *  2. Place the annotations on these getters
+ *  3. The Property which cannot have a field in the interface will have a Field in the implementation, so we have to mark the Field as transient.
+ *      However, since the Field  doesn't actually exist (only the autogen getters and setters) we have to place the annotation on the getter of the Property
+ */
 interface TepidId : TepidJackson {
     @get:Transient
     var _id: String?
@@ -72,7 +85,7 @@ interface TepidId : TepidJackson {
     @Id
     @Column(columnDefinition = "char(36) default 'undefined'")
     fun getId() = _id ?: ""
-    fun setId(value: String?) {println(value); _id=value} // necessary for Hibernate, since this is a property with backing field
+    fun setId(value: String?) {println(value); _id=value}
 }
 
 class TepidIdDelegate : TepidId {
