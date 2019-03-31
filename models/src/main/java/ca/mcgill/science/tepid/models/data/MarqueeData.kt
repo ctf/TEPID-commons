@@ -12,6 +12,6 @@ import javax.persistence.*
 data class MarqueeData(
         var title: String? = null, //the title to be displayed over the message
         @Access(AccessType.FIELD)
-        @ElementCollection
+        @ElementCollection(fetch = FetchType.EAGER)
         var entry: List<String> = emptyList()    //the message itself
 ) : @EmbeddedId TepidDb by TepidDbDelegate()
