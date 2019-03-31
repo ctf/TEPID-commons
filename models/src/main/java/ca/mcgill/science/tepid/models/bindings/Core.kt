@@ -3,9 +3,12 @@ package ca.mcgill.science.tepid.models.bindings
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
+import org.hibernate.annotations.GenericGenerator
 import javax.persistence.Column
 import javax.persistence.Embeddable
+import javax.persistence.GeneratedValue
 import javax.persistence.Id
+import javax.persistence.Transient
 
 /**
  * DB Metadata common to all db related classes
@@ -58,6 +61,7 @@ class TepidDbDelegate : TepidDb, TepidId by TepidIdDelegate() {
 
 @Embeddable
 interface TepidId : TepidJackson {
+    @get:Transient
     var _id: String?
 
     /*
@@ -68,10 +72,15 @@ interface TepidId : TepidJackson {
     @Id
     @Column(columnDefinition = "char(36) default 'undefined'")
     fun getId() = _id ?: ""
-    fun setId(value: String?) {_id=value} // necessary for Hibernate, since this is a property with backing field
+    fun setId(value: String?) {println(value); _id=value} // necessary for Hibernate, since this is a property with backing field
 }
 
 class TepidIdDelegate : TepidId {
+//    @GeneratedValue(generator = "UUID")
+//    @GenericGenerator(
+//            name = "UUID",
+//    strategy = "org.hibernate.id.UUIDGenerator"
+//    )
     override var _id: String? = null
 }
 
