@@ -230,7 +230,12 @@ class HibernateTest {
 
     @AfterEach
     fun truncateUsed(){
-        val u = listOf(FullSession::class.java, FullDestination::class.java, DestinationTicket::class.java, FullUser::class.java)
+        val u = listOf(
+                FullSession::class.java,
+                PrintJob::class.java,
+                FullDestination::class.java,
+                DestinationTicket::class.java,
+                FullUser::class.java)
         u.forEach{truncate(it)}
     }
 
