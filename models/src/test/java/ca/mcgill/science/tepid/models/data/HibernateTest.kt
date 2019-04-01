@@ -25,7 +25,7 @@ data class TestList(
     @Access(AccessType.FIELD)
     @OneToMany(targetEntity = TestListedEntity::class)
     var datas: List<TestListedEntity> = emptyList()
-) : @EmbeddedId TepidDb by TepidDbDelegate() {
+) : @Embedded TepidDb by TepidDbDelegate() {
 
 }
 
@@ -37,7 +37,7 @@ data class TestEmbedding(
     @Access(AccessType.FIELD)
     @ElementCollection(targetClass = TestEmbeddable::class)
     var datas: List<TestEmbeddable> = emptyList()
-) : @EmbeddedId TepidDb by TepidDbDelegate()
+) : @Embedded TepidDb by TepidDbDelegate()
 
 @Entity
 data class TestImmutableField(@Id val data:String) : Serializable
@@ -47,7 +47,7 @@ data class TestListWithVal(
     @Access(AccessType.FIELD)
     @ElementCollection(targetClass = TestImmutableField::class)
     var datas: List<TestImmutableField> = emptyList()
-) : @EmbeddedId TepidDb by TepidDbDelegate()
+) : @Embedded TepidDb by TepidDbDelegate()
 
 @Embeddable
 data class TestImmutableFieldEmbeddable(@Access(AccessType.FIELD) val data:String) : Serializable
@@ -58,13 +58,13 @@ data class TestListWithValEmbeddable(
         @Embedded
         @ElementCollection(targetClass = TestImmutableFieldEmbeddable::class)
         var datas: List<TestImmutableFieldEmbeddable> = emptyList()
-) : @EmbeddedId TepidDb by TepidDbDelegate()
+) : @Embedded TepidDb by TepidDbDelegate()
 
 @Entity
 data class TestEntity(
         @Column(nullable = false)
         var content: String = ""
-) : @EmbeddedId TepidDb by TepidDbDelegate()
+) : @Embedded TepidDb by TepidDbDelegate()
 
 class HibernateTest {
 

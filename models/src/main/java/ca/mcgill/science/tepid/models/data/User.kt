@@ -90,7 +90,7 @@ data class FullUser(
         var studentId: Int = -1,
         var jobExpiration: Long = TimeUnit.DAYS.toMillis(7), // DB authoritative
         var colorPrinting: Boolean = false // DB authoritative
-) : @EmbeddedId TepidDb by TepidDbDelegate() {
+) : @Embedded TepidDb by TepidDbDelegate() {
 
     init {
         updateUserNameInformation()

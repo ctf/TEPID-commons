@@ -14,4 +14,4 @@ data class MarqueeData(
         @Access(AccessType.FIELD)
         @ElementCollection(fetch = FetchType.EAGER)
         var entry: List<String> = emptyList()    //the message itself
-) : @EmbeddedId TepidDb by TepidDbDelegate()
+) : @Embedded TepidDb by TepidDbDelegate()
