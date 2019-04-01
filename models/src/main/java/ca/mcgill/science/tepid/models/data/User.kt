@@ -25,12 +25,10 @@ data class User(
         var salutation: String? = null,
         var authType: String? = null,
         var role: String = "",
-        @Access(AccessType.FIELD)
-        @ElementCollection
-        var preferredName: List<String> = emptyList(),
+        var preferredName: String? = null,
         var activeSince: Long = -1,
         var studentId: Int = -1,
-        var jobExpiration: Long = TimeUnit.DAYS.toMillis(7), //why is this here
+        var jobExpiration: Long = TimeUnit.DAYS.toMillis(7),
         var colorPrinting: Boolean = false
 ) {
 
@@ -72,7 +70,7 @@ data class FullUser(
         var middleName: String? = null,                     // LDAP authoritative
         var lastName: String? = null,                       // LDAP authoritative
         var shortUser: String? = null,                      // LDAP authoritative
-        var longUser: String? = null,                       //Expected lower case
+        var longUser: String? = null,                       // Expected lower case
         var email: String? = null,                          // LDAP authoritative
         var faculty: String? = null,                        // LDAP authoritative
         var nick: String? = null,                           // DB authoritative
@@ -87,9 +85,7 @@ data class FullUser(
         @Access(AccessType.FIELD)
         @ElementCollection(targetClass = Course::class)
         var courses: List<Course> = emptyList(),            // Computer, from LDAP
-        @Access(AccessType.FIELD)
-        @ElementCollection
-        var preferredName: List<String> = emptyList(),      // DB authoritative
+        var preferredName: String? = null,                  // DB authoritative
         var activeSince: Long = System.currentTimeMillis(), // LDAP authoritative
         var studentId: Int = -1,
         var jobExpiration: Long = TimeUnit.DAYS.toMillis(7), // DB authoritative
@@ -104,13 +100,8 @@ data class FullUser(
      * Adds information relating to the name of a student to a FullUser [user]
      */
     fun updateUserNameInformation() {
-        salutation = if (nick == null)
-            if (!preferredName.isEmpty()) preferredName[preferredName.size - 1]
-            else givenName else nick
-        if (!preferredName.isEmpty())
-            realName = preferredName.asReversed().joinToString(" ")
-        else
-            realName = "${givenName} ${lastName}"
+        salutation = nick ?: preferredName ?:givenName
+        realName = preferredName ?: "${givenName} ${lastName}"
     }
 
     override var type: String? = "user"
@@ -144,7 +135,7 @@ data class FullUser(
             salutation = salutation,
             authType = authType,
             role = role,
-            preferredName = preferredName.toList(), //Makes a copy of the list, to avoid "Found shared references to a collection" error
+            preferredName = preferredName,
             activeSince = activeSince,
             studentId = studentId,
             jobExpiration = jobExpiration,
@@ -179,5 +170,5 @@ data class NameUser(
         var nick: String? = null,
         var realName: String? = null,
         var salutation: String? = null,
-        var preferredName: List<String> = emptyList()
+        var preferredName: String? = null
 )
