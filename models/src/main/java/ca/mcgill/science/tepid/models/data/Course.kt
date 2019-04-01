@@ -7,7 +7,11 @@ import javax.persistence.AccessType
 import javax.persistence.Embeddable
 
 @Embeddable
-data class Course(@Access(AccessType.FIELD) val name: String, @Access(AccessType.FIELD) val season: Season, @Access(AccessType.FIELD) val year: Int) : TepidJackson {
+data class Course(
+        @Access(AccessType.FIELD) val name: String,
+        @Access(AccessType.FIELD) val season: Season,
+        @Access(AccessType.FIELD) val year: Int
+) : TepidJackson {
     fun semester() = Semester(season, year)
 }
 

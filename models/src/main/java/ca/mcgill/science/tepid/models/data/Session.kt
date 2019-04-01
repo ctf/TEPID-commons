@@ -9,7 +9,7 @@ import javax.persistence.*
 data class FullSession(
         var role: String = "",
         @Access(AccessType.FIELD)
-        @ManyToOne(targetEntity = FullUser::class)
+        @ManyToOne(targetEntity = FullUser::class, fetch = FetchType.EAGER)
         var user: FullUser,
         var expiration: Long = -1L,
         var persistent: Boolean = true

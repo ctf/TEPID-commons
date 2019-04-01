@@ -10,7 +10,7 @@ data class PrintQueue(
         var defaultOn: String? = null,
         var name: String? = null,
         @Access(AccessType.FIELD)
-        @ElementCollection
+        @ElementCollection(fetch = FetchType.EAGER)
         var destinations: List<String> = emptyList()
 ) : @EmbeddedId TepidDb by TepidDbDelegate() {
 
