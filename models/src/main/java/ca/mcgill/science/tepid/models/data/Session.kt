@@ -17,12 +17,6 @@ data class FullSession(
 
     override var type: String? = "session"
 
-    override fun toString() = "Session $_id"
-
-    override fun equals(other: Any?) = !_id.isNullOrBlank() && other is FullSession && _id == other._id && _rev == other._rev
-
-    override fun hashCode() = getId().hashCode() * 13 + getRev().hashCode()
-
     @Transient
     fun isValid() = expiration == -1L || expiration > System.currentTimeMillis()
 
