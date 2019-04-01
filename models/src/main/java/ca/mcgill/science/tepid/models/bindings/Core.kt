@@ -85,7 +85,7 @@ interface TepidId : TepidJackson {
     @Id
     @Column(columnDefinition = "char(36) default 'undefined'")
     fun getId() = _id ?: ""
-    fun setId(value: String?) {println(value); _id=value}
+    fun setId(value: String?) {println("▄▄▄▄TRYING TO SET ID▄▄▄▄ $value"); _id=value}
 }
 
 class TepidIdDelegate : TepidId {
