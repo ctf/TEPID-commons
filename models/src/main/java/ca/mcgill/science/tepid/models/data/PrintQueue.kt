@@ -12,7 +12,7 @@ data class PrintQueue(
         @Access(AccessType.FIELD)
         @ElementCollection(fetch = FetchType.EAGER)
         var destinations: List<String> = emptyList()
-) : @Embedded TepidDb by TepidDbDelegate() {
+) : TepidDb by TepidDbDelegate() {
 
     override var type: String? = "queue"
 

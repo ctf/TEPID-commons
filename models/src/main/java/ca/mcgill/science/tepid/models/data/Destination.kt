@@ -84,4 +84,4 @@ data class DestinationTicket(
         @Embedded
         var user: User? = null,
         var reported: Long = System.currentTimeMillis()
-) : @Embedded TepidDb by TepidDbDelegate()
+) : TepidDb by TepidDbDelegate()

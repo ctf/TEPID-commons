@@ -13,7 +13,7 @@ data class FullSession(
         var user: FullUser,
         var expiration: Long = -1L,
         var persistent: Boolean = true
-) : @Embedded TepidDb by TepidDbDelegate() {
+) : TepidDb by TepidDbDelegate() {
 
     override var type: String? = "session"
 

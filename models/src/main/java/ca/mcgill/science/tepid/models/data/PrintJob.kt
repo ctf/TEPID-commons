@@ -26,7 +26,7 @@ data class PrintJob(
         var isRefunded: Boolean = false,
         var eta: Long = 0,
         var deleteDataOn: Long = 0
-) : @Embedded TepidDb by TepidDbDelegate(), Comparable<PrintJob> {
+) : TepidDb by TepidDbDelegate(), Comparable<PrintJob> {
 
     override var type: String? = "job"
 
