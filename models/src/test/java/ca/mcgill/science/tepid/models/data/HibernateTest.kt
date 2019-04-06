@@ -1,7 +1,6 @@
 package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
-import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
 import org.hibernate.annotations.TypeDef
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -10,6 +9,7 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.io.Serializable
+import java.util.*
 import javax.persistence.*
 
 @TypeDef(
@@ -78,10 +78,9 @@ class HibernateTest {
     @Test
     fun testAddObject(){
 
-        em.transaction.begin()
         val test = TestEntity(content = "t")
-        em.persist(test)
-        em.transaction.commit()
+        persist(test)
+
         val te = em.find(TestEntity::class.java, test._id)
 
         assertNotNull(te)
@@ -134,10 +133,8 @@ class HibernateTest {
         val e0 = TestForeignKey(datum = embed0)
         e0._id = "TEST"
 
-        em.transaction.begin()
-        em.persist(embed0)
-        em.persist(e0)
-        em.transaction.commit()
+        persist(embed0)
+        persist(e0)
 
         val r0 = em.find(TestForeignKey::class.java,"TEST")
 
@@ -147,8 +144,13 @@ class HibernateTest {
 
     }
 
-    fun <C> persist (obj:C){
+    fun <C: TepidDb> persist (obj:C){
         em.transaction.begin()
+        if(!obj._id.isNullOrBlank()){
+//            em.merge(obj)
+        } else {
+            obj._id = UUID.randomUUID().toString()
+        }
         em.persist(obj)
         em.transaction.commit()
     }
@@ -264,14 +266,28 @@ class HibernateTest {
 
     @AfterEach
     fun truncateUsed(){
-        val u = listOf(
+        val truncatable = listOf(
+
+                TestListWithVal::class.java,
+                TestImmutableField::class.java,
+
+                TestEntity::class.java,
+                TestList::class.java,
+                TestListedEntity::class.java,
                 TestForeignKey::class.java,
                 FullSession::class.java,
                 PrintJob::class.java,
                 FullDestination::class.java,
                 DestinationTicket::class.java,
                 FullUser::class.java)
-        u.forEach{truncate(it)}
+        truncatable.forEach{truncate(it)}
+        val removal = listOf(
+                TestEmbedding::class.java,
+                TestListWithValEmbeddable::class.java
+        )
+        removal.forEach {
+            deleteAllIndividually(it)
+        }
     }
 
 
@@ -281,6 +297,15 @@ class HibernateTest {
             em.flush()
             em.clear()
             em.createQuery("DELETE FROM ${classParameter.simpleName} e").executeUpdate()
+            em.transaction.commit()
+        }
+
+        internal fun<T> deleteAllIndividually(classParameter: Class<T>){
+            em.transaction.begin()
+            val l : List<T> = em.createQuery("SELECT c FROM ${classParameter.simpleName} c", classParameter).resultList
+            l.forEach {
+                em.remove(it)
+            }
             em.transaction.commit()
         }
 
