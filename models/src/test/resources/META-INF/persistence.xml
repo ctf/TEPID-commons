@@ -15,6 +15,7 @@
         <class>ca.mcgill.science.tepid.models.data.TestImmutableField</class>
         <class>ca.mcgill.science.tepid.models.data.TestListWithValEmbeddable</class>
         <class>ca.mcgill.science.tepid.models.data.TestImmutableFieldEmbeddable</class>
+        <class>ca.mcgill.science.tepid.models.data.TestForeignKey</class>
 
 
         <!--<class>ca.mcgill.science.tepid.models.data.Course</class>-->

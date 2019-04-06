@@ -66,6 +66,13 @@ data class TestEntity(
         var content: String = ""
 ) : TepidDb by TepidDbDelegate()
 
+@Entity
+data class TestForeignKey(
+        @Access(AccessType.FIELD)
+        @ManyToOne(fetch = FetchType.EAGER)
+        var datum : FullUser
+) : TepidDb by TepidDbDelegate()
+
 class HibernateTest {
 
     @Test
@@ -118,6 +125,26 @@ class HibernateTest {
     @Test
     fun testAddObjectWithImmutableFieldEmbeddable(){
         collectionTest<TestListWithValEmbeddable, TestImmutableFieldEmbeddable>({l -> TestListWithValEmbeddable(l) }, { s -> TestImmutableFieldEmbeddable(s) }, false)
+    }
+
+
+    @Test
+    fun testFk(){
+        val embed0 = FullUser(shortUser = "TESTENTITY")
+        val e0 = TestForeignKey(datum = embed0)
+        e0._id = "TEST"
+
+        em.transaction.begin()
+        em.persist(embed0)
+        em.persist(e0)
+        em.transaction.commit()
+
+        val r0 = em.find(TestForeignKey::class.java,"TEST")
+
+        assertNotNull(r0)
+        assertEquals(e0, r0)
+
+
     }
 
     fun <C> persist (obj:C){
@@ -238,6 +265,7 @@ class HibernateTest {
     @AfterEach
     fun truncateUsed(){
         val u = listOf(
+                TestForeignKey::class.java,
                 FullSession::class.java,
                 PrintJob::class.java,
                 FullDestination::class.java,
