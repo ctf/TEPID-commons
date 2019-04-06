@@ -90,7 +90,7 @@ data class FullUser(
         var studentId: Int = -1,
         var jobExpiration: Long = TimeUnit.DAYS.toMillis(7), // DB authoritative
         var colorPrinting: Boolean = false // DB authoritative
-) : TepidDb by TepidDbDelegate() {
+) : TepidDb(type="user") {
 
     init {
         updateUserNameInformation()
@@ -103,8 +103,6 @@ data class FullUser(
         salutation = nick ?: preferredName ?:givenName
         realName = preferredName ?: "${givenName} ${lastName}"
     }
-
-    override var type: String? = "user"
 
     /**
      * Check if supplied [name] matches

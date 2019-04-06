@@ -53,10 +53,12 @@ fun <T : TepidId> T.withIdData(main: TepidId): T {
  * todo see if type is needed
  */
 @MappedSuperclass
-abstract class TepidDb : TepidId() {
-    var _rev: String? = null
-    var type: String? = null
-    var schema: String? = null
+abstract class TepidDb(
+        var _rev: String? = null,
+        var type: String? = null,
+        var schema: String? = null
+) : TepidId() {
+
 
     /*
      * Helper function to retrieve a nonnull rev

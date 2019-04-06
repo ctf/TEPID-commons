@@ -8,4 +8,4 @@ data class SignUp(
         var givenName: String = name,
         var nickname: String? = null,
         var slots: Map<String, Array<String>> = emptyMap()
-) : TepidDb by TepidDbDelegate()
+) : TepidDb(type="signup")

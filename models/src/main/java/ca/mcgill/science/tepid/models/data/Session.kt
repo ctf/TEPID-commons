@@ -13,9 +13,7 @@ data class FullSession(
         var user: FullUser,
         var expiration: Long = -1L,
         var persistent: Boolean = true
-) : TepidDb by TepidDbDelegate() {
-
-    override var type: String? = "session"
+) : TepidDb(type="session") {
 
     @Transient
     fun isValid() = expiration == -1L || expiration > System.currentTimeMillis()
@@ -35,7 +33,7 @@ data class Session(
         var role: String = user.role,
         var expiration: Long = -1L,
         var persistent: Boolean = true
-) : TepidId by TepidIdDelegate() {
+) : TepidId() {
     val authHeader: String
         @JsonIgnore
         get() = encodeToHeader(user.shortUser, _id)

@@ -9,4 +9,4 @@ import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
 data class EmailReasons(
         var heading: String? = null,
         var body: String? = null
-) : TepidDb by TepidDbDelegate()
+) : TepidDb()

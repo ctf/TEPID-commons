@@ -34,7 +34,7 @@ data class FullDestination(
         var ticket: DestinationTicket? = null,
         var up: Boolean = false,
         var ppm: Int = 0
-) : @Embedded TepidDb by TepidDbDelegate() {
+) : TepidDb() {
 
     /**
      * Returned a filtered destination variant depending on the role if supplied
@@ -84,4 +84,4 @@ data class DestinationTicket(
         @Embedded
         var user: User? = null,
         var reported: Long = System.currentTimeMillis()
-) : TepidDb by TepidDbDelegate()
+) : TepidDb()

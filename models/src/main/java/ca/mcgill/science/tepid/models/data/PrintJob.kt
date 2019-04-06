@@ -26,9 +26,9 @@ data class PrintJob(
         var isRefunded: Boolean = false,
         var eta: Long = 0,
         var deleteDataOn: Long = 0
-) : TepidDb by TepidDbDelegate(), Comparable<PrintJob> {
+) : TepidDb(type = "job"), Comparable<PrintJob> {
 
-    override var type: String? = "job"
+
 
     fun truncateName(length: Int): String {
         return if (name.length > length) name.substring(0, length - 1) + "\u2026" else name
