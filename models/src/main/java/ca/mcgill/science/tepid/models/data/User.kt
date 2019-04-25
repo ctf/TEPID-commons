@@ -80,9 +80,11 @@ data class FullUser(
         var role: String = "",                              // Computed
         var password: String? = null,                       // Password encrypted with bcrypt for local users
         @Access(AccessType.FIELD)
+        @OrderColumn
         @ElementCollection(fetch = FetchType.EAGER)
         var groups: List<String> = emptyList(),             // Computed, from LDAP
         @Access(AccessType.FIELD)
+        @OrderColumn
         @ElementCollection(targetClass = Course::class, fetch = FetchType.EAGER)
         var courses: List<Course> = emptyList(),            // Computer, from LDAP
         var preferredName: String? = null,                  // DB authoritative
