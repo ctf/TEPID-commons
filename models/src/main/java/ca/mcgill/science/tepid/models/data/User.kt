@@ -81,10 +81,10 @@ data class FullUser(
         var password: String? = null,                       // Password encrypted with bcrypt for local users
         @Access(AccessType.FIELD)
         @ElementCollection(fetch = FetchType.EAGER)
-        var groups: Set<String> = emptySet(),             // Computed, from LDAP
+        var groups: List<String> = emptyList(),             // Computed, from LDAP
         @Access(AccessType.FIELD)
         @ElementCollection(targetClass = Course::class, fetch = FetchType.EAGER)
-        var courses: Set<Course> = emptySet(),            // Computer, from LDAP
+        var courses: List<Course> = emptyList(),            // Computer, from LDAP
         var preferredName: String? = null,                  // DB authoritative
         var activeSince: Long = System.currentTimeMillis(), // LDAP authoritative
         var studentId: Int = -1,
