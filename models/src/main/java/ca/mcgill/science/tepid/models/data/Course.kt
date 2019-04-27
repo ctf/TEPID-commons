@@ -1,17 +1,19 @@
 package ca.mcgill.science.tepid.models.data
 
+import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidJackson
 import java.util.*
 import javax.persistence.Access
 import javax.persistence.AccessType
 import javax.persistence.Embeddable
+import javax.persistence.Entity
 
-@Embeddable
+@Entity
 data class Course(
         @Access(AccessType.FIELD) val name: String,
         @Access(AccessType.FIELD) val season: Season,
         @Access(AccessType.FIELD) val year: Int
-) : TepidJackson {
+) : TepidDb(type = "course") {
     fun semester() = Semester(season, year)
 }
 
