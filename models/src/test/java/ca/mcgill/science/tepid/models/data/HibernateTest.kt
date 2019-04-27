@@ -172,9 +172,10 @@ class HibernateTest {
 
     @Test
     fun testFullUserGroups(){
-        val test = FullUser(shortUser = "shortUname", groups = setOf("G1", "G2"))
+        val test = FullUser(shortUser = "shortUname", groups = listOf(AdGroup("G1"), AdGroup("G2")))
         test._id="TEST"
 
+        test.groups.forEach { persist(it) }
         persist(test)
 
         val retrieved = em.find(FullUser::class.java, "TEST")
@@ -190,7 +191,10 @@ class HibernateTest {
         println("===========================")
 
         val newEm = emf.createEntityManager()
-        test.groups = setOf("G1", "G2", "G3")
+
+        test.groups = listOf(AdGroup("G1"), AdGroup("G2"), AdGroup("G3"))
+        test.groups.forEach { persist(it) }
+
 
         newEm.transaction.begin()
         newEm.merge(test)
