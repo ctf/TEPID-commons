@@ -171,6 +171,43 @@ class HibernateTest {
     }
 
     @Test
+    fun testFullUserGroups(){
+        val test = FullUser(shortUser = "shortUname", groups = setOf("G1", "G2"))
+        test._id="TEST"
+
+        persist(test)
+
+        val retrieved = em.find(FullUser::class.java, "TEST")
+        assertNotNull(retrieved)
+        assertEquals(test.groups, retrieved.groups)
+
+        // repersist
+        em.detach(test)
+        em.close()
+
+        em = emf.createEntityManager()
+
+        println("===========================")
+
+        val newEm = emf.createEntityManager()
+        test.groups = setOf("G1", "G2", "G3")
+
+        newEm.transaction.begin()
+        newEm.merge(test)
+        newEm.transaction.commit()
+
+        val retrieved1 = newEm.find(FullUser::class.java, "TEST")
+
+        println("===========================")
+
+
+        assertNotNull(retrieved1)
+        assertEquals(test.groups, retrieved1.groups)
+
+
+    }
+
+    @Test
     fun testAddFullSession(){
         val testFullUser = FullUser(shortUser = "shortUname")
 
@@ -278,12 +315,12 @@ class HibernateTest {
                 FullSession::class.java,
                 PrintJob::class.java,
                 FullDestination::class.java,
-                DestinationTicket::class.java,
-                FullUser::class.java)
+                DestinationTicket::class.java)
         truncatable.forEach{truncate(it)}
         val removal = listOf(
                 TestEmbedding::class.java,
-                TestListWithValEmbeddable::class.java
+                TestListWithValEmbeddable::class.java,
+                FullUser::class.java
         )
         removal.forEach {
             deleteAllIndividually(it)
