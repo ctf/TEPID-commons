@@ -1,7 +1,6 @@
 package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
-import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
 import ca.mcgill.science.tepid.models.bindings.TepidJackson
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.concurrent.TimeUnit
@@ -81,12 +80,12 @@ data class FullUser(
         var password: String? = null,                       // Password encrypted with bcrypt for local users
         @Access(AccessType.FIELD)
         @OrderColumn
-        @ElementCollection(fetch = FetchType.EAGER)
-        var groups: List<String> = emptyList(),             // Computed, from LDAP
+        @OneToMany(targetEntity=AdGroup::class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+        var groups: List<AdGroup> = emptyList(),             // Computed, from LDAP
         @Access(AccessType.FIELD)
         @OrderColumn
-        @ElementCollection(targetClass = Course::class, fetch = FetchType.EAGER)
-        var courses: List<Course> = emptyList(),            // Computer, from LDAP
+        @OneToMany(targetEntity=Course::class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+        var courses: List<Course> = emptyList(),            // Computed, from LDAP
         var preferredName: String? = null,                  // DB authoritative
         var activeSince: Long = System.currentTimeMillis(), // LDAP authoritative
         var studentId: Int = -1,
