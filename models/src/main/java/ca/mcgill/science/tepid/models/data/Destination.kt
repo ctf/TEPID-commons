@@ -3,7 +3,6 @@ package ca.mcgill.science.tepid.models.data
 import ca.mcgill.science.tepid.models.bindings.CTFER
 import ca.mcgill.science.tepid.models.bindings.ELDER
 import ca.mcgill.science.tepid.models.bindings.TepidDb
-import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
 import javax.persistence.*
 
 @Entity

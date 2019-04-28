@@ -34,9 +34,6 @@ abstract class TepidId : TepidJackson {
     fun getId() = _id ?: ""
 }
 
-class TepidIdDelegate : TepidId() {
-}
-
 fun <T : TepidId> T.withIdData(main: TepidId): T {
     _id = main._id
     return this
@@ -80,6 +77,3 @@ fun <T : TepidDb> T.withDbData(main: TepidDb): T {
     return this
 }
 
-class TepidDbDelegate : TepidDb() {
-
-}
