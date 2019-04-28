@@ -14,27 +14,7 @@ import javax.persistence.*
 @JsonIgnoreProperties(ignoreUnknown = true)
 interface TepidJackson
 
-@MappedSuperclass
-abstract class TepidId : TepidJackson {
-    @Id
-    @Column(columnDefinition = "char(36) default 'undefined'")
-    @GeneratedValue(generator = "FallbackUuid")
-    @GenericGenerator(
-            name = "FallbackUuid",
-            strategy = "ca.mcgill.science.tepid.models.bindings.FallbackUuidIdGenerator"
-    )
-    var _id: String? = null
-
-    /*
-     * Helper function to retrieve a nonnull id
-     * Defaults to an empty string
-     */
-    @JsonIgnore
-    @Transient
-    fun getId() = _id ?: ""
-}
-
-fun <T : TepidId> T.withIdData(main: TepidId): T {
+fun <T : TepidDb> T.withIdData(main: TepidDb): T {
     _id = main._id
     return this
 }
@@ -51,12 +31,22 @@ fun <T : TepidId> T.withIdData(main: TepidId): T {
  */
 @MappedSuperclass
 abstract class TepidDb(
+        @Id
+        @Column(columnDefinition = "char(36) default 'undefined'")
+        @GeneratedValue(generator = "FallbackUuid")
+        @GenericGenerator(
+                name = "FallbackUuid",
+                strategy = "ca.mcgill.science.tepid.models.bindings.FallbackUuidIdGenerator"
+        )
+        var _id: String? = null,
         var _rev: String? = null,
         var type: String? = null,
         var schema: String? = null
-) : TepidId() {
+) {
 
-
+    @JsonIgnore
+    @Transient
+    fun getId() = _id ?: ""
     /*
      * Helper function to retrieve a nonnull rev
      * Defaults to an empty string

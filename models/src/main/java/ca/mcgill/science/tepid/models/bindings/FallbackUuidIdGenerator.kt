@@ -7,7 +7,7 @@ import java.util.*
 
 class FallbackUuidIdGenerator : IdentifierGenerator {
     override fun generate(session: SharedSessionContractImplementor?, `object`: Any?): Serializable {
-        val obj = `object` as TepidId
+        val obj = `object` as TepidDb
         return obj._id ?: UUID.randomUUID().toString()
     }
 }
