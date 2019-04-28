@@ -24,7 +24,7 @@ data class TestListedEntity(@Id var data:String) : Serializable
 data class TestList(
     @Access(AccessType.FIELD)
     @OneToMany(targetEntity = TestListedEntity::class)
-    var datas: List<TestListedEntity> = emptyList()
+    var datas: MutableList<TestListedEntity> = mutableListOf()
 ) : TepidDb() {
 
 }
@@ -36,7 +36,7 @@ data class TestEmbeddable(var data:String) : Serializable
 data class TestEmbedding(
     @Access(AccessType.FIELD)
     @ElementCollection(targetClass = TestEmbeddable::class)
-    var datas: List<TestEmbeddable> = emptyList()
+    var datas: MutableList<TestEmbeddable> = mutableListOf()
 ) : TepidDb()
 
 @Entity
@@ -46,7 +46,7 @@ data class TestImmutableField(@Id val data:String) : Serializable
 data class TestListWithVal(
     @Access(AccessType.FIELD)
     @ElementCollection(targetClass = TestImmutableField::class)
-    var datas: List<TestImmutableField> = emptyList()
+    var datas: MutableList<TestImmutableField> = mutableListOf()
 ) : TepidDb()
 
 @Embeddable
@@ -57,7 +57,7 @@ data class TestListWithValEmbeddable(
         @Access(AccessType.FIELD)
         @Embedded
         @ElementCollection(targetClass = TestImmutableFieldEmbeddable::class)
-        var datas: List<TestImmutableFieldEmbeddable> = emptyList()
+        var datas: MutableList<TestImmutableFieldEmbeddable> = mutableListOf()
 ) : TepidDb()
 
 @Entity
@@ -101,11 +101,11 @@ class HibernateTest {
         println(te._id)
     }
 
-    fun <C : TepidDb, D>collectionTest(collectionClassFactory: (List<D>) -> C, collectedClassFactory: (String) -> D, persistCollected:Boolean = false){
+    fun <C : TepidDb, D>collectionTest(collectionClassFactory: (MutableList<D>) -> C, collectedClassFactory: (String) -> D, persistCollected:Boolean = false){
         em.transaction.begin()
         val e0 = collectedClassFactory("0")
         val e1 = collectedClassFactory("1")
-        val test = collectionClassFactory(listOf(e0, e1))
+        val test = collectionClassFactory(mutableListOf(e0, e1))
         test._id = "TEST"
         if (persistCollected) {
             em.persist(e0)
@@ -305,13 +305,13 @@ class HibernateTest {
 
     @Test
     fun testAddMarqueeData(){
-        val testMarqueeData = MarqueeData("TITLE", listOf("A", "B"))
+        val testMarqueeData = MarqueeData("TITLE", mutableListOf("A", "B"))
         crudTest(testMarqueeData)
     }
 
     @Test
     fun testAddPrintQueue(){
-        val testPrintQueue = PrintQueue("fiddy-fiddy", "false", "Queueueueue", listOf("A", "B"))
+        val testPrintQueue = PrintQueue("fiddy-fiddy", "false", "Queueueueue", mutableListOf("A", "B"))
         crudTest(testPrintQueue)
     }
 

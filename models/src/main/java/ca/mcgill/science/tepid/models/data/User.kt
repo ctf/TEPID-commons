@@ -81,11 +81,11 @@ data class FullUser(
         @Access(AccessType.FIELD)
         @OrderColumn
         @OneToMany(targetEntity=AdGroup::class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
-        var groups: Set<AdGroup> = emptySet(),             // Computed, from LDAP
+        var groups: Set<AdGroup> = mutableSetOf(),             // Computed, from LDAP
         @Access(AccessType.FIELD)
         @OrderColumn
         @OneToMany(targetEntity=Course::class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
-        var courses: Set<Course> = emptySet(),            // Computed, from LDAP
+        var courses: Set<Course> = mutableSetOf(),            // Computed, from LDAP
         var preferredName: String? = null,                  // DB authoritative
         var activeSince: Long = System.currentTimeMillis(), // LDAP authoritative
         var studentId: Int = -1,
