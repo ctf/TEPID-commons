@@ -95,6 +95,7 @@ data class FullUser(
 
     init {
         updateUserNameInformation()
+        _id = "u$shortUser"
     }
 
     /**

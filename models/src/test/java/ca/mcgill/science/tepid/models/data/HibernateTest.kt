@@ -98,7 +98,7 @@ class HibernateTest {
             em.persist(e0)
             em.persist(e1)
         }
-        em.persist(test)
+        em.merge(test)
         em.transaction.commit()
         val retrieved = em.find(test::class.java, test._id)
 
@@ -147,11 +147,12 @@ class HibernateTest {
     fun <C: TepidDb> persist (obj:C){
         em.transaction.begin()
         if(!obj._id.isNullOrBlank()){
-//            em.merge(obj)
+            em.merge(obj)
         } else {
-            obj._id = UUID.randomUUID().toString()
+//            obj._id = UUID.randomUUID().toString()
+            em.persist(obj)
         }
-        em.persist(obj)
+//        em.persist(obj)
         em.transaction.commit()
     }
 
@@ -307,6 +308,8 @@ class HibernateTest {
 
     @AfterEach
     fun truncateUsed(){
+        if (em.transaction.isActive) em.transaction.rollback() // prevents transactions in failed state from persisting to other tests
+
         val truncatable = listOf(
 
                 TestListWithVal::class.java,

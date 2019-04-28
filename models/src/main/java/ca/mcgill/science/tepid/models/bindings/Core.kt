@@ -18,6 +18,11 @@ interface TepidJackson
 abstract class TepidId : TepidJackson {
     @Id
     @Column(columnDefinition = "char(36) default 'undefined'")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+    strategy = "org.hibernate.id.UUIDGenerator"
+    )
     var _id: String? = null
 
     /*
@@ -30,11 +35,6 @@ abstract class TepidId : TepidJackson {
 }
 
 class TepidIdDelegate : TepidId() {
-    //    @GeneratedValue(generator = "UUID")
-//    @GenericGenerator(
-//            name = "UUID",
-//    strategy = "org.hibernate.id.UUIDGenerator"
-//    )
 }
 
 fun <T : TepidId> T.withIdData(main: TepidId): T {
