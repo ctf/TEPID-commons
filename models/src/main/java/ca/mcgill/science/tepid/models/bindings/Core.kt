@@ -32,7 +32,7 @@ fun <T : TepidDb> T.withIdData(main: TepidDb): T {
 @MappedSuperclass
 abstract class TepidDb(
         @Id
-        @Column(columnDefinition = "char(36) default 'undefined'")
+        @Column(length = 36)
         @GeneratedValue(generator = "FallbackUuid")
         @GenericGenerator(
                 name = "FallbackUuid",
