@@ -195,7 +195,7 @@ class HibernateTest {
         val test = FullUser(shortUser = "shortUname", groups = setOf(AdGroup("G1"), AdGroup("G2")))
         test._id="TEST"
 
-        test.groups.forEach { persist(it) }
+//        test.groups.forEach { persist(it) }
         persist(test)
 
         val retrieved = em.find(FullUser::class.java, "TEST")
