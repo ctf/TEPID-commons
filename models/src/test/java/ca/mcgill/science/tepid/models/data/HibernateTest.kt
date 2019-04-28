@@ -73,6 +73,19 @@ data class TestForeignKey(
         var datum : FullUser
 ) : TepidDb()
 
+
+@Entity
+data class TestListedEntityTepidDb(var data:String) : TepidDb()
+
+@Entity
+data class TestListTepidDb(
+        @Access(AccessType.FIELD)
+        @OneToMany(targetEntity = TestListedEntityTepidDb::class)
+        var datas: MutableList<TestListedEntityTepidDb> = mutableListOf()
+) : TepidDb() {
+
+}
+
 class HibernateTest {
 
     @Test
@@ -124,6 +137,12 @@ class HibernateTest {
     @Test
     fun testAddObjectWithImmutableFieldEmbeddable(){
         collectionTest<TestListWithValEmbeddable, TestImmutableFieldEmbeddable>({l -> TestListWithValEmbeddable(l) }, { s -> TestImmutableFieldEmbeddable(s) }, false)
+    }
+
+    // Also tests the autogen of IDs
+    @Test
+    fun testAddListingEntityTepidDb(){
+        collectionTest<TestListTepidDb, TestListedEntityTepidDb>({ l -> TestListTepidDb(l)}, { s-> TestListedEntityTepidDb(s)}, true)
     }
 
 

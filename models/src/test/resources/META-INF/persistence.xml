@@ -17,6 +17,8 @@
         <class>ca.mcgill.science.tepid.models.data.TestImmutableFieldEmbeddable</class>
         <class>ca.mcgill.science.tepid.models.data.TestForeignKey</class>
 
+        <class>ca.mcgill.science.tepid.models.data.TestListedEntityTepidDb</class>
+        <class>ca.mcgill.science.tepid.models.data.TestListTepidDb</class>
 
         <!--<class>ca.mcgill.science.tepid.models.data.Course</class>-->
         <class>ca.mcgill.science.tepid.models.data.FullUser</class>
