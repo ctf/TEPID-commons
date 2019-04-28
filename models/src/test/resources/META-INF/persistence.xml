@@ -20,6 +20,10 @@
         <class>ca.mcgill.science.tepid.models.data.TestListedEntityTepidDb</class>
         <class>ca.mcgill.science.tepid.models.data.TestListTepidDb</class>
 
+        <class>ca.mcgill.science.tepid.models.data.TestEntity0</class>
+        <class>ca.mcgill.science.tepid.models.data.TestEntity1</class>
+        <class>ca.mcgill.science.tepid.models.data.TestContainingEntity</class>
+
         <!--<class>ca.mcgill.science.tepid.models.data.Course</class>-->
         <class>ca.mcgill.science.tepid.models.data.FullUser</class>
         <class>ca.mcgill.science.tepid.models.data.FullSession</class>
