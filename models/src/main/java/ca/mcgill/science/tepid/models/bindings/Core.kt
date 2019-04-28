@@ -18,10 +18,10 @@ interface TepidJackson
 abstract class TepidId : TepidJackson {
     @Id
     @Column(columnDefinition = "char(36) default 'undefined'")
-    @GeneratedValue(generator = "UUID")
+    @GeneratedValue(generator = "FallbackUuid")
     @GenericGenerator(
-            name = "UUID",
-    strategy = "org.hibernate.id.UUIDGenerator"
+            name = "FallbackUuid",
+            strategy = "ca.mcgill.science.tepid.models.bindings.FallbackUuidIdGenerator"
     )
     var _id: String? = null
 
