@@ -32,5 +32,5 @@ class Versions {
     static def junit = '5.1.0'
 
     // Hibernate
-    static def hibernate = '5.4.1.Final'
+    static def hibernate = '5.4.2.Final'
 }

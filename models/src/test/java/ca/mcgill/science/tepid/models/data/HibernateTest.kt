@@ -172,7 +172,7 @@ class HibernateTest {
 
     @Test
     fun testFullUserGroups(){
-        val test = FullUser(shortUser = "shortUname", groups = listOf(AdGroup("G1"), AdGroup("G2")))
+        val test = FullUser(shortUser = "shortUname", groups = setOf(AdGroup("G1"), AdGroup("G2")))
         test._id="TEST"
 
         test.groups.forEach { persist(it) }
@@ -192,7 +192,7 @@ class HibernateTest {
 
         val newEm = emf.createEntityManager()
 
-        test.groups = listOf(AdGroup("G1"), AdGroup("G2"), AdGroup("G3"))
+        test.groups = setOf(AdGroup("G1"), AdGroup("G2"), AdGroup("G3"))
         test.groups.forEach { persist(it) }
 
 
