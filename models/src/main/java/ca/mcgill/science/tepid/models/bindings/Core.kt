@@ -42,7 +42,7 @@ abstract class TepidDb(
         var _rev: String? = null,
         var type: String? = null,
         var schema: String? = null
-) {
+) :TepidJackson {
 
     @JsonIgnore
     @Transient
