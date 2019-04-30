@@ -43,7 +43,7 @@ open class TestUtilsDelegate(
 
     override val testToken: String by string("TEST_TOKEN")
 
-    override val testUrl: String = "https://${PropsURL.SERVER_URL_TESTING!!}/"
+    override val testUrl: String = PropsURL.SERVER_URL_TESTING!!
 
     override val isNotProduction: Boolean by lazy { PropsURL.TESTING?.toBoolean() ?: true }
 
