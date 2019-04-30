@@ -2,6 +2,7 @@ package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
 import javax.persistence.*
 
 @Entity
@@ -22,6 +23,7 @@ data class PrintJob(
         var failed: Long = -1,
         var received: Long = -1,
         @Access(AccessType.FIELD)
+        @JsonProperty(value="isRefunded")
         var isRefunded: Boolean = false,
         var eta: Long = 0,
         var deleteDataOn: Long = 0
