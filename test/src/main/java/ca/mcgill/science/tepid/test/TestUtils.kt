@@ -19,7 +19,6 @@ interface TestUtilsContract {
     val testAuth: Pair<String, String>
     val testUser: String
     val testPassword: String
-    val testToken: String
     val testUrl: String
 
     val isNotProduction: Boolean
@@ -33,7 +32,7 @@ interface TestUtilsContract {
 
 open class TestUtilsDelegate(
         vararg propPath: String = arrayOf("priv.properties", "../priv.properties")
-) : PropHolder(*propPath), Loggable by WithLogging(), TestUtilsContract {
+) : Loggable by WithLogging(), TestUtilsContract {
 
     override val testAuth: Pair<String, String> by lazy { testUser to testPassword }
 
@@ -41,14 +40,12 @@ open class TestUtilsDelegate(
 
     override val testPassword: String = PropsLDAPTestUser.TEST_PASSWORD
 
-    override val testToken: String by string("TEST_TOKEN")
-
     override val testUrl: String = PropsURL.SERVER_URL_TESTING!!
 
     override val isNotProduction: Boolean by lazy { PropsURL.TESTING?.toBoolean() ?: true }
 
     override val hasTestUser: Boolean by lazy {
-        testUser.isNotBlank() && (testPassword.isNotBlank() || testToken.isNotBlank())
+        testUser.isNotBlank() && (testPassword.isNotBlank())
     }
 
     override val testSession: Session? by lazy {
@@ -57,11 +54,6 @@ open class TestUtilsDelegate(
             val session = api.getSession(
                     SessionRequest(testUser, testPassword, true, true)
             ).executeDirect()
-            if (session != null)
-                return@lazy session
-        }
-        if (testToken.isNotBlank()) {
-            val session = api.validateToken(testUser, testToken).executeDirect()
             if (session != null)
                 return@lazy session
         }
