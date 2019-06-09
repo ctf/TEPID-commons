@@ -10,7 +10,7 @@ data class PrintQueue(
         var name: String? = null,
         @Access(AccessType.FIELD)
         @ElementCollection(fetch = FetchType.EAGER)
-        var destinations: List<String> = emptyList()
+        var destinations: List<String> = mutableListOf()
 ) : TepidDb(type="queue") {
     override fun toString(): String {
         return "PrintQueue [name=$name, destinations=$destinations]"
