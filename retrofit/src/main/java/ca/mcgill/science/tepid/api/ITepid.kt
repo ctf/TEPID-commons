@@ -169,7 +169,7 @@ interface ITepid {
      */
     @PUT("destinations")
     @MinAuthority(ELDER)
-    fun putDestinations(@Body destinations: Map<String, FullDestination>): Call<PutResponse>
+    fun putDestinations(@Body destinations: Map<String, FullDestination>): Call<List<PutResponse>>
 
     /**
      * Delete the specified destination
