@@ -198,7 +198,7 @@ interface ITepid {
      */
     @PUT("queues")
     @MinAuthority(ELDER)
-    fun putQueues(@Body queues: List<PrintQueue>): Call<PutResponse>
+    fun putQueues(@Body queues: List<PrintQueue>): Call<List<PutResponse>>
 
     /**
      * Get the full list of queues
