@@ -276,7 +276,7 @@ interface ITepid {
      */
     @PUT("jobs/{id}")
     @MinAuthority(USER)
-    fun addJobData(@Path("id") id: String, @Body input: InputStream): Call<String>
+    fun addJobData(@Path("id") id: String, @Body input: ByteArray): Call<PutResponse>
 
     /**
      * Get the print job with the [PrintJob._id]
