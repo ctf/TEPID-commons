@@ -108,11 +108,6 @@ class JsonTest {
     }
 
     @Test
-    fun user() {
-        sanityTest<FullUser>()
-    }
-
-    @Test
     fun marqueeData(){
         sanityTest<MarqueeData>()
     }
