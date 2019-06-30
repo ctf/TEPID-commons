@@ -1,11 +1,15 @@
 package ca.mcgill.science.tepid
 
+import org.gradle.api.JavaVersion
+
 class Versions {
     static def tepidCommons = '1.3.1'
 
     static def kotlin = '1.3.20'
 
     static def jvm_target = '1.8'
+
+    static def java_version = JavaVersion.VERSION_11
 
     static def kit = '9bee08d'
 
