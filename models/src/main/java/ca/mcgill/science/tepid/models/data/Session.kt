@@ -16,7 +16,7 @@ data class FullSession(
 ) : TepidDb(type="session") {
 
     @Transient
-    fun isValid() = expiration == -1L || expiration > System.currentTimeMillis()
+    fun isUnexpired() = expiration == -1L || expiration > System.currentTimeMillis()
 
     fun toSession(): Session = Session(
             user = user.toUser(),
