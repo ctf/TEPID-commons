@@ -3,23 +3,20 @@ package ca.mcgill.science.tepid.models.data
 import ca.mcgill.science.tepid.models.bindings.*
 import ca.mcgill.science.tepid.models.internal.Base64
 import com.fasterxml.jackson.annotation.JsonIgnore
+import javax.persistence.*
 
+@Entity
 data class FullSession(
         var role: String = "",
+        @Access(AccessType.FIELD)
+        @ManyToOne(targetEntity = FullUser::class, fetch = FetchType.EAGER)
         var user: FullUser,
         var expiration: Long = -1L,
         var persistent: Boolean = true
-) : TepidDb by TepidDbDelegate() {
+) : TepidDb(type="session") {
 
-    override var type: String? = "session"
-
-    override fun toString() = "Session $_id"
-
-    override fun equals(other: Any?) = !_id.isNullOrBlank() && other is FullSession && _id == other._id && _rev == other._rev
-
-    override fun hashCode() = getId().hashCode() * 13 + getRev().hashCode()
-
-    fun isValid() = expiration == -1L || expiration > System.currentTimeMillis()
+    @Transient
+    fun isUnexpired() = expiration == -1L || expiration > System.currentTimeMillis()
 
     fun toSession(): Session = Session(
             user = user.toUser(),
@@ -36,7 +33,7 @@ data class Session(
         var role: String = user.role,
         var expiration: Long = -1L,
         var persistent: Boolean = true
-) : TepidId by TepidIdDelegate() {
+) : TepidDb() {
     val authHeader: String
         @JsonIgnore
         get() = encodeToHeader(user.shortUser, _id)

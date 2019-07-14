@@ -1,9 +1,11 @@
 package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
-import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
+import javax.persistence.*
 
+@Entity
 data class PrintJob(
         var name: String = "",
         var queueName: String? = null,
@@ -14,17 +16,20 @@ data class PrintJob(
         var file: String? = null,
         var colorPages: Int = 0,
         var pages: Int = 0,
+        @Access(AccessType.FIELD)
         val started: Long = System.currentTimeMillis(),
         var processed: Long = -1,
         var printed: Long = -1,
         var failed: Long = -1,
         var received: Long = -1,
+        @Access(AccessType.FIELD)
+        @get:JsonProperty(value="refunded")
         var isRefunded: Boolean = false,
         var eta: Long = 0,
         var deleteDataOn: Long = 0
-) : TepidDb by TepidDbDelegate(), Comparable<PrintJob> {
+) : TepidDb(type = "job"), Comparable<PrintJob> {
 
-    override var type: String? = "job"
+
 
     fun truncateName(length: Int): String {
         return if (name.length > length) name.substring(0, length - 1) + "\u2026" else name
@@ -36,6 +41,7 @@ data class PrintJob(
     }
 
     val displayDate: Long
+        @Transient
         @JsonIgnore
         get() = when {
             failed != -1L -> failed

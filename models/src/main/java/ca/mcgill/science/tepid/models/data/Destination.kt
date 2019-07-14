@@ -1,10 +1,11 @@
 package ca.mcgill.science.tepid.models.data
 
-import ca.mcgill.science.tepid.models.bindings.*
+import ca.mcgill.science.tepid.models.bindings.CTFER
+import ca.mcgill.science.tepid.models.bindings.ELDER
+import ca.mcgill.science.tepid.models.bindings.TepidDb
+import javax.persistence.*
 
-/**
- * Created by Allan Wang on 2017-05-03.
- */
+@Entity
 data class FullDestination(
         var name: String = "",
         var protocol: String? = null,
@@ -27,10 +28,12 @@ data class FullDestination(
          */
         var path: String? = null,
         var domain: String? = null,
+        @Access(AccessType.FIELD)
+        @OneToOne(targetEntity = DestinationTicket::class, fetch = FetchType.EAGER)
         var ticket: DestinationTicket? = null,
         var up: Boolean = false,
         var ppm: Int = 0
-) : TepidDb by TepidDbDelegate() {
+) : TepidDb() {
 
     /**
      * Returned a filtered destination variant depending on the role if supplied
@@ -51,7 +54,7 @@ data class FullDestination(
                 ticket = if (isElder || isCtfer) ticket else null,
                 up = up,
                 ppm = ppm
-        ).withDbData(this)
+        )
     }
 
 }
@@ -71,11 +74,13 @@ data class Destination(
         var ticket: DestinationTicket? = null,
         var up: Boolean = false,
         var ppm: Int = 0
-) : TepidDb by TepidDbDelegate()
+)
 
+@Entity
 data class DestinationTicket(
         var up: Boolean = false,
         var reason: String? = null,
+        @Embedded
         var user: User? = null,
         var reported: Long = System.currentTimeMillis()
-) : TepidJackson
+) : TepidDb()

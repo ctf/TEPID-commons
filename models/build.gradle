@@ -1,8 +1,26 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+        jcenter()
+    }
+    dependencies{
+        classpath "org.jetbrains.kotlin:kotlin-noarg:${tepid.kotlin}"   // For Hibernate
+    }
+}
+
+apply plugin: "kotlin-jpa"  // For Hibernate
+
 dependencies {
     compile "com.fasterxml.jackson.core:jackson-annotations:${tepid.jackson}"
     compile "com.fasterxml.jackson.core:jackson-databind:${tepid.jackson}"
     compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:${tepid.jackson}"
     compile "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:${tepid.jackson}"
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:${tepid.jackson}"
-    compile "ca.allanwang:kit:${tepid.kit}"
+
+    compile "org.hibernate:hibernate-core:${tepid.hibernate}"
+    compile "org.hibernate:hibernate-testing:${tepid.hibernate}"
+    compile "org.postgresql:postgresql:42.2.5"
+
+    testCompile "com.h2database:h2:1.3.148"
 }

@@ -59,7 +59,7 @@ interface ITepidScreensaver {
      * -------------------------------------------
      */
 
-    @GET("screensaver/{username}")
+    @GET("screensaver/user/{username}")
     @MinAuthority(NONE)
     fun getUserNick(@Path("username") username: String): Call<String>
 

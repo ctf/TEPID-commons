@@ -1,15 +1,15 @@
 package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
-import ca.mcgill.science.tepid.models.bindings.TepidDbDelegate
 import ca.mcgill.science.tepid.models.bindings.TepidJackson
-import ca.mcgill.science.tepid.models.bindings.withDbData
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.concurrent.TimeUnit
+import javax.persistence.*
 
 /**
  * Note that this is typically created from using [FullUser.toUser]
  */
+@Embeddable
 data class User(
         var displayName: String? = null,
         var givenName: String? = null,
@@ -24,15 +24,14 @@ data class User(
         var salutation: String? = null,
         var authType: String? = null,
         var role: String = "",
-        var preferredName: List<String> = emptyList(),
+        var preferredName: String? = null,
         var activeSince: Long = -1,
         var studentId: Int = -1,
-        var jobExpiration: Long = TimeUnit.DAYS.toMillis(7), //why is this here
+        var jobExpiration: Long = TimeUnit.DAYS.toMillis(7),
         var colorPrinting: Boolean = false
-) : TepidDb by TepidDbDelegate() {
+) {
 
-    override var type: String? = "user"
-
+    @Transient
     fun isMatch(name: String) =
             if (name.contains(".")) longUser == name
             else shortUser == name
@@ -63,13 +62,14 @@ data class UserQuery(
  * It contains sensitive information, and therefore should not be used for interchange over the network
  * BEWARE that, for builtin users, the hashed password is printed in user.toString().
  */
+@Entity
 data class FullUser(
         var displayName: String? = null,                    // LDAP authoritative
         var givenName: String? = null,                      // LDAP authoritative
         var middleName: String? = null,                     // LDAP authoritative
         var lastName: String? = null,                       // LDAP authoritative
         var shortUser: String? = null,                      // LDAP authoritative
-        var longUser: String? = null,                       //Expected lower case
+        var longUser: String? = null,                       // Expected lower case
         var email: String? = null,                          // LDAP authoritative
         var faculty: String? = null,                        // LDAP authoritative
         var nick: String? = null,                           // DB authoritative
@@ -78,33 +78,33 @@ data class FullUser(
         var authType: String? = null,
         var role: String = "",                              // Computed
         var password: String? = null,                       // Password encrypted with bcrypt for local users
-        var groups: List<String> = emptyList(),             // Computed, from LDAP
-        var courses: List<Course> = emptyList(),            // Computer, from LDAP
-        var preferredName: List<String> = emptyList(),      // DB authoritative
+        @Access(AccessType.FIELD)
+//        @OrderColumn
+        @OneToMany(targetEntity=AdGroup::class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+        var groups: Set<AdGroup> = mutableSetOf(),             // Computed, from LDAP
+        @Access(AccessType.FIELD)
+//        @OrderColumn
+        @OneToMany(targetEntity=Course::class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+        var courses: Set<Course> = mutableSetOf(),            // Computed, from LDAP
+        var preferredName: String? = null,                  // DB authoritative
         var activeSince: Long = System.currentTimeMillis(), // LDAP authoritative
         var studentId: Int = -1,
         var jobExpiration: Long = TimeUnit.DAYS.toMillis(7), // DB authoritative
         var colorPrinting: Boolean = false // DB authoritative
-) : TepidDb by TepidDbDelegate() {
+) : TepidDb(type="user") {
 
     init {
         updateUserNameInformation()
+        _id = "u$shortUser"
     }
 
     /**
      * Adds information relating to the name of a student to a FullUser [user]
      */
     fun updateUserNameInformation() {
-        salutation = if (nick == null)
-            if (!preferredName.isEmpty()) preferredName[preferredName.size - 1]
-            else givenName else nick
-        if (!preferredName.isEmpty())
-            realName = preferredName.asReversed().joinToString(" ")
-        else
-            realName = "${givenName} ${lastName}"
+        salutation = nick ?: preferredName ?:givenName
+        realName = preferredName ?: "${givenName} ${lastName}"
     }
-
-    override var type: String? = "user"
 
     /**
      * Check if supplied [name] matches
@@ -117,6 +117,7 @@ data class FullUser(
     /**
      * Get the set of semesters for which the user has had courses
      */
+    @Transient
     @JsonIgnore
     fun getSemesters(): Set<Semester> =
             courses.map(Course::semester).toSet()
@@ -139,7 +140,7 @@ data class FullUser(
             studentId = studentId,
             jobExpiration = jobExpiration,
             colorPrinting = colorPrinting
-    ).withDbData(this)
+    )
 
     fun toNameUser(): NameUser = NameUser(
             displayName = displayName,
@@ -169,5 +170,5 @@ data class NameUser(
         var nick: String? = null,
         var realName: String? = null,
         var salutation: String? = null,
-        var preferredName: List<String> = emptyList()
+        var preferredName: String? = null
 )

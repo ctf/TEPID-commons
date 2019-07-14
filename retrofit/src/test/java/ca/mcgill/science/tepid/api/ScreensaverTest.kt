@@ -42,6 +42,7 @@ class ScreensaverTest {
 
     @Test
     fun getUserNick(){
+        TestUtils.testApi.setNickname(TestUtils.testUser, "Guinea Pig").get()
         TestUtils.testScreensaverApi.getUserNick(TEST_USER_SHORT).get()
     }
 }

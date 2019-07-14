@@ -169,7 +169,7 @@ interface ITepid {
      */
     @PUT("destinations")
     @MinAuthority(ELDER)
-    fun putDestinations(destinations: Map<String, FullDestination>): Call<PutResponse>
+    fun putDestinations(@Body destinations: Map<String, FullDestination>): Call<List<PutResponse>>
 
     /**
      * Delete the specified destination
@@ -198,7 +198,7 @@ interface ITepid {
      */
     @PUT("queues")
     @MinAuthority(ELDER)
-    fun putQueues(queues: List<PrintQueue>): Call<PutResponse>
+    fun putQueues(@Body queues: List<PrintQueue>): Call<List<PutResponse>>
 
     /**
      * Get the full list of queues
@@ -276,7 +276,7 @@ interface ITepid {
      */
     @PUT("jobs/{id}")
     @MinAuthority(USER)
-    fun addJobData(@Path("id") id: String, @Body input: InputStream): Call<String>
+    fun addJobData(@Path("id") id: String, @Body input: ByteArray): Call<PutResponse>
 
     /**
      * Get the print job with the [PrintJob._id]
