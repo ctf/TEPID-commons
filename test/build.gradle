@@ -1,8 +1,6 @@
 apply plugin: 'ca.mcgill.science.tepid.commons'
 
 dependencies {
-    compile "ca.allanwang.kit:props:${tepid.kit}"
-    compile "ca.allanwang.kit:logger:${tepid.kit}"
     compile project(':models')
     compile project(':retrofit')
     compile project(':utils')

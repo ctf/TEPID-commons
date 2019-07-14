@@ -19,8 +19,8 @@ dependencies {
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:${tepid.jackson}"
 
     compile "org.hibernate:hibernate-core:${tepid.hibernate}"
-    compile "org.hibernate:hibernate-testing:${tepid.hibernate}"
     compile "org.postgresql:postgresql:42.2.5"
 
+    testCompile "org.hibernate:hibernate-testing:${tepid.hibernate}"
     testCompile "com.h2database:h2:1.3.148"
 }

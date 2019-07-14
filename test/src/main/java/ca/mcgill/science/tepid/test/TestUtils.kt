@@ -1,14 +1,12 @@
 package ca.mcgill.science.tepid.test
 
-import ca.allanwang.kit.logger.Loggable
-import ca.allanwang.kit.logger.WithLogging
-import ca.allanwang.kit.props.PropHolder
 import ca.mcgill.science.tepid.api.*
 import ca.mcgill.science.tepid.models.data.Session
 import ca.mcgill.science.tepid.models.data.SessionRequest
-import ca.mcgill.science.tepid.utils.PropsLDAP
+import ca.mcgill.science.tepid.utils.Loggable
 import ca.mcgill.science.tepid.utils.PropsLDAPTestUser
 import ca.mcgill.science.tepid.utils.PropsURL
+import ca.mcgill.science.tepid.utils.WithLogging
 
 object TestUtils : TestUtilsDelegate(
         PropsLDAPTestUser.TEST_USER,

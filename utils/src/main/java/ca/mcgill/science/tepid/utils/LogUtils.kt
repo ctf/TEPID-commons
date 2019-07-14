@@ -8,10 +8,6 @@ import kotlin.reflect.full.companionObject
 
 
 /**
- * Created by Allan Wang on 2017-09-29.
- */
-
-/**
  * We will use the benefits of log4j2,
  * but wrap it in a delegate to make it cleaner
  *

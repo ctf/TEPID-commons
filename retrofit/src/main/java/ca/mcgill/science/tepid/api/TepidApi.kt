@@ -9,8 +9,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 /**
- * Created by Allan Wang on 2017-10-29.
- *
  * An open ended implementation of the api holder
  *
  * Can be implemented per project with a singleton via
