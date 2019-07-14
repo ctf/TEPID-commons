@@ -4,10 +4,6 @@ import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 
-/**
- * Created by Allan Wang on 2017-10-29.
- */
-
 abstract class BaseInterceptor : Interceptor {
 
     abstract fun apply(request: Request.Builder, originalChain: Interceptor.Chain)
