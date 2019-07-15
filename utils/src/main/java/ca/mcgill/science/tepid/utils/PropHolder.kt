@@ -13,4 +13,8 @@ open class PropHolder(propLoaders: List<PropLoader>) : WithLogging() {
     fun getNonNull(key: String): Lazy<String> {
         return lazy { this.get(key).value ?: throw NoSuchElementException("Could not load property $key") }
     }
+
+    fun getInt(key: String): Lazy<Int?> {
+        return lazy { this.get(key).value?.toInt() }
+    }
 }
