@@ -19,6 +19,7 @@ object TestUtils : TestUtilsDelegate(
  * Global attributes to pull from properties for testing
  */
 interface TestUtilsContract {
+    abstract val GUID_REGEX: Regex
     val testAuth: Pair<String, String>
     val testUser: String
     val testPassword: String
@@ -92,5 +93,8 @@ open class TestUtilsDelegate(
         }
         TepidScreensaverApi(testUrl, true).create()
     }
+
+    override val GUID_REGEX = """(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}""".toRegex()
+
 
 }
