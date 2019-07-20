@@ -8,7 +8,7 @@ dependencies {
     compile "com.squareup.okhttp3:logging-interceptor:${tepid.okhttp3}"
 
     testCompile "org.tukaani:xz:1.6"
-    
+    testCompile "com.google.guava:guava:20.0"
     
     testCompile project(':test')
 }

@@ -3,6 +3,9 @@ package ca.mcgill.science.tepid.api
 import ca.mcgill.science.tepid.models.data.PrintJob
 import ca.mcgill.science.tepid.test.TestUtils
 import ca.mcgill.science.tepid.test.get
+import com.google.common.io.ByteStreams
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.junit.Test
 import org.tukaani.xz.LZMA2Options
 import org.tukaani.xz.XZOutputStream
@@ -40,16 +43,14 @@ class JobTest {
         val fileInStream = FileInputStream(File(
                 this::class.java.classLoader.getResource(testFile).file
         ))
-
         val o = ByteArrayOutputStream()
         val xzStream = XZOutputStream(o, LZMA2Options())
-
-
-        xzStream.write(fileInStream.readAllBytes())
-
+        ByteStreams.copy(fileInStream, xzStream)
+        xzStream.finish()
         val i = o.toByteArray()
+        val bod = RequestBody.create(MediaType.parse("application/octet-stream"), i)
 
-        val response = TestUtils.testApi.addJobData(jobId, i).executeDirect() ?: fail("null response received sending job contents")
+        val response = TestUtils.testApi.addJobData(jobId, bod).executeDirect() ?: fail("null response received sending job contents")
         println("Job sent: $response")
 
         assertTrue(response.ok)

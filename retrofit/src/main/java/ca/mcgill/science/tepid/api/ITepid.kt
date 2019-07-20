@@ -5,9 +5,11 @@ import ca.mcgill.science.tepid.models.bindings.ELDER
 import ca.mcgill.science.tepid.models.bindings.USER
 import ca.mcgill.science.tepid.models.data.*
 import ca.mcgill.science.tepid.models.enums.PrinterId
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
+import java.io.InputStream
 
 /**
  * API version 1.02.00
@@ -273,7 +275,7 @@ interface ITepid {
      */
     @PUT("jobs/{id}")
     @MinAuthority(USER)
-    fun addJobData(@Path("id") id: String, @Body input: ByteArray): Call<PutResponse>
+    fun addJobData(@Path("id") id: String, @Body input: RequestBody): Call<PutResponse>
 
     /**
      * Get the print job with the [PrintJob._id]
