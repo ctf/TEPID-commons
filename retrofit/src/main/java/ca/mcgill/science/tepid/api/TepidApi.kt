@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 
 /**
  * An open ended implementation of the api holder
@@ -48,6 +49,7 @@ class TepidApi(private val url: String,
 
         val retrofit = Retrofit.Builder()
                 .baseUrl(url)
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create(moshi.build()))
                 .client(client.build())
         retrofitBuilder(retrofit)

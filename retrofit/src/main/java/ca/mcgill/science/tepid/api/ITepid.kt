@@ -169,8 +169,6 @@ interface ITepid {
 
     /**
      * Remap all existing destinations
-     *
-     * //todo verify
      */
     @PUT("destinations")
     @MinAuthority(ELDER)

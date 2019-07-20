@@ -2,6 +2,7 @@ dependencies {
     compile project(':models')
     compile project(':utils')
     compile "com.squareup.retrofit2:retrofit:${tepid.retrofit}"
+    compile 'com.squareup.retrofit2:converter-scalars:2.5.0'
     compile "com.squareup.retrofit2:converter-moshi:${tepid.retrofit}"
     compile "com.squareup.moshi:moshi:${tepid.moshi}"
     compile "com.squareup.moshi:moshi-kotlin:${tepid.moshi}"
@@ -9,7 +10,7 @@ dependencies {
 
     compile "org.tukaani:xz:1.6"
     compile "com.google.guava:guava:20.0"
-    
+
     testCompile project(':test')
 }
 
