@@ -71,9 +71,6 @@ class JsonTest {
     fun checkedIn() = sanityTest<CheckedIn>()
 
     @Test
-    fun email() = sanityTest<EmailReasons>()
-
-    @Test
     fun destination() {
         sanityTest<FullDestination>()
     }

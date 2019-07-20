@@ -92,3 +92,7 @@ object PropsScreensaver : PropHolder(DefaultProps.withName("screensaver.properti
     val GOOGLE_CUSTOM_SEARCH_KEY by PropsScreensaver.get("GOOGLE_CUSTOM_SEARCH_KEY")
     val ICS_CALENDAR_ADDRESS by PropsScreensaver.get("ICS_CALENDAR_ADDRESS")
 }
+
+object PropsPrinting : PropHolder(DefaultProps.withName("printing.properties")){
+    val MAX_PAGES_PER_JOB : Int? by PropsPrinting.getInt("MAX_PAGES_PER_JOB")
+}

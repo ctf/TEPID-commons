@@ -7,4 +7,3 @@ class PrinterId(val name:String, val serialNumber: String) {
             .replace("_", "-")
 }
 
-class Room(val name:String, val printers: List<PrinterId>) {}

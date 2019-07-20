@@ -1,9 +1,13 @@
 package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
+import ca.mcgill.science.tepid.models.enums.PrintError
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
-import javax.persistence.*
+import javax.persistence.Access
+import javax.persistence.AccessType
+import javax.persistence.Entity
+import javax.persistence.Transient
 
 @Entity
 data class PrintJob(
@@ -38,6 +42,10 @@ data class PrintJob(
     fun fail(error: String) {
         this.failed = System.currentTimeMillis()
         this.error = error
+    }
+
+    fun fail(error: PrintError) {
+        fail(error.display)
     }
 
     val displayDate: Long

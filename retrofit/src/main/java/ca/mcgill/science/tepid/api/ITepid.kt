@@ -5,11 +5,9 @@ import ca.mcgill.science.tepid.models.bindings.ELDER
 import ca.mcgill.science.tepid.models.bindings.USER
 import ca.mcgill.science.tepid.models.data.*
 import ca.mcgill.science.tepid.models.enums.PrinterId
-import ca.mcgill.science.tepid.models.enums.Room
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
-import java.io.InputStream
 
 /**
  * API version 1.02.00
@@ -263,7 +261,6 @@ interface ITepid {
     /**
      * Create a print job
      *
-     * Note that a job's must be one of [Room.toString]
      */
     @POST("jobs")
     @MinAuthority(USER)

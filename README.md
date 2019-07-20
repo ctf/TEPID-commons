@@ -61,6 +61,7 @@ The configs are explained as follows:
 - [Screensaver](#screensaver.properties)
 - [TEPID Endpoint Manager](#TEM.properties)
 - [URLs](#URL.properties)
+- [Printing](#Printing.properties)
 
 ### about.properties
 Common properties specifying information about the organisation. Notably includes links to Terms of Service.
@@ -120,3 +121,6 @@ Properties for the TEPID Endpoint Manager, which is currently a work in progress
 Both of these options have testing and production
 - Server URL : the URL for the application root of the server with all the rest endpoints
 - Web URL : the URL for the web server, typically the same but without the slug targetting the tomcat webapp
+
+### Printing.properties
+- MAX_PAGES_PER_JOB : maximum pages per job. Positive numbers impose an inclusive limit, 0 and negative numbers do not. That is, a value of 50 means that jobs up to and including 50 pages will be printed, but above that will fail; a value of -1 will mean no limit is imposed.
