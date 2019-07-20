@@ -42,14 +42,8 @@ class JobTest {
     @Test
     fun test() {
         val testFile = "pdf-test.pdf"
-        val job = PrintJob(name = TestUtils.testUser,
-                queueName = "1B16",
-                originalHost = "Unit Test")
 
-        val user = TestUtils.testApi.getUser(TestUtils.testUser).get()
-
-
-        val putJob = TestUtils.testApi.createNewJob(job).executeDirect()
+        val putJob = TestUtils.testApi.createNewJob(testJob).executeDirect()
 
         assertTrue(putJob!!.ok, "Could not put job")
 
