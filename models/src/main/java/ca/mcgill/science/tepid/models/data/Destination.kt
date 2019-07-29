@@ -29,7 +29,7 @@ data class FullDestination(
         var path: String? = null,
         var domain: String? = null,
         @Access(AccessType.FIELD)
-        @OneToOne(targetEntity = DestinationTicket::class, fetch = FetchType.EAGER)
+        @OneToOne(targetEntity = DestinationTicket::class, fetch = FetchType.EAGER, cascade = arrayOf(CascadeType.ALL))
         var ticket: DestinationTicket? = null,
         var up: Boolean = false,
         var ppm: Int = 0

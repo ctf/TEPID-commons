@@ -5,9 +5,16 @@ import ca.mcgill.science.tepid.models.bindings.ELDER
 import ca.mcgill.science.tepid.models.bindings.USER
 import ca.mcgill.science.tepid.models.data.*
 import ca.mcgill.science.tepid.models.enums.PrinterId
+import com.google.common.io.ByteStreams
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import org.tukaani.xz.LZMA2Options
+import org.tukaani.xz.XZOutputStream
 import retrofit2.Call
 import retrofit2.http.*
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
 
 /**
  * API version 1.02.00
@@ -162,8 +169,6 @@ interface ITepid {
 
     /**
      * Remap all existing destinations
-     *
-     * //todo verify
      */
     @PUT("destinations")
     @MinAuthority(ELDER)
@@ -269,11 +274,11 @@ interface ITepid {
     /**
      * Add job data to the supplied id
      *
-     * todo unify output
      */
     @PUT("jobs/{id}")
     @MinAuthority(USER)
-    fun addJobData(@Path("id") id: String, @Body input: ByteArray): Call<PutResponse>
+    fun addJobData(@Path("id") id: String, @Body input: RequestBody): Call<PutResponse>
+
 
     /**
      * Get the print job with the [PrintJob._id]
@@ -354,3 +359,21 @@ fun ITepid.refundJob(id: String) = refundJob(id, true)
 fun ITepid.queryUsers(query: String) = queryUsers(query, -1)
 
 fun ITepid.getPrintJobs(query: String) = getPrintJobs(query, -1)
+
+/*
+ *
+ */
+
+/**
+ * -------------------------------------------
+ * xz extension, so we don't have to circumvent the whole API
+ * -------------------------------------------
+ */
+fun ITepid.addJobDataFromInput( id: String, input: InputStream): Call<PutResponse> {
+    val o = ByteArrayOutputStream()
+    val xzStream = XZOutputStream(o, LZMA2Options())
+    ByteStreams.copy(input, xzStream)
+    xzStream.finish()
+    val body = RequestBody.create(MediaType.parse("application/octet-stream"), o.toByteArray())
+    return addJobData(id, body)
+}
