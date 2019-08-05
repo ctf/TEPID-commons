@@ -3,8 +3,8 @@ package ca.mcgill.science.tepid.api
 import ca.mcgill.science.tepid.api.internal.TEST_USER_SHORT
 import ca.mcgill.science.tepid.test.TestUtils
 import ca.mcgill.science.tepid.test.get
-import org.junit.Test
-import kotlin.test.fail
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.fail
 
 class ScreensaverTest {
 
