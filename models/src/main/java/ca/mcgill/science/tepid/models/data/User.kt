@@ -80,7 +80,7 @@ data class FullUser(
         var password: String? = null,                       // Password encrypted with bcrypt for local users
         @Access(AccessType.FIELD)
 //        @OrderColumn
-        @OneToMany(targetEntity=AdGroup::class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+        @ElementCollection(fetch = FetchType.EAGER)
         var groups: Set<AdGroup> = mutableSetOf(),             // Computed, from LDAP
         @Access(AccessType.FIELD)
 //        @OrderColumn

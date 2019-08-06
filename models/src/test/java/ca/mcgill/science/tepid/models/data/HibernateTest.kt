@@ -212,6 +212,12 @@ class HibernateTest {
         assertEquals(2, r_find.set1.size)
     }
 
+    fun <C> persistAny (obj:C){
+        em.transaction.begin()
+        em.merge(obj)
+        em.transaction.commit()
+    }
+
     fun <C: TepidDb> persist (obj:C){
         em.transaction.begin()
         if(!obj._id.isNullOrBlank()){
@@ -262,7 +268,6 @@ class HibernateTest {
         val newEm = emf.createEntityManager()
 
         test.groups = setOf(AdGroup("G1"), AdGroup("G2"), AdGroup("G3"))
-        test.groups.forEach { persist(it) }
 
 
         newEm.transaction.begin()

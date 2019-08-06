@@ -1,11 +1,10 @@
 package ca.mcgill.science.tepid.models.data
 
-import ca.mcgill.science.tepid.models.bindings.TepidDb
-import javax.persistence.Entity
+import javax.persistence.Embeddable
+import javax.persistence.Id
 
-@Entity
+@Embeddable
 data class AdGroup(
-    val name: String
-) : TepidDb(type="group") {
-
+        val name: String
+) {
 }
