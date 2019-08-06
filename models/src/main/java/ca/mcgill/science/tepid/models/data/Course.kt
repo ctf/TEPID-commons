@@ -8,12 +8,12 @@ import javax.persistence.AccessType
 import javax.persistence.Embeddable
 import javax.persistence.Entity
 
-@Entity
+@Embeddable
 data class Course(
         @Access(AccessType.FIELD) val name: String,
         @Access(AccessType.FIELD) val season: Season,
         @Access(AccessType.FIELD) val year: Int
-) : TepidDb(type = "course") {
+){
     fun semester() = Semester(season, year)
 }
 

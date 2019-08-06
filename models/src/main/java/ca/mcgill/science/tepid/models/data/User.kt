@@ -79,12 +79,10 @@ data class FullUser(
         var role: String = "",                              // Computed
         var password: String? = null,                       // Password encrypted with bcrypt for local users
         @Access(AccessType.FIELD)
-//        @OrderColumn
         @ElementCollection(fetch = FetchType.EAGER)
         var groups: Set<AdGroup> = mutableSetOf(),             // Computed, from LDAP
         @Access(AccessType.FIELD)
-//        @OrderColumn
-        @OneToMany(targetEntity=Course::class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+        @ElementCollection(fetch = FetchType.EAGER)
         var courses: Set<Course> = mutableSetOf(),            // Computed, from LDAP
         var preferredName: String? = null,                  // DB authoritative
         var activeSince: Long = System.currentTimeMillis(), // LDAP authoritative
