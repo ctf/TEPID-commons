@@ -196,8 +196,7 @@ interface ITepid {
 
     /**
      * Set the full list of queues
-     *
-     * todo verify
+     * ref tepid-commons#12
      */
     @PUT("queues")
     @MinAuthority(ELDER)

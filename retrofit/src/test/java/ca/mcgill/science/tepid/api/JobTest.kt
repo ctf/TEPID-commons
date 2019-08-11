@@ -6,12 +6,13 @@ import ca.mcgill.science.tepid.models.data.PrintJob
 import ca.mcgill.science.tepid.models.data.PrintQueue
 import ca.mcgill.science.tepid.test.TestUtils
 import ca.mcgill.science.tepid.test.get
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.fail
 import java.io.File
 import java.io.FileInputStream
 import java.util.concurrent.TimeUnit
-import kotlin.test.*
 
 class JobTest {
 
@@ -21,9 +22,12 @@ class JobTest {
     fun initTest() {
         val r = TestUtils.testApi.enableColor(TestUtils.testUser, true).execute()
 
-        TestUtils.testApi.putDestinations(mapOf("d0" to FullDestination(name = "d0", up = true), "d1" to FullDestination(name = "d1", up = true))).executeDirect()
+        val d0 = "d0".padEnd(36)
+        val d1 = "d1".padEnd(36)
 
-        val q =  PrintQueue(loadBalancer = "fiftyfifty", name = "q0", destinations = listOf("d0", "d1"))
+        TestUtils.testApi.putDestinations(mapOf(d0 to FullDestination(name = d0, up = true), d1 to FullDestination(name = d1, up = true))).executeDirect()
+
+        val q =  PrintQueue(loadBalancer = "fiftyfifty", name = "0", destinations = listOf(d0, d1))
         q._id = "q0"
         TestUtils.testApi.putQueues(listOf(q)).executeDirect()
 

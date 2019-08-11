@@ -2,9 +2,9 @@ package ca.mcgill.science.tepid.api.internal
 
 import ca.mcgill.science.tepid.models.data.User
 import ca.mcgill.science.tepid.utils.PropsLDAPTestUser
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.fail
 import retrofit2.Call
-import kotlin.test.assertEquals
-import kotlin.test.fail
 
 /**
  * Execute a response while expecting an error of code [expectedCode]
