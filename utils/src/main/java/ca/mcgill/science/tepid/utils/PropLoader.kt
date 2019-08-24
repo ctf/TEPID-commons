@@ -8,7 +8,7 @@ import java.util.*
 interface PropSaver {
     fun saveProps(): Boolean
 
-    fun set(k:String, v:String?)
+    fun set(k: String, v: String?)
 }
 
 /**
@@ -54,13 +54,17 @@ class FilePropLoader(val filePath: String) : PropLoader, PropSaver, WithLogging(
     }
 
     override fun set(k: String, v: String?) {
-        props.setProperty(k, v)
+        if (v == null) {
+            props.remove(k)
+        } else {
+            props.setProperty(k, v)
+        }
     }
 
     override fun saveProps(): Boolean {
         val file = File(filePath)
         if (file.isFile || file.createNewFile()) {
-            FileOutputStream(file).use { f -> props.save(f, null)}
+            FileOutputStream(file).use { f -> props.save(f, null) }
             log.info("Saved to file at $filePath")
             return true
         } else {

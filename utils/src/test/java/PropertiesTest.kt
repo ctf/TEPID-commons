@@ -1,5 +1,5 @@
-
 import ca.mcgill.science.tepid.utils.*
+import junit.framework.Assert.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -36,10 +36,10 @@ class PropertiesTest {
 class PropSaverTest {
 
     @Test
-    fun testSavePropsNewFile(){
-        val filePath="src/test/resources/FilePropSaverTest0.properties"
+    fun testSavePropsNewFile() {
+        val filePath = "src/test/resources/FilePropSaverTest0.properties"
         val props: PropSaver = FilePropLoader(filePath)
-        props.set("k0","v0")
+        props.set("k0", "v0")
         props.saveProps()
 
         val ver: PropLoader = FilePropLoader(filePath)
@@ -49,17 +49,32 @@ class PropSaverTest {
     }
 
     @Test
-    fun testSavePropsExisting(){
-        val filePath="src/test/resources/FilePropSaverTest1.properties"
-        FileWriter(filePath).use{f->f.write("#Sat Aug 10 18:53:29 EDT 2019\nk0=v0\n")}
+    fun testSavePropsExisting() {
+        val filePath = "src/test/resources/FilePropSaverTest1.properties"
+        FileWriter(filePath).use { f -> f.write("#Sat Aug 10 18:53:29 EDT 2019\nk0=v0\n") }
 
         val props = FilePropLoader(filePath)
         assertEquals("v0", props.get("k0"))
-        props.set("k0","v1")
+        props.set("k0", "v1")
         props.saveProps()
 
         val ver: PropLoader = FilePropLoader(filePath)
         assertEquals("v1", ver.get("k0"))
+        assertTrue(File(filePath).delete(), "Failed to delete file")
+    }
+
+    @Test
+    fun testRemoveProps() {
+        val filePath = "src/test/resources/FilePropSaverTest2.properties"
+        FileWriter(filePath).use { f -> f.write("k0=v0\n") }
+
+        val props = FilePropLoader(filePath)
+        assertEquals("v0", props.get("k0"))
+        props.set("k0", null)
+        props.saveProps()
+
+        val ver: PropLoader = FilePropLoader(filePath)
+        assertNull( ver.get("k0"))
         assertTrue(File(filePath).delete(), "Failed to delete file")
     }
 
