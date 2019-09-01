@@ -53,7 +53,8 @@ data class FullDestination(
                 domain = if (isElder) domain else null,
                 ticket = if (isElder || isCtfer) ticket else null,
                 up = up,
-                ppm = ppm
+                ppm = ppm,
+                _id = _id
         )
     }
 
@@ -73,7 +74,8 @@ data class Destination(
         var domain: String? = null,
         var ticket: DestinationTicket? = null,
         var up: Boolean = false,
-        var ppm: Int = 0
+        var ppm: Int = 0,
+        var _id: String? = null
 )
 
 @Entity
