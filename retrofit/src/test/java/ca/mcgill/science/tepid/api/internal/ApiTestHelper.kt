@@ -1,9 +1,10 @@
 package ca.mcgill.science.tepid.api.internal
 
 import ca.mcgill.science.tepid.models.data.User
-import ca.mcgill.science.tepid.test.assertComponentsEqual
+import ca.mcgill.science.tepid.utils.PropsLDAPTestUser
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.fail
 import retrofit2.Call
-import kotlin.test.fail
 
 /**
  * Execute a response while expecting an error of code [expectedCode]
@@ -21,18 +22,10 @@ internal fun <T> Call<T>.executeExpectingError(expectedCode: Int, message: Strin
     }
 }
 
-const val TEST_USER_SHORT = "***REMOVED***"
-const val TEST_USER_ID = ***REMOVED***
+val TEST_USER_SHORT = PropsLDAPTestUser.TEST_USER
+val TEST_USER_ID = PropsLDAPTestUser.TEST_ID
 
-internal fun User.assertTestUser() = assertComponentsEqual {
-    listOf(
-            givenName to "Allan",
-            lastName to "Wang",
-            longUser to "***REMOVED***",
-            email to "***REMOVED***",
-            faculty to "***REMOVED***",
-            realName to "Allan Wang",
-            shortUser to TEST_USER_SHORT,
-            studentId to TEST_USER_ID
-    )
+internal fun User.assertTestUser(){
+    assertEquals(TEST_USER_SHORT, shortUser)
+    assertEquals(TEST_USER_ID, studentId.toString())
 }

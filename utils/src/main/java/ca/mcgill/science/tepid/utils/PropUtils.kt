@@ -1,89 +1,98 @@
 package ca.mcgill.science.tepid.utils
 
-import ca.allanwang.kit.props.PropHolder
 
 /**
  * Configurations for any TEPID project. This way, sharing config interfaces is the default action.
- * Configs first look in the external directory (think /etc/application), then in a customised internal directory (internal to the path of the WAR or JAR, useful also to point to an exploded WAR from the root of the Tomcat process), then in a default fallback location of config inside the root of the WAR.
- *
- * I wanted to pull all of these back into a list or a mutableList or a function which returned a list of paths for the file in all desired locations, but I kept getting utter failures to launch the program (no errors, just sadness). Maybe someone smarter than I could fix this. lilatomic, 2018-05-28
- *
+ * The configs are loaded triply lazily: The config objects will only be built on first use; the PropLoaders are stored in a lazy property; and the individual properties are lazy themselves.
+ * The DefaultProps generator can be changed before any initialisation happens
  * ===ADDING A NEW CONFIG===
  * When you add a new config here. make sure to document it in the README as well!
-* */
+ * */
 
-var internalConfigLocation = ""
-var externalConfigLocation = ""
-
-object PropsAbout : PropHolder("${externalConfigLocation}creationInformation.properties", "${internalConfigLocation}config/creationInformation.properties", "config/creationInformation.properties") {
-    val LINK_MAIN by PropsAbout.string("LINK_MAIN", errorMessage = "LINK_MAIN not set")
-    val LINK_TOS by PropsAbout.string("LINK_TOS", errorMessage = "LINK_TOS not set")
-    val ORG_NAME by PropsAbout.string("ORG_NAME", errorMessage = "ORG_NAME not set")
+object DefaultProps {
+    var withName: (String) -> List<PropLoader> = { fileName ->
+        listOf(
+                FilePropLoader(fileName),
+                JarPropLoader("/$fileName")
+        )
+    }
 }
 
-object PropsCreationInfo : PropHolder("${externalConfigLocation}creationInformation.properties", "${internalConfigLocation}config/creationInformation.properties", "config/creationInformation.properties") {
-    val HASH by PropsCreationInfo.string("HASH", errorMessage = "HASH not set")
-    val TAG by PropsCreationInfo.string("TAG", errorMessage = "TAG not set")
-    val CREATION_TIMESTAMP by PropsCreationInfo.string("CREATION_TIMESTAMP", errorMessage = "CREATION_TIMESTAMP not set")
-    val CREATION_TIME by PropsCreationInfo.string("CREATION_TIME", errorMessage = "CREATION_TIME not set")
+object PropsAbout : PropHolder(DefaultProps.withName("creationInformation.properties")) {
+    val LINK_MAIN by PropsAbout.get("LINK_MAIN")
+    val LINK_TOS by PropsAbout.get("LINK_TOS")
+    val ORG_NAME by PropsAbout.get("ORG_NAME")
 }
 
-object PropsURL : PropHolder("${externalConfigLocation}URL.properties","${internalConfigLocation}URL.properties", "config/URL.properties") {
-    val TESTING by PropsURL.string("TESTING", "true", errorMessage = "TESTING not set")
-    val SERVER_URL_TESTING by PropsURL.string("SERVER_URL_TESTING", errorMessage = "SERVER_URL_TESTING not set")
-    val SERVER_URL_PRODUCTION by PropsURL.string("SERVER_URL_PRODUCTION", errorMessage = "SERVER_URL_PRODUCTION not set")
-    val WEB_URL_TESTING by PropsURL.string("WEB_URL_TESTING", errorMessage = "WEB_URL_TESTING not set")
-    val WEB_URL_PRODUCTION by PropsURL.string("WEB_URL_PRODUCTION", errorMessage = "WEB_URL_PRODUCTION not set")
+object PropsCreationInfo : PropHolder(DefaultProps.withName("creationInformation.properties")) {
+    val HASH by PropsCreationInfo.get("HASH")
+    val TAG by PropsCreationInfo.get("TAG")
+    val CREATION_TIMESTAMP by PropsCreationInfo.get("CREATION_TIMESTAMP")
+    val CREATION_TIME by PropsCreationInfo.get("CREATION_TIME")
 }
 
-object PropsLDAP : PropHolder ("${externalConfigLocation}LDAP.properties", "${internalConfigLocation}LDAP.properties", "config/LDAP.properties") {
-    val LDAP_ENABLED by string("LDAP_ENABLED", "true", errorMessage = "LDAP_ENABLED not set")
-    val LDAP_SEARCH_BASE by PropsLDAP.string("LDAP_SEARCH_BASE", errorMessage = "LDAP_SEARCH_BASE not set")
-    val ACCOUNT_DOMAIN by PropsLDAP.string("ACCOUNT_DOMAIN", errorMessage = "ACCOUNT_DOMAIN not set")
-    val PROVIDER_URL by PropsLDAP.string("PROVIDER_URL", errorMessage = "PROVIDER_URL not set")
-    val SECURITY_PRINCIPAL_PREFIX by PropsLDAP.string("SECURITY_PRINCIPAL_PREFIX", errorMessage = "SECURITY_PRINCIPAL_PREFIX not set")
+object PropsURL : PropHolder(DefaultProps.withName("URL.properties")) {
+    val TESTING by PropsURL.get("TESTING")
+    val SERVER_URL_TESTING by PropsURL.get("SERVER_URL_TESTING")
+    val SERVER_URL_PRODUCTION by PropsURL.get("SERVER_URL_PRODUCTION")
+    val WEB_URL_TESTING by PropsURL.get("WEB_URL_TESTING")
+    val WEB_URL_PRODUCTION by PropsURL.get("WEB_URL_PRODUCTION")
 }
 
-object PropsLDAPResource : PropHolder ("${externalConfigLocation}LDAPResource.properties", "${internalConfigLocation}LDAPResource.properties", "config/LDAPResource.properties") {
-    val LDAP_RESOURCE_USER by PropsLDAPResource.string("LDAP_RESOURCE_USER", errorMessage = "LDAP_RESOURCE_USER not set")
-    val LDAP_RESOURCE_CREDENTIALS by PropsLDAPResource.string("LDAP_RESOURCE_CREDENTIALS", errorMessage = "LDAP_RESOURCE_CREDENTIALS not set")
+object PropsLDAP : PropHolder(DefaultProps.withName("LDAP.properties")) {
+    val LDAP_ENABLED by PropsLDAP.get("LDAP_ENABLED")
+    val LDAP_SEARCH_BASE by PropsLDAP.get("LDAP_SEARCH_BASE")
+    val ACCOUNT_DOMAIN by PropsLDAP.get("ACCOUNT_DOMAIN")
+    val PROVIDER_URL by PropsLDAP.get("PROVIDER_URL")
+    val SECURITY_PRINCIPAL_PREFIX by PropsLDAP.get("SECURITY_PRINCIPAL_PREFIX")
 }
 
-object PropsLDAPGroups : PropHolder ("${externalConfigLocation}LDAPGroups.properties", "${internalConfigLocation}LDAPGroups.properties", "config/LDAPGroups.properties") {
-    val EXCHANGE_STUDENTS_GROUP_BASE by PropsLDAPGroups.string("EXCHANGE_STUDENTS_GROUP_BASE", errorMessage = "EXCHANGE_STUDENTS_GROUP_BASE not set")
-    val GROUPS_LOCATION by PropsLDAPGroups.string("GROUPS_LOCATION", errorMessage = "GROUPS_LOCATION not set")
-    val ELDERS_GROUPS by PropsLDAPGroups.string("ELDERS_GROUPS", errorMessage = "ELDERS_GROUPS not set")
-    val CTFERS_GROUPS by PropsLDAPGroups.string("CTFERS_GROUPS", errorMessage = "CTFERS_GROUPS not set")
-    val USERS_GROUPS by PropsLDAPGroups.string("USERS_GROUPS", errorMessage = "USERS_GROUPS not set")
+object PropsLDAPResource : PropHolder(DefaultProps.withName("LDAPResource.properties")) {
+    val LDAP_RESOURCE_USER by PropsLDAPResource.get("LDAP_RESOURCE_USER")
+    val LDAP_RESOURCE_CREDENTIALS by PropsLDAPResource.get("LDAP_RESOURCE_CREDENTIALS")
 }
 
-object PropsLDAPTestUser : PropHolder ("${externalConfigLocation}LDAPTestUser.properties", "${internalConfigLocation}LDAPTestUser.properties", "config/LDAPTestUser.properties") {
-    val TEST_USER by PropsLDAPTestUser.string("TEST_USER", errorMessage = "TEST_USER not set")
-    val TEST_PASSWORD by PropsLDAPTestUser.string("TEST_PASSWORD", errorMessage = "TEST_PASSWORD not set")
+object PropsLDAPGroups : PropHolder(DefaultProps.withName("LDAPGroups.properties")) {
+    val EXCHANGE_STUDENTS_GROUP_BASE by PropsLDAPGroups.get("EXCHANGE_STUDENTS_GROUP_BASE")
+    val GROUPS_LOCATION by PropsLDAPGroups.get("GROUPS_LOCATION")
+    val ELDERS_GROUPS by PropsLDAPGroups.get("ELDERS_GROUPS")
+    val CTFERS_GROUPS by PropsLDAPGroups.get("CTFERS_GROUPS")
+    val USERS_GROUPS by PropsLDAPGroups.get("USERS_GROUPS")
 }
 
-object PropsDB : PropHolder ("${externalConfigLocation}DB.properties", "${internalConfigLocation}DB.properties", "config/DB.properties") {
-    val COUCHDB_USERNAME by PropsDB.string("COUCHDB_USERNAME", errorMessage = "COUCHDB_USERNAME not set")
-    val COUCHDB_PASSWORD by PropsDB.string ("COUCHDB_PASSWORD", errorMessage = "COUCHDB_PASSWORD not set")
-    val COUCHDB_URL by PropsDB.string("COUCHDB_URL", errorMessage = "COUCHDB_URL not set")
+object PropsLDAPTestUser : PropHolder(DefaultProps.withName("LDAPTestUser.properties")) {
+    val TEST_USER by PropsLDAPTestUser.getNonNull("TEST_USER")
+    val TEST_PASSWORD by PropsLDAPTestUser.getNonNull("TEST_PASSWORD")
+    val TEST_ID by PropsLDAPTestUser.getNonNull("TEST_ID")
 }
 
-object PropsTEM : PropHolder("${externalConfigLocation}TEM.properties", "${internalConfigLocation}TEM.properties", "config/TEM.properties"){
-    val TEM_URL by PropsTEM.string("TEM_URL", errorMessage = "TEM_URL not set")
+object PropsDB : PropHolder(DefaultProps.withName("DB.properties")) {
+    val DB_TYPE by PropsDB.getNonNull("DB_TYPE")
+    val USERNAME by PropsDB.getNonNull("USERNAME")
+    val PASSWORD by PropsDB.getNonNull("PASSWORD")
+    val URL by PropsDB.getNonNull("URL")
 }
 
-object PropsBarcode : PropHolder("${externalConfigLocation}barcode.properties", "${internalConfigLocation}barcode.properties", "config/barcode.properties"){
-    val BARCODES_URL by PropsBarcode.string("BARCODES_URL", errorMessage = "BARCODES_URL not set")
-    val BARCODES_DB_USERNAME by PropsBarcode.string("BARCODES_DB_URL", errorMessage = "BARCODES_DB_URL not set")
-    val BARCODES_DB_PASSWORD by PropsBarcode.string("BARCODES_DB_PASSWORD", errorMessage = "BARCODES_DB_PASSWORD not set")
+object PropsTEM : PropHolder(DefaultProps.withName("TEM.properties")) {
+    val TEM_URL by PropsTEM.get("TEM_URL")
 }
 
-object PropsScreensaver : PropHolder ("${externalConfigLocation}screensaver.properties", "${internalConfigLocation}screensaver.properties", "config/screensaver.properties") {
-    val OFFICE_REGEX by PropsScreensaver.string("OFFICE_REGEX", errorMessage = "OFFICE_REGEX not set")
-    val GRAVATAR_SEARCH_TERMS by PropsScreensaver.string("GRAVATAR_SEARCH_TERMS", errorMessage = "GRAVATAR_SEARCH_TERMS not set")
-    val REPORT_MALFUNCTIONING_COMPUTER_TEXT by PropsScreensaver.string("REPORT_MALFUNCTIONING_COMPUTER_TEXT", errorMessage = "REPORT_MALFUNCTIONING_COMPUTER_TEXT not set")
-    val BACKGROUND_PICTURE_LOCATION by PropsScreensaver.string("BACKGROUND_PICTURE_LOCATION", errorMessage = "BACKGROUND_PICTURE_LOCATION not set")
-    val ANNOUNCEMENT_SLIDE_LOCATION by PropsScreensaver.string("ANNOUNCEMENT_SLIDE_LOCATION", errorMessage = "ANNOUNCEMENT_SLIDE_LOCATION not set")
-    val GOOGLE_CUSTOM_SEARCH_KEY by PropsScreensaver.string("GOOGLE_CUSTOM_SEARCH_KEY", errorMessage = "GOOGLE_CUSTOM_SEARCH_KEY not set")
-    val ICS_CALENDAR_ADDRESS by PropsScreensaver.string("ICS_CALENDAR_ADDRESS", errorMessage = "ICS_CALENDAR_ADDRESS not set")
+object PropsBarcode : PropHolder(DefaultProps.withName("barcode.properties")) {
+    val BARCODES_URL by PropsBarcode.get("BARCODES_URL")
+    val BARCODES_DB_USERNAME by PropsBarcode.get("BARCODES_DB_URL")
+    val BARCODES_DB_PASSWORD by PropsBarcode.get("BARCODES_DB_PASSWORD")
+}
+
+object PropsScreensaver : PropHolder(DefaultProps.withName("screensaver.properties")) {
+    val OFFICE_REGEX by PropsScreensaver.get("OFFICE_REGEX")
+    val GRAVATAR_SEARCH_TERMS by PropsScreensaver.get("GRAVATAR_SEARCH_TERMS")
+    val REPORT_MALFUNCTIONING_COMPUTER_TEXT by PropsScreensaver.get("REPORT_MALFUNCTIONING_COMPUTER_TEXT")
+    val BACKGROUND_PICTURE_LOCATION by PropsScreensaver.get("BACKGROUND_PICTURE_LOCATION")
+    val ANNOUNCEMENT_SLIDE_LOCATION by PropsScreensaver.get("ANNOUNCEMENT_SLIDE_LOCATION")
+    val GOOGLE_CUSTOM_SEARCH_KEY by PropsScreensaver.get("GOOGLE_CUSTOM_SEARCH_KEY")
+    val ICS_CALENDAR_ADDRESS by PropsScreensaver.get("ICS_CALENDAR_ADDRESS")
+}
+
+object PropsPrinting : PropHolder(DefaultProps.withName("printing.properties")){
+    val MAX_PAGES_PER_JOB : Int? by PropsPrinting.getInt("MAX_PAGES_PER_JOB")
 }

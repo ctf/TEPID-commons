@@ -2,8 +2,8 @@ package ca.mcgill.science.tepid.api
 
 import ca.mcgill.science.tepid.test.TestUtils
 import ca.mcgill.science.tepid.test.get
-import org.junit.Test
-import kotlin.test.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Test
 
 class AboutTest {
 

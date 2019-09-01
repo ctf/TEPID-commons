@@ -1,15 +1,15 @@
 package ca.mcgill.science.tepid.models.data
 
-import ca.mcgill.science.tepid.models.bindings.*
+import ca.mcgill.science.tepid.models.bindings.TepidDb
+import ca.mcgill.science.tepid.models.bindings.TepidJackson
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.concurrent.TimeUnit
+import javax.persistence.*
 
 /**
- * Created by Allan Wang on 2017-05-14.
- *
- * The main user data model with public variables
  * Note that this is typically created from using [FullUser.toUser]
  */
+@Embeddable
 data class User(
         var displayName: String? = null,
         var givenName: String? = null,
@@ -24,15 +24,14 @@ data class User(
         var salutation: String? = null,
         var authType: String? = null,
         var role: String = "",
-        var preferredName: List<String> = emptyList(),
+        var preferredName: String? = null,
         var activeSince: Long = -1,
         var studentId: Int = -1,
-        var jobExpiration: Long = TimeUnit.DAYS.toMillis(7), //why is this here
+        var jobExpiration: Long = TimeUnit.DAYS.toMillis(7),
         var colorPrinting: Boolean = false
-) : TepidDb by TepidDbDelegate() {
+) {
 
-    override var type: String? = "user"
-
+    @Transient
     fun isMatch(name: String) =
             if (name.contains(".")) longUser == name
             else shortUser == name
@@ -59,34 +58,51 @@ data class UserQuery(
 
 /**
  * The complete collection of user attributes
- * Note that this is for back end only as it has content that should not be queried
- * BEWARE that the password is printed in user.toString(). It's also a public variable...
+ * Note that this is the main user model used for the backend.
+ * It contains sensitive information, and therefore should not be used for interchange over the network
+ * BEWARE that, for builtin users, the hashed password is printed in user.toString().
  */
+@Entity
 data class FullUser(
-        var displayName: String? = null,
-        var givenName: String? = null,
-        var middleName: String? = null,
-        var lastName: String? = null,
-        var shortUser: String? = null,
-        var longUser: String? = null,
-        var email: String? = null,
-        var faculty: String? = null,
-        var nick: String? = null,
-        var realName: String? = null,
-        var salutation: String? = null,
+        var displayName: String? = null,                    // LDAP authoritative
+        var givenName: String? = null,                      // LDAP authoritative
+        var middleName: String? = null,                     // LDAP authoritative
+        var lastName: String? = null,                       // LDAP authoritative
+        var shortUser: String? = null,                      // LDAP authoritative
+        var longUser: String? = null,                       // Expected lower case
+        var email: String? = null,                          // LDAP authoritative
+        var faculty: String? = null,                        // LDAP authoritative
+        var nick: String? = null,                           // DB authoritative
+        var realName: String? = null,                       // Computed
+        var salutation: String? = null,                     // Computed
         var authType: String? = null,
-        var role: String = "",
-        var password: String? = null,
-        var groups: List<String> = emptyList(),
-        var courses: List<Course> = emptyList(),
-        var preferredName: List<String> = emptyList(),
-        var activeSince: Long = System.currentTimeMillis(),
+        var role: String = "",                              // Computed
+        var password: String? = null,                       // Password encrypted with bcrypt for local users
+        @Access(AccessType.FIELD)
+        @ElementCollection(fetch = FetchType.EAGER)
+        var groups: Set<AdGroup> = mutableSetOf(),             // Computed, from LDAP
+        @Access(AccessType.FIELD)
+        @ElementCollection(fetch = FetchType.EAGER)
+        var courses: Set<Course> = mutableSetOf(),            // Computed, from LDAP
+        var preferredName: String? = null,                  // DB authoritative
+        var activeSince: Long = System.currentTimeMillis(), // LDAP authoritative
         var studentId: Int = -1,
-        var jobExpiration: Long = TimeUnit.DAYS.toMillis(7),//why is this here
-        var colorPrinting: Boolean = false
-) : TepidDb by TepidDbDelegate() {
+        var jobExpiration: Long = TimeUnit.DAYS.toMillis(7), // DB authoritative
+        var colorPrinting: Boolean = false // DB authoritative
+) : TepidDb(type="user") {
 
-    override var type: String? = "user"
+    init {
+        updateUserNameInformation()
+        _id = "u$shortUser"
+    }
+
+    /**
+     * Adds information relating to the name of a student to a FullUser [user]
+     */
+    fun updateUserNameInformation() {
+        salutation = nick ?: preferredName ?:givenName
+        realName = preferredName ?: "${givenName} ${lastName}"
+    }
 
     /**
      * Check if supplied [name] matches
@@ -99,31 +115,10 @@ data class FullUser(
     /**
      * Get the set of semesters for which the user has had courses
      */
+    @Transient
     @JsonIgnore
     fun getSemesters(): Set<Semester> =
             courses.map(Course::semester).toSet()
-
-    /**
-     * Returns either an empty role, or one of
-     * [USER], [CTFER], or [ELDER]
-     *
-     * Note that this differs from the full user role,
-     * which may include being a local admin
-     */
-    @JsonIgnore
-    fun getCtfRole(): String {
-        if (groups.isEmpty())
-            return ""
-        if (authType == null || authType != LOCAL) {
-            val g = groups.toSet()
-            if (elderGroups.any(g::contains)) return ELDER
-            if (ctferGroups.any(g::contains)) return CTFER
-            if (userGroups.any(g::contains)) return USER
-            return ""
-        } else {
-            return if (role == ADMIN) ELDER else USER
-        }
-    }
 
     fun toUser(): User = User(
             displayName = displayName,
@@ -137,13 +132,13 @@ data class FullUser(
             nick = nick,
             salutation = salutation,
             authType = authType,
-            role = getCtfRole(),
+            role = role,
             preferredName = preferredName,
             activeSince = activeSince,
             studentId = studentId,
             jobExpiration = jobExpiration,
             colorPrinting = colorPrinting
-    ).withDbData(this)
+    )
 
     fun toNameUser(): NameUser = NameUser(
             displayName = displayName,
@@ -173,6 +168,5 @@ data class NameUser(
         var nick: String? = null,
         var realName: String? = null,
         var salutation: String? = null,
-        var preferredName: List<String> = emptyList()
+        var preferredName: String? = null
 )
-

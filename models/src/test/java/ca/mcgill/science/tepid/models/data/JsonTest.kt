@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.treeToValue
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -71,12 +71,13 @@ class JsonTest {
     fun checkedIn() = sanityTest<CheckedIn>()
 
     @Test
-    fun email() = sanityTest<EmailReasons>()
+    fun destination() {
+        sanityTest<FullDestination>()
+    }
 
     @Test
-    fun destination() {
-        sanityTest<Destination>()
-        sanityTest<FullDestination>()
+    fun destinationTicket(){
+        sanityTest<DestinationTicket>()
     }
 
     @Test
@@ -104,8 +105,7 @@ class JsonTest {
     }
 
     @Test
-    fun user() {
-        sanityTest<User>()
-        sanityTest<FullUser>()
+    fun marqueeData(){
+        sanityTest<MarqueeData>()
     }
 }

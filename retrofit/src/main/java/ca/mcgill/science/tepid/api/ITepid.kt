@@ -5,14 +5,19 @@ import ca.mcgill.science.tepid.models.bindings.ELDER
 import ca.mcgill.science.tepid.models.bindings.USER
 import ca.mcgill.science.tepid.models.data.*
 import ca.mcgill.science.tepid.models.enums.PrinterId
-import ca.mcgill.science.tepid.models.enums.Room
+import com.google.common.io.ByteStreams
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import org.tukaani.xz.LZMA2Options
+import org.tukaani.xz.XZOutputStream
 import retrofit2.Call
 import retrofit2.http.*
+import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
 /**
- * Created by Allan Wang on 2017-10-28.
+ * API version 1.02.00
  */
 interface ITepid {
 
@@ -164,12 +169,10 @@ interface ITepid {
 
     /**
      * Remap all existing destinations
-     *
-     * //todo verify
      */
     @PUT("destinations")
     @MinAuthority(ELDER)
-    fun putDestinations(destinations: Map<String, FullDestination>): Call<PutResponse>
+    fun putDestinations(@Body destinations: Map<String, FullDestination>): Call<List<PutResponse>>
 
     /**
      * Delete the specified destination
@@ -193,12 +196,11 @@ interface ITepid {
 
     /**
      * Set the full list of queues
-     *
-     * todo verify
+     * ref tepid-commons#12
      */
     @PUT("queues")
     @MinAuthority(ELDER)
-    fun putQueues(queues: List<PrintQueue>): Call<PutResponse>
+    fun putQueues(@Body queues: List<PrintQueue>): Call<List<PutResponse>>
 
     /**
      * Get the full list of queues
@@ -239,11 +241,6 @@ interface ITepid {
     fun getAttachment(@Path("queue") queue: String, @Path("id") id: String, @Path("file") file: String): Call<ResponseBody>
 
     /**
-     * todo implement
-     */
-    //@GET("queues/_changes")
-
-    /**
      * Return list of load balancers available
      */
     @GET("queues/loadbalancers")
@@ -268,7 +265,6 @@ interface ITepid {
     /**
      * Create a print job
      *
-     * Note that a job's must be one of [Room.toString]
      */
     @POST("jobs")
     @MinAuthority(USER)
@@ -277,11 +273,11 @@ interface ITepid {
     /**
      * Add job data to the supplied id
      *
-     * todo unify output
      */
     @PUT("jobs/{id}")
     @MinAuthority(USER)
-    fun addJobData(@Path("id") id: String, @Body input: InputStream): Call<String>
+    fun addJobData(@Path("id") id: String, @Body input: RequestBody): Call<PutResponse>
+
 
     /**
      * Get the print job with the [PrintJob._id]
@@ -303,14 +299,6 @@ interface ITepid {
     @POST("jobs/job/{id}/reprint")
     @MinAuthority(USER)
     fun reprintJob(@Path("id") id: String): Call<String>
-
-    /**
-     * Get changes for the specified job id
-     */
-    @GET("jobs/job/{id}/_changes")
-    @MinAuthority(USER)
-    fun getJobChanges(@Path("id") id: String, @Query("feed") feed: String, @Query("since") since: String): Call<List<ChangeDelta>>
-
 
     /*
      * -------------------------------------------
@@ -371,5 +359,20 @@ fun ITepid.queryUsers(query: String) = queryUsers(query, -1)
 
 fun ITepid.getPrintJobs(query: String) = getPrintJobs(query, -1)
 
-fun ITepid.getJobChanges(id: String) = getJobChanges(id, "longpoll", "now")
-//fun ITepid.getJobChanges(id: String, since: Long) = getJobChanges(id, "longpoll", since.toString())
+/*
+ *
+ */
+
+/**
+ * -------------------------------------------
+ * xz extension, so we don't have to circumvent the whole API
+ * -------------------------------------------
+ */
+fun ITepid.addJobDataFromInput( id: String, input: InputStream): Call<PutResponse> {
+    val o = ByteArrayOutputStream()
+    val xzStream = XZOutputStream(o, LZMA2Options())
+    ByteStreams.copy(input, xzStream)
+    xzStream.finish()
+    val body = RequestBody.create(MediaType.parse("application/octet-stream"), o.toByteArray())
+    return addJobData(id, body)
+}

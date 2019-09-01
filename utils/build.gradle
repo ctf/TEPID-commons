@@ -2,5 +2,31 @@ dependencies {
     compile "org.apache.logging.log4j:log4j-api:${tepid.apache}"
     compile "org.apache.logging.log4j:log4j-core:${tepid.apache}"
     compile "org.jetbrains.kotlin:kotlin-reflect:${tepid.kotlin}"
-    compile "ca.allanwang.kit:props:${tepid.kit}"
+}
+
+sourceSets {
+    test {
+        resources {
+            srcDir "src/test/resources"
+        }
+    }
+}
+
+task copyTestResources(type: Copy) {
+    from "${projectDir}/src/test/resources"
+    into "${buildDir}/classes/test"
+}
+processTestResources.dependsOn copyTestResources
+
+task jarTests(type: Jar, dependsOn: testClasses) {
+    classifier = 'tests'
+    from sourceSets.test.output
+}
+configurations {
+    tests {
+        extendsFrom testRuntime
+    }
+}
+artifacts {
+    tests jarTests
 }
