@@ -67,7 +67,6 @@ object PropsLDAPTestUser : PropHolder(DefaultProps.withName("LDAPTestUser.proper
 }
 
 object PropsDB : PropHolder(DefaultProps.withName("DB.properties")) {
-    val DB_TYPE by PropsDB.getNonNull("DB_TYPE")
     val USERNAME by PropsDB.getNonNull("USERNAME")
     val PASSWORD by PropsDB.getNonNull("PASSWORD")
     val URL by PropsDB.getNonNull("URL")
