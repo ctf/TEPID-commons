@@ -7,6 +7,20 @@ import java.util.concurrent.TimeUnit
 import javax.persistence.*
 
 /**
+ * String representing a:
+ * - short user
+ * - long user
+ * - student id
+ */
+typealias Sam = String
+
+/**
+ * String representing a student's short username. Guaranteed unique.
+ */
+
+typealias ShortUser = String
+
+/**
  * Note that this is typically created from using [FullUser.toUser]
  */
 @Embeddable
