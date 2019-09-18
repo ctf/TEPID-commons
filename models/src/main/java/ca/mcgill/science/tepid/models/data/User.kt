@@ -7,6 +7,20 @@ import java.util.concurrent.TimeUnit
 import javax.persistence.*
 
 /**
+ * String representing a:
+ * - short user
+ * - long user
+ * - student id
+ */
+typealias Sam = String
+
+/**
+ * String representing a student's short username. Guaranteed unique.
+ */
+
+typealias ShortUser = String
+
+/**
  * Note that this is typically created from using [FullUser.toUser]
  */
 @Embeddable
@@ -22,7 +36,6 @@ data class User(
         var nick: String? = null,
         var realName: String? = null,
         var salutation: String? = null,
-        var authType: String? = null,
         var role: String = "",
         var preferredName: String? = null,
         var activeSince: Long = -1,
@@ -75,9 +88,8 @@ data class FullUser(
         var nick: String? = null,                           // DB authoritative
         var realName: String? = null,                       // Computed
         var salutation: String? = null,                     // Computed
-        var authType: String? = null,
         var role: String = "",                              // Computed
-        var password: String? = null,                       // Password encrypted with bcrypt for local users
+        // Password encrypted with bcrypt for local users
         @Access(AccessType.FIELD)
         @ElementCollection(fetch = FetchType.EAGER)
         var groups: Set<AdGroup> = mutableSetOf(),             // Computed, from LDAP
@@ -131,7 +143,6 @@ data class FullUser(
             faculty = faculty,
             nick = nick,
             salutation = salutation,
-            authType = authType,
             role = role,
             preferredName = preferredName,
             activeSince = activeSince,
