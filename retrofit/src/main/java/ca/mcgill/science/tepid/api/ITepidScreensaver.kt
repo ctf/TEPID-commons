@@ -23,11 +23,11 @@ interface ITepidScreensaver {
 
     @GET("screensaver/queues/{queue}")
     @MinAuthority(NONE)
-    fun listJobs(@Path("queue") queueName: String, @Query("limit") limit: Int, @Query("from") from: Long): Call<Collection<PrintJob>>
+    fun listJobs(@Path("queue") queueName: String, @Query("limit") limit: Int, @Query("from") from: Long): Call<List<PrintJob>>
 
     @GET("screensaver/queues/{queue}")
     @MinAuthority(NONE)
-    fun listJobs(@Path("queue") queueName: String): Call<Collection<PrintJob>>
+    fun listJobs(@Path("queue") queueName: String): Call<List<PrintJob>>
 
     @GET("screensaver/queues/status")
     @MinAuthority(NONE)
@@ -62,7 +62,6 @@ interface ITepidScreensaver {
     @GET("screensaver/user/{username}")
     @MinAuthority(NONE)
     fun getUserNick(@Path("username") username: String): Call<String>
-
 }
 
 private const val NONE = "none"
