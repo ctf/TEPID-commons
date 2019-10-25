@@ -2,7 +2,6 @@ package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidJackson
-import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.concurrent.TimeUnit
 import javax.persistence.Access
 import javax.persistence.AccessType
@@ -95,13 +94,15 @@ data class FullUser(
         var realName: String? = null,                       // Computed
         var salutation: String? = null,                     // Computed
         var role: String = "",                              // Computed
-        // Password encrypted with bcrypt for local users
         @Access(AccessType.FIELD)
         @ElementCollection(fetch = FetchType.EAGER)
-        var groups: Set<AdGroup> = mutableSetOf(),             // Computed, from LDAP
+        var groups: Set<AdGroup> = mutableSetOf(),          // Computed, from LDAP
         @Access(AccessType.FIELD)
         @ElementCollection(fetch = FetchType.EAGER)
-        var courses: Set<Course> = mutableSetOf(),            // Computed, from LDAP
+        var courses: Set<Course> = mutableSetOf(),          // Computed, from LDAP
+        @Access(AccessType.FIELD)
+        @ElementCollection(fetch = FetchType.EAGER)
+        var semesters: Set<Semester> = mutableSetOf(),        // Computed, from LDAP
         var preferredName: String? = null,                  // DB authoritative
         var activeSince: Long = System.currentTimeMillis(), // LDAP authoritative
         var studentId: Int = -1,
@@ -129,14 +130,6 @@ data class FullUser(
     fun isMatch(name: String) =
             if (name.contains(".")) longUser == name
             else shortUser == name
-
-    /**
-     * Get the set of semesters for which the user has had courses
-     */
-    @Transient
-    @JsonIgnore
-    fun getSemesters(): Set<Semester> =
-            courses.map(Course::semester).toSet()
 
     fun toUser(): User = User(
             displayName = displayName,
