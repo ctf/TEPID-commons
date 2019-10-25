@@ -4,7 +4,13 @@ import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidJackson
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.concurrent.TimeUnit
-import javax.persistence.*
+import javax.persistence.Access
+import javax.persistence.AccessType
+import javax.persistence.ElementCollection
+import javax.persistence.Embeddable
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.Transient
 
 /**
  * String representing a:
@@ -12,7 +18,7 @@ import javax.persistence.*
  * - long user
  * - student id
  */
-typealias Sam = String
+typealias PersonalIdentifier = String
 
 /**
  * String representing a student's short username. Guaranteed unique.
