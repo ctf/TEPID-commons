@@ -99,10 +99,7 @@ data class FullUser(
         var groups: Set<AdGroup> = mutableSetOf(),          // Computed, from LDAP
         @Access(AccessType.FIELD)
         @ElementCollection(fetch = FetchType.EAGER)
-        var courses: Set<Course> = mutableSetOf(),          // Computed, from LDAP
-        @Access(AccessType.FIELD)
-        @ElementCollection(fetch = FetchType.EAGER)
-        var semesters: Set<Semester> = mutableSetOf(),        // Computed, from LDAP
+        var semesters: Set<Semester> = mutableSetOf(),      // Computed, from LDAP
         var preferredName: String? = null,                  // DB authoritative
         var activeSince: Long = System.currentTimeMillis(), // LDAP authoritative
         var studentId: Int = -1,
