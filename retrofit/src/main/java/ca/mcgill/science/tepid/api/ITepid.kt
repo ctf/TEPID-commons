@@ -1,5 +1,6 @@
 package ca.mcgill.science.tepid.api
 
+import ca.mcgill.science.tepid.models.DTO.QuotaData
 import ca.mcgill.science.tepid.models.bindings.CTFER
 import ca.mcgill.science.tepid.models.bindings.ELDER
 import ca.mcgill.science.tepid.models.bindings.USER
@@ -90,7 +91,7 @@ interface ITepid {
      */
     @GET("users/{sam}/quota")
     @MinAuthority(USER)
-    fun getQuota(@Path("sam") sam: String): Call<Int>
+    fun getQuota(@Path("sam") sam: String): Call<QuotaData>
 
     /**
      * Returns true if a local admin exists
