@@ -17,6 +17,7 @@ data class Course(
     fun semester() = Semester(season, year)
 }
 
+@Embeddable
 data class Semester(val season: Season, val year: Int) : TepidJackson, Comparable<Semester> {
 
     override fun compareTo(other: Semester): Int =
