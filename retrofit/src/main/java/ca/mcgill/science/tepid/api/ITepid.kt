@@ -1,10 +1,22 @@
 package ca.mcgill.science.tepid.api
 
+import ca.mcgill.science.tepid.models.DTO.QuotaData
 import ca.mcgill.science.tepid.models.bindings.CTFER
 import ca.mcgill.science.tepid.models.bindings.ELDER
 import ca.mcgill.science.tepid.models.bindings.USER
-import ca.mcgill.science.tepid.models.data.*
-import ca.mcgill.science.tepid.models.enums.PrinterId
+import ca.mcgill.science.tepid.models.data.About
+import ca.mcgill.science.tepid.models.data.Destination
+import ca.mcgill.science.tepid.models.data.DestinationTicket
+import ca.mcgill.science.tepid.models.data.FullDestination
+import ca.mcgill.science.tepid.models.data.FullSession
+import ca.mcgill.science.tepid.models.data.FullUser
+import ca.mcgill.science.tepid.models.data.PrintJob
+import ca.mcgill.science.tepid.models.data.PrintQueue
+import ca.mcgill.science.tepid.models.data.PutResponse
+import ca.mcgill.science.tepid.models.data.Session
+import ca.mcgill.science.tepid.models.data.SessionRequest
+import ca.mcgill.science.tepid.models.data.User
+import ca.mcgill.science.tepid.models.data.UserQuery
 import com.google.common.io.ByteStreams
 import okhttp3.MediaType
 import okhttp3.RequestBody
@@ -12,7 +24,13 @@ import okhttp3.ResponseBody
 import org.tukaani.xz.LZMA2Options
 import org.tukaani.xz.XZOutputStream
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
+import retrofit2.http.Query
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
@@ -90,7 +108,7 @@ interface ITepid {
      */
     @GET("users/{sam}/quota")
     @MinAuthority(USER)
-    fun getQuota(@Path("sam") sam: String): Call<Int>
+    fun getQuota(@Path("sam") sam: String): Call<QuotaData>
 
     /**
      * Returns true if a local admin exists
@@ -216,7 +234,6 @@ interface ITepid {
     /**
      * Get the list of print jobs for the given queue
      *
-     * todo figure out what the queue is. Likely [PrinterId.serialNumber]?
      */
     @GET("queues/{queue}")
     @MinAuthority(NONE)
