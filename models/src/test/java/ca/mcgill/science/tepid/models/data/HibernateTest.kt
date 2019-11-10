@@ -245,45 +245,65 @@ class HibernateTest {
         crudTest(test)
     }
 
+    private fun fullUserEmbeddedTest(user: FullUser, uut: (FullUser)-> FullUser, equalityTest: (FullUser, FullUser) -> Unit){
+
+        persist(user)
+
+        val retrieved = em.find(FullUser::class.java, user._id)
+        assertNotNull(retrieved)
+        equalityTest(user, retrieved)
+
+        //repersist
+        em.detach(user)
+        em.close()
+
+        println("===========================")
+        em = emf.createEntityManager()
+
+        val newEm = emf.createEntityManager()
+        val modifiedUser = uut(user)
+
+        newEm.transaction.begin()
+        newEm.merge(modifiedUser)
+        newEm.transaction.commit()
+
+        println("===========================")
+        val retrieved1 = newEm.find(FullUser::class.java, user._id)
+
+        assertNotNull(retrieved1)
+        equalityTest(modifiedUser, retrieved1)
+
+
+    }
+
     @Test
     fun testFullUserGroups(){
         val test = FullUser(shortUser = "shortUname", groups = setOf(AdGroup("G1"), AdGroup("G2")))
         test._id="TEST"
 
-//        test.groups.forEach { persist(it) }
+        fullUserEmbeddedTest(test, {u-> u.groups = setOf(AdGroup("G1"), AdGroup("G2"), AdGroup("G3")); u}, {e: FullUser, a:FullUser->assertEquals(e.groups, a.groups)})
+    }
+
+
+    @Test
+    fun testFullUserSemesters(){
+        val test = FullUser(shortUser = "shortUname", semesters = setOf(Semester(Season.WINTER, 1111), Semester(Season.FALL, 2222)))
+        test._id="TEST"
+
+        fullUserEmbeddedTest(test, {u-> u.semesters = setOf(Semester(Season.WINTER, 1111), Semester(Season.FALL, 2222), Semester(Season.SUMMER, 3333)); u}, {e: FullUser, a:FullUser->assertEquals(e.groups, a.groups)})
+    }
+
+    @Test
+    fun testQueryWithSemesters(){
+        val test = FullUser(shortUser = "shortUname", semesters = setOf(Semester(Season.WINTER, 1111), Semester(Season.FALL, 2222)))
+        test._id="TEST"
         persist(test)
 
-        val retrieved = em.find(FullUser::class.java, "TEST")
-        assertNotNull(retrieved)
-        assertEquals(test.groups, retrieved.groups)
-
-        // repersist
-        em.detach(test)
-        em.close()
-
-        em = emf.createEntityManager()
-
-        println("===========================")
-
-        val newEm = emf.createEntityManager()
-
-        test.groups = setOf(AdGroup("G1"), AdGroup("G2"), AdGroup("G3"))
-
-
-        newEm.transaction.begin()
-        newEm.merge(test)
-        newEm.transaction.commit()
-
-        val retrieved1 = newEm.find(FullUser::class.java, "TEST")
-
-        println("===========================")
-
-
-        assertNotNull(retrieved1)
-        assertEquals(test.groups, retrieved1.groups)
-
-
+        val r = em.createQuery("SELECT c FROM FullUser c JOIN c.semesters s WHERE s.year = 1111", FullUser::class.java).singleResult
+        assertNotNull(r)
+        assertEquals(2, r.semesters.size)
     }
+
 
     @Test
     fun testAddFullSession(){
