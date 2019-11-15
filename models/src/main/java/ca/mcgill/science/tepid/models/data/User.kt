@@ -77,8 +77,6 @@ data class UserQuery(
 /**
  * The complete collection of user attributes
  * Note that this is the main user model used for the backend.
- * It contains sensitive information, and therefore should not be used for interchange over the network
- * BEWARE that, for builtin users, the hashed password is printed in user.toString().
  */
 @Entity
 data class FullUser(
@@ -99,7 +97,7 @@ data class FullUser(
         var groups: Set<AdGroup> = mutableSetOf(),          // Computed, from LDAP
         @Access(AccessType.FIELD)
         @ElementCollection(fetch = FetchType.EAGER)
-        var semesters: Set<Semester> = mutableSetOf(),      // Computed, from LDAP
+        var semesters: Set<Semester> = mutableSetOf(),      // DB authoritative
         var preferredName: String? = null,                  // DB authoritative
         var activeSince: Long = System.currentTimeMillis(), // LDAP authoritative
         var studentId: Int = -1,
