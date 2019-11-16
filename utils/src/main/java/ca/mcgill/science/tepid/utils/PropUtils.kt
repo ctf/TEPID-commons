@@ -64,7 +64,7 @@ object PropsLDAPGroups : PropHolder(DefaultProps.withName("LDAPGroups.properties
     val GROUPS_LOCATION by getNonNull("GROUPS_LOCATION")
     val ELDERS_GROUPS by getAdGroups("ELDERS_GROUPS")
     val CTFERS_GROUPS by getAdGroups("CTFERS_GROUPS")
-    val USERS_GROUPS by getAdGroups("USERS_GROUPS")
+    val QUOTA_GROUPS by getAdGroups("QUOTA_GROUPS")
 }
 
 object PropsLDAPTestUser : PropHolder(DefaultProps.withName("LDAPTestUser.properties")) {
