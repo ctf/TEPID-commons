@@ -1,5 +1,6 @@
 package ca.mcgill.science.tepid.utils
 
+import ca.mcgill.science.tepid.models.data.AdGroup
 
 /**
  * Configurations for any TEPID project. This way, sharing config interfaces is the default action.
@@ -40,7 +41,6 @@ object PropsURL : PropHolder(DefaultProps.withName("URL.properties")) {
 }
 
 object PropsLDAP : PropHolder(DefaultProps.withName("LDAP.properties")) {
-    val LDAP_ENABLED by PropsLDAP.get("LDAP_ENABLED")
     val LDAP_SEARCH_BASE by PropsLDAP.get("LDAP_SEARCH_BASE")
     val ACCOUNT_DOMAIN by PropsLDAP.get("ACCOUNT_DOMAIN")
     val PROVIDER_URL by PropsLDAP.get("PROVIDER_URL")
@@ -53,11 +53,17 @@ object PropsLDAPResource : PropHolder(DefaultProps.withName("LDAPResource.proper
 }
 
 object PropsLDAPGroups : PropHolder(DefaultProps.withName("LDAPGroups.properties")) {
-    val EXCHANGE_STUDENTS_GROUP_BASE by PropsLDAPGroups.get("EXCHANGE_STUDENTS_GROUP_BASE")
-    val GROUPS_LOCATION by PropsLDAPGroups.get("GROUPS_LOCATION")
-    val ELDERS_GROUPS by PropsLDAPGroups.get("ELDERS_GROUPS")
-    val CTFERS_GROUPS by PropsLDAPGroups.get("CTFERS_GROUPS")
-    val USERS_GROUPS by PropsLDAPGroups.get("USERS_GROUPS")
+    private val illegalLDAPCharacters = "[,+\"\\\\<>;=]".toRegex()
+
+    fun getAdGroups(key: String): Lazy<List<AdGroup>> {
+        return lazy { get(key).value?.split(illegalLDAPCharacters)?.map { AdGroup(it) } ?: emptyList() }
+    }
+
+    val EXCHANGE_STUDENTS_GROUP_BASE by get("EXCHANGE_STUDENTS_GROUP_BASE")
+    val GROUPS_LOCATION by getNonNull("GROUPS_LOCATION")
+    val ELDERS_GROUPS by getAdGroups("ELDERS_GROUPS")
+    val CTFERS_GROUPS by getAdGroups("CTFERS_GROUPS")
+    val QUOTA_GROUPS by getAdGroups("QUOTA_GROUPS")
 }
 
 object PropsLDAPTestUser : PropHolder(DefaultProps.withName("LDAPTestUser.properties")) {
@@ -70,16 +76,6 @@ object PropsDB : PropHolder(DefaultProps.withName("DB.properties")) {
     val USERNAME by PropsDB.getNonNull("USERNAME")
     val PASSWORD by PropsDB.getNonNull("PASSWORD")
     val URL by PropsDB.getNonNull("URL")
-}
-
-object PropsTEM : PropHolder(DefaultProps.withName("TEM.properties")) {
-    val TEM_URL by PropsTEM.get("TEM_URL")
-}
-
-object PropsBarcode : PropHolder(DefaultProps.withName("barcode.properties")) {
-    val BARCODES_URL by PropsBarcode.get("BARCODES_URL")
-    val BARCODES_DB_USERNAME by PropsBarcode.get("BARCODES_DB_URL")
-    val BARCODES_DB_PASSWORD by PropsBarcode.get("BARCODES_DB_PASSWORD")
 }
 
 object PropsScreensaver : PropHolder(DefaultProps.withName("screensaver.properties")) {

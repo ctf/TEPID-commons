@@ -36,6 +36,7 @@
         <class>ca.mcgill.science.tepid.models.data.MarqueeData</class>
         <class>ca.mcgill.science.tepid.models.data.AdGroup</class>
         <class>ca.mcgill.science.tepid.models.data.Course</class>
+        <class>ca.mcgill.science.tepid.models.data.Semester</class>
 
         <properties>
             <!-- Configuring JDBC properties -->
@@ -47,7 +48,7 @@
 
             <!-- Hibernate properties -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="validate"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
             <property name="hibernate.format_sql" value="false"/>
             <property name="hibernate.show_sql" value="true"/>
 
