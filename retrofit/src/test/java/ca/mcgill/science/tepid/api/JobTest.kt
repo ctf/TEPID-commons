@@ -33,7 +33,7 @@ class JobTest {
 
         testJob = PrintJob(
                 name = "Server Test ${System.currentTimeMillis()}",
-                queueName = "0",
+                queueId = "0",
                 userIdentification = TestUtils.testUser
         )
     }

@@ -12,7 +12,7 @@ import javax.persistence.Transient
 @Entity
 data class PrintJob(
         var name: String = "",
-        var queueName: String? = null,
+        var queueId: String? = null,
         var originalHost: String? = null,
         var userIdentification: String? = null,
         var destination: String? = null,
