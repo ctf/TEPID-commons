@@ -6,7 +6,10 @@ import ca.mcgill.science.tepid.models.data.PrintJob
 import ca.mcgill.science.tepid.models.data.PrintQueue
 import ca.mcgill.science.tepid.test.TestUtils
 import ca.mcgill.science.tepid.test.get
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
@@ -33,7 +36,7 @@ class JobTest {
 
         testJob = PrintJob(
                 name = "Server Test ${System.currentTimeMillis()}",
-                queueId = "0",
+                queueId = "q0",
                 userIdentification = TestUtils.testUser
         )
     }
