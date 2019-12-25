@@ -9,7 +9,7 @@ import ca.mcgill.science.tepid.models.data.Destination
 import ca.mcgill.science.tepid.models.data.DestinationTicket
 import ca.mcgill.science.tepid.models.data.FullDestination
 import ca.mcgill.science.tepid.models.data.FullSession
-import ca.mcgill.science.tepid.models.data.FullUser
+import ca.mcgill.science.tepid.models.data.PersonalIdentifier
 import ca.mcgill.science.tepid.models.data.PrintJob
 import ca.mcgill.science.tepid.models.data.PrintQueue
 import ca.mcgill.science.tepid.models.data.PutResponse
@@ -20,7 +20,6 @@ import ca.mcgill.science.tepid.models.data.UserQuery
 import com.google.common.io.ByteStreams
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import org.tukaani.xz.LZMA2Options
 import org.tukaani.xz.XZOutputStream
 import retrofit2.Call
@@ -35,7 +34,7 @@ import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
 /**
- * API version 1.02.00
+ * API version 2.0.0
  */
 interface ITepid {
 
@@ -70,6 +69,16 @@ interface ITepid {
     @MinAuthority(NONE)
     fun removeSession(@Path("id") id: String): Call<Void>
 
+    @DELETE("sessions")
+    fun endCurrentSession(): Call<Void>
+
+    /**
+     * ends all of the sessions for a specified short
+     */
+
+    @POST("sessions/invalidate/{id}")
+    fun invalidateSessions(@Path("id") id: String): Call<Void>
+
     /*
      * -------------------------------------------
      * Users
@@ -88,89 +97,73 @@ interface ITepid {
      * 404  user could not be found
      * 401  invalid session or unauthorized access to another user
      */
-    @GET("users/{sam}")
+    @GET("users/{personalIdentifier}")
     @MinAuthority(USER)
-    fun getUser(@Path("sam") sam: String): Call<User>
+    fun getUser(@Path("personalIdentifier") personalIdentifier: PersonalIdentifier): Call<User>
 
     /**
      * Helper for when sam is an id
      *
      * See [getUser]
      */
-    @GET("users/{id}?noRedirect")
+    @GET("users/{personalIdentifier}?noRedirect")
     @MinAuthority(USER)
-    fun getUser(@Path("id") id: Int): Call<User>
+    fun getUser(@Path("personalIdentifier") id: Int): Call<User>
 
     /**
-     * Get quota of the supplied sam
-     * If sender is a user, the sam must also match their own sam
-     * If sender is a ctfer, no restriction is applied on the sam
+     * Sets the color toggle for the given user
+     * Users can only set their own; CTFers and Elders can set for anyone
      */
-    @GET("users/{sam}/quota")
+    @PUT("users/{id}/color")
     @MinAuthority(USER)
-    fun getQuota(@Path("sam") sam: String): Call<QuotaData>
-
-    /**
-     * Returns true if a local admin exists
-     *
-     */
-    @GET("users/configured")
-    @MinAuthority(NONE)
-    fun isConfigured(): Call<Boolean>
-
-    /**
-     * Create a new local admin with the given data
-     * This is only authorized when no existing local admin exists
-     */
-    @PUT("users/{sam}")
-    @MinAuthority(NONE)
-    fun createLocalAdmin(@Path("sam") sam: String, @Body admin: FullUser): Call<PutResponse>
-
-    /**
-     * Gets a list of short users similar to the one supplied
-     *
-     * query will be used to match short users or display names
-     */
-    @GET("users/autosuggest/{expr}")
-    @MinAuthority(CTFER)
-    fun queryUsers(@Path("expr") query: String, @Query("limit") limit: Int): Call<List<UserQuery>>
+    fun enableColor(@Path("id") id: String, @Body enable: Boolean): Call<PutResponse>
 
     /**
      * Sets the exchange student status for the given user
      */
-    @PUT("users/{sam}/exchange")
+    @PUT("users/{id}/exchange")
     @MinAuthority(CTFER)
-    fun setExchange(@Path("sam") sam: String, @Body enable: Boolean): Call<PutResponse>
+    fun setExchange(@Path("id") id: String, @Body enable: Boolean): Call<PutResponse>
 
     /**
-     * Sets the color toggle for the given user
-     * If sender is a user, the sam must also match their own sam
-     * If sender is a ctfer, no restriction is applied on the sam
+     * Sets the new job expiration, in milliseconds
+     * Users can only set their own; CTFers and Elders can set for anyone
      */
-    @PUT("users/{sam}/color")
+    @PUT("users/{id}/jobExpiration")
     @MinAuthority(USER)
-    fun enableColor(@Path("sam") sam: String, @Body enable: Boolean): Call<PutResponse>
+    fun setJobExpiration(@Path("id") id: String, @Body jobExpiration: Long): Call<PutResponse>
 
     /**
      * Sets the nickname for the given user
-     * If sender is a user, the sam must also match their own sam
-     * If sender is a ctfer, no restriction is applied on the sam
-     *
-     * A nickname that is blank will effectively set the nickname to null,
-     * and the default name will be used
+     * Users can only set their own; CTFers and Elders can set for anyone
+     * Clearing the nickname is done by submitting an empty body
      */
-    @PUT("users/{sam}/nick")
+    @PUT("users/{id}/nick")
     @MinAuthority(USER)
-    fun setNickname(@Path("sam") sam: String, @Body nickname: String): Call<PutResponse>
+    fun setNickname(@Path("id") id: String, @Body nickname: String): Call<PutResponse>
 
     /**
-     * Sets the new job expiration for the current user
-     * If sender is a user, the sam must also match their own sam
-     * If sender is a ctfer, no restriction is applied on the sam
+     * Get quota of the supplied sam
+     * Users can only set their own; CTFers and Elders can set for anyone
      */
-    @PUT("users/{sam}/jobExpiration")
+    @GET("users/{id}/quota")
     @MinAuthority(USER)
-    fun setJobExpiration(@Path("sam") sam: String, @Body jobExpiration: Long): Call<PutResponse>
+    fun getQuota(@Path("id") id: String): Call<QuotaData>
+
+    /**
+     * Gets a list of short users similar to the one supplied
+     * query will be used to match short users or display names
+     */
+    @GET("users/autosuggest/{like}")
+    @MinAuthority(CTFER)
+    fun queryUsers(@Path("like") query: String, @Query("limit") limit: Int): Call<List<UserQuery>>
+
+    /**
+     * Refreshes the user from LDAP and invalidates their sessions
+     */
+    @POST("users/{id}/refresh")
+    @MinAuthority(CTFER)
+    fun forceRefresh(@Path("id") id: String): Call<Void>
 
     /*
      * -------------------------------------------
@@ -179,32 +172,38 @@ interface ITepid {
      */
 
     /**
-     * Retrieve a map of room names to destinations
+     * Retrieve a map of _id to destinations
      */
     @GET("destinations")
     @MinAuthority(USER)
     fun getDestinations(): Call<Map<String, Destination>>
 
-    /**
-     * Remap all existing destinations
-     */
-    @PUT("destinations")
+    @POST("destinations")
     @MinAuthority(ELDER)
-    fun putDestinations(@Body destinations: Map<String, FullDestination>): Call<List<PutResponse>>
+    fun newDestination(): Call<PutResponse>
 
-    /**
-     * Delete the specified destination
-     */
-    @DELETE("destinations/{printerId}")
+    @GET("destinations/{dest}")
+    @MinAuthority(USER)
+    fun getDestination(@Path("dest") id: String): Call<Destination>
+
+    @PUT("destinations/{dest}")
     @MinAuthority(ELDER)
-    fun deleteDestination(@Path("printerId") printerId: String): Call<String>
+    fun putDestination(@Path("dest") id: String, @Body destinations: FullDestination): Call<PutResponse>
+
+    @DELETE("destinations/{dest}")
+    @MinAuthority(ELDER)
+    fun deleteDestination(@Path("dest") id: String): Call<Void>
 
     /**
      * Send a ticket to the given printer by id
      */
-    @POST("destinations/{printerId}")
+    @POST("destinations/{dest}/ticket")
     @MinAuthority(CTFER)
-    fun setPrinterStatus(@Path("printerId") printerId: String, @Body ticket: DestinationTicket): Call<String>
+    fun setTicket(@Path("dest") id: String, @Body ticket: DestinationTicket): Call<PutResponse>
+
+    @DELETE("destinations/{id}/ticket")
+    @MinAuthority(CTFER)
+    fun deleteTicket(@Path("dest") id: String): Call<Void>
 
     /*
      * -------------------------------------------
@@ -213,49 +212,27 @@ interface ITepid {
      */
 
     /**
-     * Set the full list of queues
-     * ref tepid-commons#12
-     */
-    @PUT("queues")
-    @MinAuthority(ELDER)
-    fun putQueues(@Body queues: List<PrintQueue>): Call<List<PutResponse>>
-
-    /**
-     * Get the full list of queues
+     * Retrieve a map of _id to queues
      */
     @GET("queues")
-    @MinAuthority(NONE)
-    fun getQueues(): Call<List<PrintQueue>>
+    @MinAuthority(USER)
+    fun getQueues(): Call<Map<String, PrintQueue>>
+
+    @POST("queues")
+    @MinAuthority(ELDER)
+    fun newQueue(): Call<PutResponse>
+
+    @GET("queues/{queue}")
+    @MinAuthority(USER)
+    fun getQueue(@Path("queue") id: String): Call<PrintQueue>
+
+    @PUT("queues/{queue}")
+    @MinAuthority(ELDER)
+    fun putQueue(@Path("queue") id: String, @Body queue: PrintQueue): Call<PutResponse>
 
     @DELETE("queues/{queue}")
     @MinAuthority(ELDER)
-    fun deleteQueue(@Path("queue") queue: String): Call<String>
-
-    /**
-     * Get the list of print jobs for the given queue
-     *
-     */
-    @GET("queues/{queue}")
-    @MinAuthority(NONE)
-    fun getPrintJobs(@Path("queue") queue: String, @Query("limit") limit: Int): Call<List<PrintJob>>
-
-    /**
-     * Gets a single print job from the specified queue and id
-     *
-     * todo return 404 if not found
-     */
-    @GET("queues/{queue}/{id}")
-    @MinAuthority(NONE)
-    fun getPrintJob(@Path("queue") queue: String, @Path("id") id: String): Call<PrintJob>
-
-    /**
-     * Gets a single file from the specified queue, id, and filename
-     *
-     * todo this should have at least ctf access?
-     */
-    @GET("queues/{queue}/{id}/{file}")
-    @MinAuthority(NONE)
-    fun getAttachment(@Path("queue") queue: String, @Path("id") id: String, @Path("file") file: String): Call<ResponseBody>
+    fun deleteQueue(@Path("queue") id: String): Call<Void>
 
     /**
      * Return list of load balancers available
@@ -271,51 +248,55 @@ interface ITepid {
      */
 
     /**
-     * Get the list of print jobs for the given user
-     *
-     * todo add limit query
-     */
-    @GET("jobs/{sam}")
-    @MinAuthority(USER)
-    fun getUserPrintJobs(@Path("sam") sam: String): Call<List<PrintJob>>
-
-    /**
      * Create a print job
-     *
      */
     @POST("jobs")
     @MinAuthority(USER)
     fun createNewJob(@Body job: PrintJob): Call<PutResponse>
 
     /**
-     * Add job data to the supplied id
-     *
-     */
-    @PUT("jobs/{id}")
-    @MinAuthority(USER)
-    fun addJobData(@Path("id") id: String, @Body input: RequestBody): Call<PutResponse>
-
-
-    /**
      * Get the print job with the [PrintJob._id]
      */
-    @GET("jobs/job/{id}")
+    @GET("jobs/{id}")
     @MinAuthority(USER)
     fun getJob(@Path("id") id: String): Call<PrintJob>
 
     /**
+     * Add job data to the supplied id
+     */
+    @PUT("jobs/{id}/data")
+    @MinAuthority(USER)
+    fun addJobData(@Path("id") id: String, @Body input: RequestBody): Call<PutResponse>
+
+    /**
      * Refund the print job with the supplied [PrintJob._id]
      */
-    @PUT("jobs/job/{id}/refunded")
+    @PUT("jobs/{id}/refunded")
     @MinAuthority(CTFER)
     fun refundJob(@Path("id") id: String, @Body refund: Boolean): Call<PutResponse>
 
     /**
      * Reprint the print job with the supplied id
      */
-    @POST("jobs/job/{id}/reprint")
+    @POST("jobs/{id}/reprint")
     @MinAuthority(USER)
     fun reprintJob(@Path("id") id: String): Call<String>
+
+    /**
+     * Get the list of print jobs for the given user
+     *
+     * todo add limit query
+     */
+    @GET("users/{userId}/jobs")
+    @MinAuthority(USER)
+    fun getUserPrintJobs(@Path("userId") id: String): Call<List<PrintJob>>
+
+    /**
+     * Get the list of print jobs for the given queue
+     */
+    @GET("queues/{queue}/jobs")
+    @MinAuthority(NONE)
+    fun getPrintJobs(@Path("queue") queue: String, @Query("limit") limit: Int): Call<List<PrintJob>>
 
     /*
      * -------------------------------------------
@@ -337,9 +318,6 @@ interface ITepid {
     @GET("endpoints")
     @MinAuthority(CTFER)
     fun getEndpoints(): Call<String>
-
-//    @GET("barcode/_wait")
-//    fun scanBarcode(): Call<UserBarcode>
 }
 
 private const val NONE = "none"
@@ -350,21 +328,6 @@ private const val NONE = "none"
  * -------------------------------------------
  */
 
-/*
- * -------------------------------------------
- * Id extensions
- *
- * Converts ids to strings
- * -------------------------------------------
- */
-
-fun ITepid.setNickname(id: Int, nickname: String) = setNickname(id.toString(), nickname)
-fun ITepid.setExchange(id: Int, enable: Boolean) = setExchange(id.toString(), enable)
-fun ITepid.enableColor(id: Int, enable: Boolean) = enableColor(id.toString(), enable)
-fun ITepid.setJobExpiration(id: Int, jobExpiration: Long) = setJobExpiration(id.toString(), jobExpiration)
-fun ITepid.getQuota(id: Int) = getQuota(id.toString())
-fun ITepid.getUserPrintJobs(id: Int) = getUserPrintJobs(id.toString())
-fun ITepid.refundJob(id: String) = refundJob(id, true)
 /*
  * -------------------------------------------
  * Query extensions
@@ -385,7 +348,7 @@ fun ITepid.getPrintJobs(query: String) = getPrintJobs(query, -1)
  * xz extension, so we don't have to circumvent the whole API
  * -------------------------------------------
  */
-fun ITepid.addJobDataFromInput( id: String, input: InputStream): Call<PutResponse> {
+fun ITepid.addJobDataFromInput(id: String, input: InputStream): Call<PutResponse> {
     val o = ByteArrayOutputStream()
     val xzStream = XZOutputStream(o, LZMA2Options())
     ByteStreams.copy(input, xzStream)
