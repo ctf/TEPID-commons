@@ -172,7 +172,7 @@ class HibernateTest {
 
     @Test
     fun testFk(){
-        val embed0 = FullUser(shortUser = "TESTENTITY")
+        val embed0 = FullUser(nick = "TESTENTITY")
         val e0 = TestForeignKey(datum = embed0)
         e0._id = "TEST"
 
@@ -240,7 +240,7 @@ class HibernateTest {
 
     @Test
     fun testAddFullUser(){
-        val test = FullUser(shortUser = "shortUname")
+        val test = FullUser(nick = "nick")
         test._id="TEST"
         crudTest(test)
     }
@@ -278,7 +278,7 @@ class HibernateTest {
 
     @Test
     fun testFullUserGroups(){
-        val test = FullUser(shortUser = "shortUname", groups = setOf(AdGroup("G1"), AdGroup("G2")))
+        val test = FullUser(nick = "nick", groups = setOf(AdGroup("G1"), AdGroup("G2")))
         test._id="TEST"
 
         fullUserEmbeddedTest(test, {u-> u.groups = setOf(AdGroup("G1"), AdGroup("G2"), AdGroup("G3")); u}, {e: FullUser, a:FullUser->assertEquals(e.groups, a.groups)})
@@ -287,7 +287,7 @@ class HibernateTest {
 
     @Test
     fun testFullUserSemesters(){
-        val test = FullUser(shortUser = "shortUname", semesters = setOf(Semester(Season.WINTER, 1111), Semester(Season.FALL, 2222)))
+        val test = FullUser(nick = "nick", semesters = setOf(Semester(Season.WINTER, 1111), Semester(Season.FALL, 2222)))
         test._id="TEST"
 
         fullUserEmbeddedTest(test, {u-> u.semesters = setOf(Semester(Season.WINTER, 1111), Semester(Season.FALL, 2222), Semester(Season.SUMMER, 3333)); u}, {e: FullUser, a:FullUser->assertEquals(e.groups, a.groups)})
@@ -295,7 +295,7 @@ class HibernateTest {
 
     @Test
     fun testQueryWithSemesters(){
-        val test = FullUser(shortUser = "shortUname", semesters = setOf(Semester(Season.WINTER, 1111), Semester(Season.FALL, 2222)))
+        val test = FullUser(nick = "nick", semesters = setOf(Semester(Season.WINTER, 1111), Semester(Season.FALL, 2222)))
         test._id="TEST"
         persist(test)
 
@@ -307,7 +307,8 @@ class HibernateTest {
 
     @Test
     fun testAddFullSession(){
-        val testFullUser = FullUser(shortUser = "shortUname")
+        val testFullUser = FullUser(nick = "nick")
+        testFullUser._id = "shortUser"
 
         persist(testFullUser)
 
@@ -319,7 +320,8 @@ class HibernateTest {
 
     @Test
     fun testReadFullSession(){
-        val testFullUser = FullUser(shortUser = "shortUname")
+        val testFullUser = FullUser(nick = "nick")
+        testFullUser._id = "shortUser"
 
         persist(testFullUser)
     }
@@ -348,7 +350,8 @@ class HibernateTest {
 
     @Test
     fun testAddDestinationTicket(){
-        val testFullUser = FullUser(shortUser = "shortUname")
+        val testFullUser = FullUser(nick = "nick")
+        testFullUser._id = "shortUser"
         persist(testFullUser)
         val testDestinationTicket = DestinationTicket(user=testFullUser.toUser())
         crudTest(testDestinationTicket)
@@ -363,7 +366,8 @@ class HibernateTest {
     @Test
     fun testAddFullDestinationWithTicket(){
 
-        val testFullUser = FullUser(shortUser = "shortUname")
+        val testFullUser = FullUser(nick = "nick")
+        testFullUser._id = "shortUser"
         persist(testFullUser)
         var testFullDestination = FullDestination(name="testName")
         persist(testFullDestination)
