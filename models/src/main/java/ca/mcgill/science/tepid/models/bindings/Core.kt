@@ -42,7 +42,7 @@ abstract class TepidDb(
                 name = "FallbackUuid",
                 strategy = "ca.mcgill.science.tepid.models.bindings.FallbackUuidIdGenerator"
         )
-        var _id: String? = null,
+        open var _id: String? = null,
         var _rev: String? = null,
         var type: String? = null,
         var schema: String? = null

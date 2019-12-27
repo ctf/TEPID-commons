@@ -102,7 +102,8 @@ data class FullUser(
         var activeSince: Long = System.currentTimeMillis(), // LDAP authoritative
         var studentId: Int = -1,
         var jobExpiration: Long = TimeUnit.DAYS.toMillis(7), // DB authoritative
-        var colorPrinting: Boolean = false // DB authoritative
+        var colorPrinting: Boolean = false, // DB authoritative
+        override var _id: String? = null
 ) : TepidDb(type="user") {
 
     var shortUser: String?
