@@ -280,7 +280,7 @@ interface ITepid {
      */
     @POST("jobs/{id}/reprint")
     @MinAuthority(USER)
-    fun reprintJob(@Path("id") id: String): Call<String>
+    fun reprintJob(@Path("id") id: String): Call<PutResponse>
 
     /**
      * Get the list of print jobs for the given user
