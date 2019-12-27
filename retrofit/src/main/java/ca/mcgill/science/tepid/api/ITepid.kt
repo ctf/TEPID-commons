@@ -102,15 +102,6 @@ interface ITepid {
     fun getUser(@Path("personalIdentifier") personalIdentifier: PersonalIdentifier): Call<User>
 
     /**
-     * Helper for when sam is an id
-     *
-     * See [getUser]
-     */
-    @GET("users/{personalIdentifier}?noRedirect")
-    @MinAuthority(USER)
-    fun getUser(@Path("personalIdentifier") id: Int): Call<User>
-
-    /**
      * Sets the color toggle for the given user
      * Users can only set their own; CTFers and Elders can set for anyone
      */
