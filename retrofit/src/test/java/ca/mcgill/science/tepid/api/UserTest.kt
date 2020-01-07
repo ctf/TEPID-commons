@@ -6,16 +6,9 @@ import ca.mcgill.science.tepid.api.internal.assertTestUser
 import ca.mcgill.science.tepid.api.internal.executeExpectingError
 import ca.mcgill.science.tepid.test.TestUtils
 import ca.mcgill.science.tepid.test.get
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class UserTest {
-
-    @Test
-    fun isConfigured() {
-        val result = TestUtils.testApiUnauth.isConfigured().get()
-        assertTrue(result, "Tepid is not configured")
-    }
 
     @Test
     fun getByShortUser() {

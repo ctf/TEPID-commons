@@ -4,7 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import org.hibernate.annotations.GenericGenerator
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.MappedSuperclass
+import javax.persistence.Transient
 
 /**
  * DB Metadata common to all db related classes
@@ -38,7 +42,7 @@ abstract class TepidDb(
                 name = "FallbackUuid",
                 strategy = "ca.mcgill.science.tepid.models.bindings.FallbackUuidIdGenerator"
         )
-        var _id: String? = null,
+        open var _id: String? = null,
         var _rev: String? = null,
         var type: String? = null,
         var schema: String? = null
@@ -61,6 +65,7 @@ abstract class TepidDb(
  */
 fun <T : TepidDb> T.withDbData(main: TepidDb): T {
     withIdData(main)
+    _id = main._id
     _rev = main._rev
     type = main.type
     schema = main.schema

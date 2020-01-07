@@ -84,7 +84,7 @@ data class FullUser(
         var givenName: String? = null,                      // LDAP authoritative
         var middleName: String? = null,                     // LDAP authoritative
         var lastName: String? = null,                       // LDAP authoritative
-        var shortUser: String? = null,                      // LDAP authoritative
+        // var shortUser: String? = null,                      // LDAP authoritative
         var longUser: String? = null,                       // Expected lower case
         var email: String? = null,                          // LDAP authoritative
         var faculty: String? = null,                        // LDAP authoritative
@@ -102,12 +102,18 @@ data class FullUser(
         var activeSince: Long = System.currentTimeMillis(), // LDAP authoritative
         var studentId: Int = -1,
         var jobExpiration: Long = TimeUnit.DAYS.toMillis(7), // DB authoritative
-        var colorPrinting: Boolean = false // DB authoritative
+        var colorPrinting: Boolean = false, // DB authoritative
+        override var _id: String? = null
 ) : TepidDb(type="user") {
+
+    var shortUser: String?
+        get() = _id
+        set(value) {
+            _id = value
+        }
 
     init {
         updateUserNameInformation()
-        _id = "u$shortUser"
     }
 
     /**
