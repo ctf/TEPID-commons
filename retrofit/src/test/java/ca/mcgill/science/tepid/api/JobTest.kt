@@ -6,7 +6,10 @@ import ca.mcgill.science.tepid.models.data.PrintJob
 import ca.mcgill.science.tepid.models.data.PrintQueue
 import ca.mcgill.science.tepid.test.TestUtils
 import ca.mcgill.science.tepid.test.get
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
@@ -22,18 +25,18 @@ class JobTest {
     fun initTest() {
         val r = TestUtils.testApi.enableColor(TestUtils.testUser, true).execute()
 
-        val d0 = "d0".padEnd(36)
-        val d1 = "d1".padEnd(36)
+        val d0 = "d0"
+        val d1 = "d1"
 
-        TestUtils.testApi.putDestinations(mapOf(d0 to FullDestination(name = d0, up = true), d1 to FullDestination(name = d1, up = true))).executeDirect()
+        listOf(FullDestination(name = d0, up = true), FullDestination(name = d1, up = true)).forEach { TestUtils.testApi.putDestination(it.name, it).executeDirect() }
 
         val q =  PrintQueue(loadBalancer = "fiftyfifty", name = "0", destinations = listOf(d0, d1))
         q._id = "q0"
-        TestUtils.testApi.putQueues(listOf(q)).executeDirect()
+        TestUtils.testApi.putQueue(q.getId(), q).executeDirect()
 
         testJob = PrintJob(
                 name = "Server Test ${System.currentTimeMillis()}",
-                queueName = "0",
+                queueId = "q0",
                 userIdentification = TestUtils.testUser
         )
     }
@@ -92,12 +95,10 @@ class JobTest {
         val printedJob = TestUtils.testApi.getJob(jobId).executeDirect()
                 ?: fail("did not retrieve printed job after print")
 
-        val setStatusResponse = TestUtils.testApi.setPrinterStatus(printedJob.destination
-                ?: fail("printed job did not have destination"), DestinationTicket(up = false, reason = "reprint test, put me up")).execute()
+        val setStatusResponse = TestUtils.testApi.setTicket(printedJob.destination
+                ?: fail("printed job did not have destination"), DestinationTicket(up = false, reason = "reprint test, put me up")).executeDirect() ?: fail("failed marking printer as down")
 
-        if (setStatusResponse?.body()?.contains("down") != true) {
-            fail("destination was not marked down")
-        }
+        assertTrue(setStatusResponse.ok )
 
         // reprint
         val reprintResponse = TestUtils.testApi.reprintJob(jobId).execute().body()

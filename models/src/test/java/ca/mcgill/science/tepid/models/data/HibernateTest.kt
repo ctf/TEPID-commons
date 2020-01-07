@@ -172,7 +172,7 @@ class HibernateTest {
 
     @Test
     fun testFk(){
-        val embed0 = FullUser(shortUser = "TESTENTITY")
+        val embed0 = FullUser(nick = "TESTENTITY")
         val e0 = TestForeignKey(datum = embed0)
         e0._id = "TEST"
 
@@ -240,54 +240,75 @@ class HibernateTest {
 
     @Test
     fun testAddFullUser(){
-        val test = FullUser(shortUser = "shortUname")
+        val test = FullUser(nick = "nick")
         test._id="TEST"
         crudTest(test)
     }
 
-    @Test
-    fun testFullUserGroups(){
-        val test = FullUser(shortUser = "shortUname", groups = setOf(AdGroup("G1"), AdGroup("G2")))
-        test._id="TEST"
+    private fun fullUserEmbeddedTest(user: FullUser, uut: (FullUser)-> FullUser, equalityTest: (FullUser, FullUser) -> Unit){
 
-//        test.groups.forEach { persist(it) }
-        persist(test)
+        persist(user)
 
-        val retrieved = em.find(FullUser::class.java, "TEST")
+        val retrieved = em.find(FullUser::class.java, user._id)
         assertNotNull(retrieved)
-        assertEquals(test.groups, retrieved.groups)
+        equalityTest(user, retrieved)
 
-        // repersist
-        em.detach(test)
+        //repersist
+        em.detach(user)
         em.close()
 
+        println("===========================")
         em = emf.createEntityManager()
 
-        println("===========================")
-
         val newEm = emf.createEntityManager()
-
-        test.groups = setOf(AdGroup("G1"), AdGroup("G2"), AdGroup("G3"))
-
+        val modifiedUser = uut(user)
 
         newEm.transaction.begin()
-        newEm.merge(test)
+        newEm.merge(modifiedUser)
         newEm.transaction.commit()
 
-        val retrieved1 = newEm.find(FullUser::class.java, "TEST")
-
         println("===========================")
-
+        val retrieved1 = newEm.find(FullUser::class.java, user._id)
 
         assertNotNull(retrieved1)
-        assertEquals(test.groups, retrieved1.groups)
+        equalityTest(modifiedUser, retrieved1)
 
 
     }
 
     @Test
+    fun testFullUserGroups(){
+        val test = FullUser(nick = "nick", groups = setOf(AdGroup("G1"), AdGroup("G2")))
+        test._id="TEST"
+
+        fullUserEmbeddedTest(test, {u-> u.groups = setOf(AdGroup("G1"), AdGroup("G2"), AdGroup("G3")); u}, {e: FullUser, a:FullUser->assertEquals(e.groups, a.groups)})
+    }
+
+
+    @Test
+    fun testFullUserSemesters(){
+        val test = FullUser(nick = "nick", semesters = setOf(Semester(Season.WINTER, 1111), Semester(Season.FALL, 2222)))
+        test._id="TEST"
+
+        fullUserEmbeddedTest(test, {u-> u.semesters = setOf(Semester(Season.WINTER, 1111), Semester(Season.FALL, 2222), Semester(Season.SUMMER, 3333)); u}, {e: FullUser, a:FullUser->assertEquals(e.groups, a.groups)})
+    }
+
+    @Test
+    fun testQueryWithSemesters(){
+        val test = FullUser(nick = "nick", semesters = setOf(Semester(Season.WINTER, 1111), Semester(Season.FALL, 2222)))
+        test._id="TEST"
+        persist(test)
+
+        val r = em.createQuery("SELECT c FROM FullUser c JOIN c.semesters s WHERE s.year = 1111", FullUser::class.java).singleResult
+        assertNotNull(r)
+        assertEquals(2, r.semesters.size)
+    }
+
+
+    @Test
     fun testAddFullSession(){
-        val testFullUser = FullUser(shortUser = "shortUname")
+        val testFullUser = FullUser(nick = "nick")
+        testFullUser._id = "shortUser"
 
         persist(testFullUser)
 
@@ -299,7 +320,8 @@ class HibernateTest {
 
     @Test
     fun testReadFullSession(){
-        val testFullUser = FullUser(shortUser = "shortUname")
+        val testFullUser = FullUser(nick = "nick")
+        testFullUser._id = "shortUser"
 
         persist(testFullUser)
     }
@@ -328,7 +350,8 @@ class HibernateTest {
 
     @Test
     fun testAddDestinationTicket(){
-        val testFullUser = FullUser(shortUser = "shortUname")
+        val testFullUser = FullUser(nick = "nick")
+        testFullUser._id = "shortUser"
         persist(testFullUser)
         val testDestinationTicket = DestinationTicket(user=testFullUser.toUser())
         crudTest(testDestinationTicket)
@@ -343,7 +366,8 @@ class HibernateTest {
     @Test
     fun testAddFullDestinationWithTicket(){
 
-        val testFullUser = FullUser(shortUser = "shortUname")
+        val testFullUser = FullUser(nick = "nick")
+        testFullUser._id = "shortUser"
         persist(testFullUser)
         var testFullDestination = FullDestination(name="testName")
         persist(testFullDestination)

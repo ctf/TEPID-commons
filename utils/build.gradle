@@ -2,6 +2,7 @@ dependencies {
     compile "org.apache.logging.log4j:log4j-api:${tepid.apache}"
     compile "org.apache.logging.log4j:log4j-core:${tepid.apache}"
     compile "org.jetbrains.kotlin:kotlin-reflect:${tepid.kotlin}"
+    compile project(':models')
 }
 
 sourceSets {
@@ -19,7 +20,6 @@ task copyTestResources(type: Copy) {
 processTestResources.dependsOn copyTestResources
 
 task jarTests(type: Jar, dependsOn: testClasses) {
-    classifier = 'tests'
     from sourceSets.test.output
 }
 configurations {

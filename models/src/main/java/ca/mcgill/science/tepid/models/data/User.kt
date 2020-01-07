@@ -2,9 +2,28 @@ package ca.mcgill.science.tepid.models.data
 
 import ca.mcgill.science.tepid.models.bindings.TepidDb
 import ca.mcgill.science.tepid.models.bindings.TepidJackson
-import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.concurrent.TimeUnit
-import javax.persistence.*
+import javax.persistence.Access
+import javax.persistence.AccessType
+import javax.persistence.ElementCollection
+import javax.persistence.Embeddable
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.Transient
+
+/**
+ * String representing a:
+ * - short user
+ * - long user
+ * - student id
+ */
+typealias PersonalIdentifier = String
+
+/**
+ * String representing a student's short username. Guaranteed unique.
+ */
+
+typealias ShortUser = String
 
 /**
  * Note that this is typically created from using [FullUser.toUser]
@@ -22,7 +41,6 @@ data class User(
         var nick: String? = null,
         var realName: String? = null,
         var salutation: String? = null,
-        var authType: String? = null,
         var role: String = "",
         var preferredName: String? = null,
         var activeSince: Long = -1,
@@ -59,8 +77,6 @@ data class UserQuery(
 /**
  * The complete collection of user attributes
  * Note that this is the main user model used for the backend.
- * It contains sensitive information, and therefore should not be used for interchange over the network
- * BEWARE that, for builtin users, the hashed password is printed in user.toString().
  */
 @Entity
 data class FullUser(
@@ -68,32 +84,36 @@ data class FullUser(
         var givenName: String? = null,                      // LDAP authoritative
         var middleName: String? = null,                     // LDAP authoritative
         var lastName: String? = null,                       // LDAP authoritative
-        var shortUser: String? = null,                      // LDAP authoritative
+        // var shortUser: String? = null,                      // LDAP authoritative
         var longUser: String? = null,                       // Expected lower case
         var email: String? = null,                          // LDAP authoritative
         var faculty: String? = null,                        // LDAP authoritative
         var nick: String? = null,                           // DB authoritative
         var realName: String? = null,                       // Computed
         var salutation: String? = null,                     // Computed
-        var authType: String? = null,
         var role: String = "",                              // Computed
-        var password: String? = null,                       // Password encrypted with bcrypt for local users
         @Access(AccessType.FIELD)
         @ElementCollection(fetch = FetchType.EAGER)
-        var groups: Set<AdGroup> = mutableSetOf(),             // Computed, from LDAP
+        var groups: Set<AdGroup> = mutableSetOf(),          // Computed, from LDAP
         @Access(AccessType.FIELD)
         @ElementCollection(fetch = FetchType.EAGER)
-        var courses: Set<Course> = mutableSetOf(),            // Computed, from LDAP
+        var semesters: Set<Semester> = mutableSetOf(),      // DB authoritative
         var preferredName: String? = null,                  // DB authoritative
         var activeSince: Long = System.currentTimeMillis(), // LDAP authoritative
         var studentId: Int = -1,
         var jobExpiration: Long = TimeUnit.DAYS.toMillis(7), // DB authoritative
-        var colorPrinting: Boolean = false // DB authoritative
+        var colorPrinting: Boolean = false, // DB authoritative
+        override var _id: String? = null
 ) : TepidDb(type="user") {
+
+    var shortUser: String?
+        get() = _id
+        set(value) {
+            _id = value
+        }
 
     init {
         updateUserNameInformation()
-        _id = "u$shortUser"
     }
 
     /**
@@ -112,14 +132,6 @@ data class FullUser(
             if (name.contains(".")) longUser == name
             else shortUser == name
 
-    /**
-     * Get the set of semesters for which the user has had courses
-     */
-    @Transient
-    @JsonIgnore
-    fun getSemesters(): Set<Semester> =
-            courses.map(Course::semester).toSet()
-
     fun toUser(): User = User(
             displayName = displayName,
             givenName = givenName,
@@ -131,7 +143,6 @@ data class FullUser(
             faculty = faculty,
             nick = nick,
             salutation = salutation,
-            authType = authType,
             role = role,
             preferredName = preferredName,
             activeSince = activeSince,
